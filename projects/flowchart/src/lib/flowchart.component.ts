@@ -2,18 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import Konva from 'konva';
 import { Node } from './object/node';
 import { Style } from './object/style';
-import { NodeDrawable } from './drawable/NodeDrawable';
-import { Point } from './object/point';
+import { NodeDrawable } from './drawable/nodedrawable';
+import { Position } from './object/position';
 
 @Component({
   selector: 'lib-flowchart',
-  template: `
-    <p>
-      <b>flowchart</b> works fine!!!!
-    </p>
-    <div id="container"></div>
-  `,
-  styles: []
+  templateUrl: './flowchart.component.html',
+  styleUrls: ['./flowchart.component.css']
 })
 export class FlowchartComponent implements OnInit {
 
@@ -25,7 +20,7 @@ export class FlowchartComponent implements OnInit {
     // first we need to create a stage
     var stage = new Konva.Stage({
       container: 'container',   // id of container <div>
-      width: 500,
+      width: 900,
       height: 500
     });
 
@@ -57,8 +52,7 @@ export class FlowchartComponent implements OnInit {
       node.description = "Description "+(i + 1);
       node.icon = "start";
       node.style = new Style();
-      node.style.backgroundColor = "#00ff0f";
-      node.point = new Point();
+      node.point = new Position();
       node.point.x = (i+1) * (Math.floor(Math.random() * 6) + 1)  * 5 * 10;
       node.point.y = (i+1) * (Math.floor(Math.random() * 6) + 1)  * 5 * 10;
 

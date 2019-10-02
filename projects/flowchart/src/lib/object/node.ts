@@ -1,10 +1,10 @@
-import { Point } from './point';
+import { Position } from './position';
 import { Style } from './style';
 
 export class Node {
 
     public id:string;
-    public point:Point;
+    public point:Position;
     public width:number;
     public height:number;
     public type:string;
@@ -12,6 +12,4 @@ export class Node {
     public description:string;
     public icon:string;    
     public style:Style;
-
-    constructor() { }
 }

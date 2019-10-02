@@ -1,43 +1,56 @@
-import { Node } from '../object/node';
 import { Layer } from 'konva/types/Layer';
-import Konva from 'konva';
-import { IDrawable } from './IDrawable';
-import { Style } from '../object/style';
-import { Point } from '../object/point';
+import { Rect } from 'konva/types/shapes/Rect';
+import { Text } from 'konva/types/shapes/Text';
+import { Node } from '../object/node';
+import { KonvaUtils } from '../utils/konvautils';
+import { Constants } from '../utils/constants';
 
-
-export class NodeDrawable implements IDrawable {
+export class NodeDrawable {
 
     public node:Node;
+
+    public box:Rect;
+    public title:Text;
+    public description:Text;
+    public config:Text;
 
     constructor(node:Node) {
         this.node = node;
     }
 
     draw(layer:Layer) {
-        
-        layer.add(this.addRect(this.node.style, this.node.point, 120, 60));
-        layer.add(this.addText(this.node.title, this.node.style, this.node.point, 10, 10));
-        layer.add(this.addText(this.node.description, this.node.style, this.node.point, 10, 40));
+        this.box = KonvaUtils.createBox(this.node.point, this.node.style, Constants.NODE_WIDTH, Constants.NODE_HEIGHT, this.onDrag.bind(this));
+        this.title = KonvaUtils.createTitle(this.node.title, this.node.style, this.node.point, Constants.TITLE_OFFSET_X, Constants.TITLE_OFFSET_Y);
+        this.description = KonvaUtils.createDescription(this.node.description, this.node.style, this.node.point, Constants.DESCRIPTION_OFFSET_X, Constants.DESCRIPTION_OFFSET_Y);
+        this.config = KonvaUtils.createIcon('\uf013', this.node.style, this.node.point, Constants.ICON_OFFSET_X, Constants.ICON_OFFSET_Y, this.onClickConfig.bind(this));
+
+        layer.add(this.box);
+        layer.add(this.title);
+        layer.add(this.description);
+        layer.add(this.config);
     }
 
-    addText(text:string, style:Style, point:Point, xOffset:number, yOffset:number) {
-        return new Konva.Text({
-            x: point.x + xOffset,
-            y: point.y + yOffset,
-            text: text
-          });
+    onDrag(e:any) {
+        this.node.point.x = e.target.attrs.x;
+        this.node.point.y = e.target.attrs.y;
+
+        this.title.setAbsolutePosition({
+            x: this.node.point.x + Constants.TITLE_OFFSET_X,
+            y: this.node.point.y + Constants.TITLE_OFFSET_Y
+        });
+
+        this.description.setAbsolutePosition({
+            x: this.node.point.x + Constants.DESCRIPTION_OFFSET_X,
+            y: this.node.point.y + Constants.DESCRIPTION_OFFSET_Y
+        });
+
+        this.config.setAbsolutePosition({
+            x: this.node.point.x + Constants.ICON_OFFSET_X,
+            y: this.node.point.y + Constants.ICON_OFFSET_Y
+        });
     }
 
-    addRect(style:Style, point:Point, width:number, height:number) {
-        return new Konva.Rect({
-            x: point.x,
-            y: point.y,
-            width: width,
-            height: height,
-            fill: 'red',
-            shadowBlur: 10,
-            cornerRadius: 10
-          });
+    onClickConfig() {
+        alert("icon clicked nodeId: " + this.node.id);
     }
 }
