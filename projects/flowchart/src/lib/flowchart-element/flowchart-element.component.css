@@ -4,26 +4,31 @@
 }
 
 .draggable {
-    height: 60px;
-    width: 60px;
+    height: 40px;
+    width: 150px;
     display: block;
     margin-bottom: 20px;
     border-radius: 5px;
     border: none;
 }
 
+.draggable:hover {
+    cursor: move;
+}
+
+.draggable span i {
+    margin-top: 5px;
+}
+
 .draggable-type-S {
-    width: 120px;
     background: #1DE9B6!important;
 }
 
 .draggable-type-N, .draggable-type-C {
-    width: 120px;
     background: #FFFFFF!important;
 }
 
 .draggable-type-E {
-    width: 120px;
     background: #F44336!important;
 }
 

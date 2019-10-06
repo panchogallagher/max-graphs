@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import Konva from 'konva';
 import { Node } from '../object/node';
 import { Style } from '../object/style';
@@ -15,7 +15,7 @@ declare var $: any;
   templateUrl: './flowchart-graph.component.html',
   styleUrls: ['./flowchart-graph.component.css']
 })
-export class FlowchartGraphComponent implements OnInit {
+export class FlowchartGraphComponent implements OnInit, AfterViewInit {
 
   private layer : Konva.Layer;
   private offset: any;
@@ -26,7 +26,6 @@ export class FlowchartGraphComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.offset = $("#graph-container").offset();
     let nodes = KonvaUtils.getNodes(2);
 
     var stage = new Konva.Stage({
@@ -53,6 +52,10 @@ export class FlowchartGraphComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit() {
+    this.offset = $("#graph-container").offset();
+  }
+
   public updateNode(node: Node) {
     for (let i = 0; i < this.drawables.length; i++) {
       let drawable = this.drawables[i];
@@ -67,7 +70,7 @@ export class FlowchartGraphComponent implements OnInit {
   private onDrop(event, ui) {
     
     let x = ui.position.left - this.offset.left + Constants.NODE_WIDTH/2;
-    let y = ui.position.top - this.offset.top;
+    let y = ui.position.top;
 
     let node = KonvaUtils.createEmptyNode(ui.draggable.data('type'), this.newNodeId(), x, y);
     this.addDrawable(new NodeDrawable(node, this.initSetting.bind(this)));

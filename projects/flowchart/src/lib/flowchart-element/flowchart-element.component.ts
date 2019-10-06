@@ -1,8 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
-import { KonvaUtils } from '../utils/konvautils';
-import { Node } from '../object/node';
-import Konva from 'konva';
-import { FlowchartGraphComponent } from '../flowchart-graph/flowchart-graph.component';
+import { Component, ViewEncapsulation, AfterViewInit } from '@angular/core';
 import { Constants } from '../utils/constants';
 
 declare var $: any;
@@ -16,47 +12,25 @@ declare var $: any;
   ],
   encapsulation: ViewEncapsulation.None
 })
-export class FlowchartElementComponent implements OnInit {
+export class FlowchartElementComponent implements AfterViewInit {
 
-  @Input() flowGraph: FlowchartGraphComponent;
+  public nodeTypes: string[] = Object.keys(Constants.NODE_DEFINITION);
 
   constructor() { }
 
-  ngOnInit() {
-
-    let container = $('#element-container');
-    Constants.NODE_TYPES.forEach(function (type, i) {
-
-      let div = $('<div class="d-flex justify-content-center">' + this.getDivDraggable(type) +'</div>');
-      container.append(div);
-
-    }.bind(this));
-    
-    $( ".draggable" ).draggable({
+  ngAfterViewInit() {
+    $(".draggable" ).draggable({
       zIndex: 1000, 
       helper: "clone", 
       opacity: 0.55
     });
   }
 
-  private getDivDraggable(type:string) {
+  public getNodeText(type:string) {
+    return Constants.NODE_DEFINITION[type].title;
+  }
 
-    let text = "";
-    switch(type) {
-      case "S":
-        text = "Punto de entrada";
-        break;
-      case "E":
-        text = "Punto de término";
-        break;
-      case "N":
-        text = "Enviar mensaje";
-        break;
-      case "C":
-        text = "Evaluar condición";
-        break;
-    }
-
-    return '<div id="shape' + type + '" class="draggable d-flex justify-content-center draggable-type-' + type + '" data-type="' + type + '">' + text + '</div>';
+  public getNodeIcon(type:string) {
+    return Constants.NODE_DEFINITION[type].icon;
   }
 }

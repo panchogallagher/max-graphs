@@ -131,15 +131,15 @@ export class KonvaUtils {
             fill: style.iconColor
         });
 
-        icon.on('mouseover', function() {
-            document.body.style.cursor = 'pointer';
-        });
-          
-        icon.on('mouseout', function() {
-            document.body.style.cursor = 'default';
-        });
-
         if (onClickCallback !== null && onClickCallback !== undefined) {
+            icon.on('mouseover', function() {
+                document.body.style.cursor = 'pointer';
+            });
+              
+            icon.on('mouseout', function() {
+                document.body.style.cursor = 'default';
+            });
+
             icon.on('click', onClickCallback);
         }
 
@@ -156,7 +156,7 @@ export class KonvaUtils {
           node.type = "N";
           node.title = "Title "+(i + 1);
           node.description = "Description "+(i + 1);
-          node.icon = "start";
+          node.icon = "play";
           node.style = new Style();
           node.point = new Position();
           node.point.x = (i+1) * (Math.floor(Math.random() * 6) + 1)  * 3 * 10;
@@ -168,15 +168,18 @@ export class KonvaUtils {
     }
 
     public static createEmptyNode(type: string, id: string, x: number, y: number) {
+
+        let definition = Constants.NODE_DEFINITION[type];
+
         return {
             id: id,
             width: Constants.NODE_WIDTH,
             height: Constants.NODE_HEIGHT,
             type: type,
-            title: "Título",
+            title: definition.title,
             description: "",
-            icon: "start",
-            style: Constants.NODE_STYLE[type],
+            icon: definition.icon,
+            style: definition.style,
             point: {
                 x: x,
                 y: y,
