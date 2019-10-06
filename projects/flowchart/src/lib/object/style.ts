@@ -6,6 +6,7 @@ export class Style {
     public boxBorderWidth?:number  = Constants.DEFAULT_STYLE.boxBorderWidth;
     public boxBorderColor?:string  = Constants.DEFAULT_STYLE.boxBorderColor;
     public boxShadowBlur?:number  = Constants.DEFAULT_STYLE.boxShadowBlur;
+    public boxShadowOffset?:any = Constants.DEFAULT_STYLE.boxShadowOffset;
     public boxCornerRadious?:number  = Constants.DEFAULT_STYLE.boxCornerRadious;
 
     public titleFontFamily?:string  = Constants.DEFAULT_STYLE.titleFontFamily;

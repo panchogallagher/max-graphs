@@ -4,6 +4,7 @@ import { Text } from 'konva/types/shapes/Text';
 import { Node } from '../object/node';
 import { KonvaUtils } from '../utils/konvautils';
 import { Constants } from '../utils/constants';
+import { ChartUtils } from '../utils/chartutils';
 
 export class NodeDrawable {
 
@@ -14,12 +15,15 @@ export class NodeDrawable {
     public description:Text;
     public config:Text;
 
-    constructor(node:Node) {
+    private onClickCallback:any;
+
+    constructor(node:Node, onClickCallback?:any) {
         this.node = node;
+        this.onClickCallback = onClickCallback;
     }
 
     draw(layer:Layer) {
-        this.box = KonvaUtils.createBox(this.node.point, this.node.style, Constants.NODE_WIDTH, Constants.NODE_HEIGHT, this.onDrag.bind(this));
+        this.box = KonvaUtils.createBox(this.node.point, this.node.style, Constants.NODE_WIDTH, Constants.NODE_HEIGHT, this.onDrag.bind(this), this.onDragStart.bind(this));
         this.title = KonvaUtils.createTitle(this.node.title, this.node.style, this.node.point, Constants.TITLE_OFFSET_X, Constants.TITLE_OFFSET_Y);
         this.description = KonvaUtils.createDescription(this.node.description, this.node.style, this.node.point, Constants.DESCRIPTION_OFFSET_X, Constants.DESCRIPTION_OFFSET_Y);
         this.config = KonvaUtils.createIcon('\uf013', this.node.style, this.node.point, Constants.ICON_OFFSET_X, Constants.ICON_OFFSET_Y, this.onClickConfig.bind(this));
@@ -48,6 +52,19 @@ export class NodeDrawable {
             x: this.node.point.x + Constants.ICON_OFFSET_X,
             y: this.node.point.y + Constants.ICON_OFFSET_Y
         });
+    }
+
+    onDragStart() {
+        if (this.onClickCallback !== null && this.onClickCallback !== undefined) {
+            this.onClickCallback(this.node);
+        }
+    }
+
+    update(node: Node) {
+        this.node = Object.assign({}, node);
+
+        this.title.text(ChartUtils.format(node.title, Constants.MAX_TITLE_LENGTH));
+        this.description.text(ChartUtils.format(node.description));
     }
 
     onClickConfig() {

@@ -1,0 +1,26 @@
+<h6>Configuraci&oacute;n</h6>
+<form>
+    <div class="form-group">
+        <label for="fi-title">T&iacute;tulo</label>
+        <input type="email" class="form-control form-control-sm" id="fi-title" name="fi-title" placeholder="Ingrese el título" [(ngModel)]="node.title">
+    </div>
+    <div class="form-group">
+        <label for="fi-description">Descripci&oacute;n</label>
+        <textarea class="form-control form-control-sm" id="fi-description" name="fi-description" placeholder="Ingrese la descripci&oacute;n" [(ngModel)]="node.description"></textarea>
+    </div>
+    <div class="form-group">
+        <span class="subtitle">Estilo</span>
+    </div>
+    <div>
+        <div class="form-group">
+            <label for="fi-backgroundColor">Color de Fondo</label>
+            <input type="password" class="form-control form-control-sm" id="fi-backgroundColor" placeholder="Ingrese la descripci&oacute;n">
+        </div>
+
+    </div>
+    <div class="form-row">
+        <button type="button" class="btn btn-primary btn-sm col" (click)="onApply()">Aplicar</button>
+        <div class="col-xs-1"></div>
+        <button type="button" class="btn btn-secondary btn-sm col" (click)="onRevert()">Revertir</button>
+    </div>
+</form>
