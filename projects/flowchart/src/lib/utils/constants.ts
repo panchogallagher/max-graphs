@@ -3,14 +3,17 @@ import { Style } from '../object/style';
 export class Constants {
 
     public static ICON_WIDTH:number = 15;
+    public static CIRCLE_RADIOUS:number = 12;
+    public static CIRCLE_COLOR:string = "white";
 
     public static NODE_WIDTH:number = 150;
     public static NODE_HEIGHT:number = 35;
+    public static NODE_MARGIN:number = 10;
 
-    public static ICON_OFFSET_X:number = 10;
+    public static ICON_OFFSET_X:number = Constants.NODE_MARGIN;
     public static ICON_OFFSET_Y:number = Constants.NODE_HEIGHT/2 - Constants.ICON_WIDTH/2;
 
-    public static TITLE_OFFSET_X:number = Constants.ICON_OFFSET_X + Constants.ICON_WIDTH + 10;
+    public static TITLE_OFFSET_X:number = Constants.ICON_OFFSET_X + Constants.ICON_WIDTH + Constants.NODE_MARGIN;
     public static TITLE_OFFSET_Y:number = 5;
     public static TITLE_OFFSET_NODESCRIPTION_Y:number = Constants.ICON_OFFSET_Y + 2;
 
@@ -20,10 +23,14 @@ export class Constants {
     public static ICON_CONFIG_OFFSET_X:number = Constants.NODE_WIDTH - 25;
     public static ICON_CONFIG_OFFSET_Y:number = Constants.TITLE_OFFSET_Y;
 
-    public static MAX_TITLE_LENGTH:number = 10;
-    public static MAX_DESCRIPTION_LENGTH:number = 18;
+    public static ICON_PLUS_OFFSET_X:number = Constants.ICON_OFFSET_X + 10;
+    public static ICON_PLUS_OFFSET_Y:number = Constants.NODE_HEIGHT + 10;
 
-    
+    public static ICON_PLUS_CIRCLE_OFFSET_X:number = Constants.ICON_PLUS_OFFSET_X + Constants.CIRCLE_RADIOUS/2 + 1;
+    public static ICON_PLUS_CIRCLE_OFFSET_Y:number = Constants.ICON_PLUS_OFFSET_Y + Constants.CIRCLE_RADIOUS/2 + 2;
+
+    public static MAX_TITLE_LENGTH:number = 16;
+    public static MAX_DESCRIPTION_LENGTH:number = 19;
 
     public static DEFAULT_STYLE:any = {
         boxBackgroundColor: "#1DE9B6",
@@ -37,11 +44,11 @@ export class Constants {
         boxCornerRadious: 0,
 
         titleFontFamily: "lato",
-        titleFontSize: 14,
+        titleFontSize: 12,
         titleFontColor: "white",
 
         descriptionFontFamily: "lato",
-        descriptionFontSize: 12,
+        descriptionFontSize: 10,
         descriptionFontColor: "white",
 
         iconSize: 18,
@@ -66,6 +73,11 @@ export class Constants {
         iconColor: "#424242"
     });
 
+    public static NODE_CONDITIONAL:any = Object.assign({}, Constants.NODE_NORMAL, {
+        plusCircleColor: "white",
+        plusCircleSize: 20
+    });
+
     public static NODE_STYLE:any = {
         S: Constants.NODE_START,
         E: Constants.NODE_END,
@@ -79,12 +91,12 @@ export class Constants {
         S: {
             style: Constants.NODE_START,
             icon: 'play',
-            title: 'Punto de entrada'
+            title: 'Punto entrada'
         },
         E: {
             style: Constants.NODE_END,
             icon: 'stop',
-            title: 'Punto de término'
+            title: 'Punto término'
         },
         N: {
             style: Constants.NODE_NORMAL,
@@ -92,7 +104,7 @@ export class Constants {
             title: 'Envía mensaje'
         },
         C: {
-            style: Constants.NODE_NORMAL,
+            style: Constants.NODE_CONDITIONAL,
             icon: 'list-ul',
             title: 'Evaluar entrante'
         }

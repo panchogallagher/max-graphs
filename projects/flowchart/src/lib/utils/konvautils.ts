@@ -85,14 +85,13 @@ export class KonvaUtils {
             text: ChartUtils.format(text, Constants.MAX_TITLE_LENGTH),
             fontSize: style.titleFontSize,
             fontFamily: style.titleFontFamily,
-            fontStyle: 'bold',
             fill: style.titleFontColor
         });
 
         txt.on('mouseover', function() {
             document.body.style.cursor = 'move';
         });
-          
+
         txt.on('mouseout', function() {
             document.body.style.cursor = 'default';
         });
@@ -144,6 +143,31 @@ export class KonvaUtils {
         }
 
         return icon;
+    }
+
+    public static createCircle(style:Style, Position:Position, xOffset:number, yOffset:number, onClickCallback?: any) {
+        let circle =  new Konva.Circle({
+            x: Position.x + xOffset,
+            y: Position.y + yOffset,
+            radius: Constants.CIRCLE_RADIOUS,
+            fill: Constants.CIRCLE_COLOR,
+            stroke: '#cccccc',
+            strokeWidth: 1
+        });
+
+        if (onClickCallback !== null && onClickCallback !== undefined) {
+            circle.on('mouseover', function() {
+                document.body.style.cursor = 'pointer';
+            });
+              
+            circle.on('mouseout', function() {
+                document.body.style.cursor = 'default';
+            });
+
+            circle.on('click', onClickCallback);
+        }
+
+        return circle;
     }
 
     public static getNodes(total:number) {

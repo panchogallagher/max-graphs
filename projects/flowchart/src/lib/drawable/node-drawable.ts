@@ -6,8 +6,9 @@ import { KonvaUtils } from '../utils/konvautils';
 import { Constants } from '../utils/constants';
 import { ChartUtils } from '../utils/chartutils';
 import { FontAwesomeUnicode } from '../utils/fontawesome-unicode';
+import { IDrawable } from './i-drawable';
 
-export class NodeDrawable {
+export class NodeDrawable implements IDrawable {
 
     public node:Node;
 
@@ -28,7 +29,6 @@ export class NodeDrawable {
         
         this.box = KonvaUtils.createBox(this.node.point, this.node.style, Constants.NODE_WIDTH, Constants.NODE_HEIGHT, this.onDrag.bind(this), this.onDragStart.bind(this));
         this.title = KonvaUtils.createTitle(this.node.title, this.node.style, this.node.point, Constants.TITLE_OFFSET_X, this.node.description != '' ? Constants.TITLE_OFFSET_Y : Constants.TITLE_OFFSET_NODESCRIPTION_Y);
-
         this.description = KonvaUtils.createDescription(this.node.description, this.node.style, this.node.point, Constants.DESCRIPTION_OFFSET_X, Constants.DESCRIPTION_OFFSET_Y);
         this.config = KonvaUtils.createIcon(FontAwesomeUnicode.cog, this.node.style, this.node.point, Constants.ICON_CONFIG_OFFSET_X, Constants.ICON_CONFIG_OFFSET_Y, this.onClickConfig.bind(this));
         
@@ -86,6 +86,10 @@ export class NodeDrawable {
             x: this.node.point.x + Constants.TITLE_OFFSET_X,
             y: this.node.point.y + (this.node.description != '' ? Constants.TITLE_OFFSET_Y : Constants.TITLE_OFFSET_NODESCRIPTION_Y)
         });
+    }
+
+    getId() : string {
+        return this.node.id;
     }
 
     onClickConfig() {

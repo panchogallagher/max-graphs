@@ -7,6 +7,8 @@ import { Position } from '../object/position';
 import { KonvaUtils } from '../utils/konvautils';
 import { Constants } from '../utils/constants';
 import { FlowchartSettingComponent } from '../flowchart-setting/flowchart-setting.component';
+import { IDrawable } from '../drawable/i-drawable';
+import { DrawableFactory } from '../drawable/drawable-factory';
 
 declare var $: any;
 
@@ -19,7 +21,8 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
 
   private layer : Konva.Layer;
   private offset: any;
-  private drawables: NodeDrawable[] = [];
+  private drawables: IDrawable[] = [];
+  private counter: number = 0;
 
   @Input() nodeSetting: FlowchartSettingComponent;
 
@@ -38,11 +41,13 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
 
     this.layer.add(KonvaUtils.createBG(700,500));
     
+    /*
     nodes.forEach(function (node) {
       node.id = this.newNodeId();
-      let drawable = new NodeDrawable(node, this.initSetting.bind(this));
+      let drawable = DrawableFactory.create(node, this.initSetting.bind(this));
       this.addDrawable(drawable);
     }.bind(this));
+    */
 
     stage.add(this.layer);
     this.layer.draw();
@@ -59,7 +64,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   public updateNode(node: Node) {
     for (let i = 0; i < this.drawables.length; i++) {
       let drawable = this.drawables[i];
-      if (drawable.node.id == node.id) {
+      if (drawable.getId() == node.id) {
         drawable.update(node);
         this.layer.draw();
         break;
@@ -73,21 +78,23 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     let y = ui.position.top;
 
     let node = KonvaUtils.createEmptyNode(ui.draggable.data('type'), this.newNodeId(), x, y);
-    this.addDrawable(new NodeDrawable(node, this.initSetting.bind(this)));
+    DrawableFactory.create(node, this.initSetting.bind(this));
+    this.addDrawable(DrawableFactory.create(node, this.initSetting.bind(this)));
 
     this.layer.draw();
     this.initSetting(node);
   }
 
   private newNodeId() {
-    return "N" + (this.drawables.length + 1);
+    this.counter++;
+    return "N" + (this.counter);
   }
 
   private initSetting(node: Node) {
     this.nodeSetting.init(node);
   }
 
-  private addDrawable(drawable: NodeDrawable) {
+  private addDrawable(drawable: IDrawable) {
     drawable.draw(this.layer);
     this.drawables.push(drawable);
   }
