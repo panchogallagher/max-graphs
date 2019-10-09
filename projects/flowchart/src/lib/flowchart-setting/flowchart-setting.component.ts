@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Node } from '../object/node';
-import { FlowchartGraphComponent } from '../flowchart-graph/flowchart-graph.component';
+import { SettingService } from '../services/setting.service';
 
 @Component({
   selector: 'flowchart-setting',
@@ -12,11 +12,12 @@ import { FlowchartGraphComponent } from '../flowchart-graph/flowchart-graph.comp
 })
 export class FlowchartSettingComponent implements OnInit {
 
-  @Input() flowGraph: FlowchartGraphComponent;
   public node: Node;
   private original: Node;
 
-  constructor() { }
+  constructor(private _setting: SettingService) { 
+    _setting.view.subscribe(node => this.init(node));
+  }
 
   ngOnInit() {
     this.node = new Node();
@@ -29,7 +30,8 @@ export class FlowchartSettingComponent implements OnInit {
 
   public onApply() {
     console.log(this.node);
-    this.flowGraph.updateNode(this.node);
+    //this.flowGraph.updateNode(this.node);
+    this._setting.update(this.node);
   }
 
   public onRevert() {

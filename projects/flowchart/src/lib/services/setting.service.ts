@@ -4,6 +4,7 @@ import { Node } from '../object/node';
 export class SettingService {
 
   @Output() view: EventEmitter<Node> = new EventEmitter();
+  @Output() apply: EventEmitter<Node> = new EventEmitter();
 
   constructor() { 
 
@@ -11,5 +12,9 @@ export class SettingService {
 
   show(node: Node) {
     this.view.emit(node);
+  }
+
+  update(node: Node) {
+    this.apply.emit(node);
   }
 }

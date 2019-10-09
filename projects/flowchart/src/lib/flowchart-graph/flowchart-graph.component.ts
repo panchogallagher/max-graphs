@@ -3,12 +3,11 @@ import Konva from 'konva';
 import { Node } from '../object/node';
 import { Style } from '../object/style';
 import { NodeDrawable } from '../drawable/node-drawable';
-import { Position } from '../object/position';
 import { KonvaUtils } from '../utils/konvautils';
 import { Constants } from '../utils/constants';
-import { FlowchartSettingComponent } from '../flowchart-setting/flowchart-setting.component';
 import { IDrawable } from '../drawable/i-drawable';
 import { DrawableFactory } from '../drawable/drawable-factory';
+import { SettingService } from '../services/setting.service';
 
 declare var $: any;
 
@@ -24,9 +23,9 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   private drawables: IDrawable[] = [];
   private counter: number = 0;
 
-  @Input() nodeSetting: FlowchartSettingComponent;
-
-  constructor() { }
+  constructor(private _setting: SettingService) { 
+    _setting.apply.subscribe(node => this.updateNode(node));
+  }
 
   ngOnInit() {
     let nodes = KonvaUtils.getNodes(2);
@@ -91,7 +90,8 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   }
 
   private initSetting(node: Node) {
-    this.nodeSetting.init(node);
+    this._setting.show(node);
+    //this.nodeSetting.init(node);
   }
 
   private addDrawable(drawable: IDrawable) {
