@@ -1,8 +1,6 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, EventEmitter } from '@angular/core';
 import Konva from 'konva';
 import { Node } from '../object/node';
-import { Style } from '../object/style';
-import { NodeDrawable } from '../drawable/node-drawable';
 import { KonvaUtils } from '../utils/konvautils';
 import { Constants } from '../utils/constants';
 import { IDrawable } from '../drawable/i-drawable';
@@ -17,6 +15,8 @@ declare var $: any;
   styleUrls: ['./flowchart-graph.component.css']
 })
 export class FlowchartGraphComponent implements OnInit, AfterViewInit {
+  
+  public onClickConfig: EventEmitter<Node> = null;
 
   private layer : Konva.Layer;
   private offset: any;
@@ -24,12 +24,10 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   private counter: number = 0;
 
   constructor(private _setting: SettingService) { 
-    _setting.apply.subscribe(node => this.updateNode(node));
+    _setting.apply.subscribe((node:Node) => this.updateNode(node));
   }
 
   ngOnInit() {
-    let nodes = KonvaUtils.getNodes(2);
-
     var stage = new Konva.Stage({
       container: 'graph-container',
       width: 700,
@@ -41,6 +39,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     this.layer.add(KonvaUtils.createBG(700,500));
     
     /*
+    let nodes = KonvaUtils.getNodes(2);
     nodes.forEach(function (node) {
       node.id = this.newNodeId();
       let drawable = DrawableFactory.create(node, this.initSetting.bind(this));
@@ -77,8 +76,8 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     let y = ui.position.top;
 
     let node = KonvaUtils.createEmptyNode(ui.draggable.data('type'), this.newNodeId(), x, y);
-    DrawableFactory.create(node, this.initSetting.bind(this));
-    this.addDrawable(DrawableFactory.create(node, this.initSetting.bind(this)));
+    //DrawableFactory.create(node, this.initSetting.bind(this));
+    this.addDrawable(DrawableFactory.create(node, this.initSetting.bind(this), this.clickConfig.bind(this)));
 
     this.layer.draw();
     this.initSetting(node);
@@ -97,5 +96,15 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   private addDrawable(drawable: IDrawable) {
     drawable.draw(this.layer);
     this.drawables.push(drawable);
+  }
+
+  private clickConfig(node: Node) {
+    if (this.onClickConfig !== null) {
+      this.onClickConfig.emit(node);
+    }
+  }
+
+  public onSomething() {
+    alert("asdf");
   }
 }

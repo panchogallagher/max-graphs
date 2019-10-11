@@ -19,10 +19,12 @@ export class NodeDrawable implements IDrawable {
     public icon:Text;
 
     private onClickCallback:any;
+    private onConfigCallback:any;
 
-    constructor(node:Node, onClickCallback?:any) {
+    constructor(node:Node, onClickCallback?:any, onConfigCallback?: any) {
         this.node = node;
         this.onClickCallback = onClickCallback;
+        this.onConfigCallback = onConfigCallback;
     }
 
     draw(layer:Layer) {
@@ -93,6 +95,8 @@ export class NodeDrawable implements IDrawable {
     }
 
     onClickConfig() {
-        alert("icon clicked nodeId: " + this.node.id);
+        if (this.onConfigCallback !== null && this.onConfigCallback !== undefined) {
+            this.onConfigCallback(this.node);
+        }
     }
 }

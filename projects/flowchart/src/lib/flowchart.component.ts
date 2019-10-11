@@ -1,9 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import Konva from 'konva';
+import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ViewChild } from '@angular/core';
 import { Node } from './object/node';
-import { Style } from './object/style';
-import { NodeDrawable } from './drawable/node-drawable';
-import { Position } from './object/position';
+import { FlowchartGraphComponent } from './flowchart-graph/flowchart-graph.component';
 
 @Component({
   selector: 'lib-flowchart',
@@ -13,9 +10,24 @@ import { Position } from './object/position';
     './flowchart.component.css'
   ]
 })
-export class FlowchartComponent implements OnInit {
+export class FlowchartComponent implements AfterViewInit {
+
+  @ViewChild("flowchartgraph", {static: false})
+  flowchartgraph : FlowchartGraphComponent;
+
+  @Output() onClickConfig: EventEmitter<Node> = new EventEmitter();
 
   constructor() { }
 
-  ngOnInit() {}
+  ngAfterViewInit() {
+    this.flowchartgraph.onClickConfig = this.onClickConfig;
+  }
+
+  load(graph: Node[]) {
+
+  }
+
+  export() {
+    this.flowchartgraph.onSomething();
+  }
 }

@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FlowchartComponent } from './flowchart.component';
 import { FlowchartElementComponent } from './flowchart-element/flowchart-element.component';
 import { FlowchartSettingComponent } from './flowchart-setting/flowchart-setting.component';
 import { FlowchartGraphComponent } from './flowchart-graph/flowchart-graph.component';
-import { CommonModule } from '@angular/common';
 import { SettingService } from './services/setting.service';
 
 @NgModule({

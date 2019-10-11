@@ -5,7 +5,7 @@ import { ConditionDrawable } from './condition-drawable';
 
 export class DrawableFactory {
 
-    public static create(node: Node, onClickCallback?: any) : IDrawable {
+    public static create(node: Node, onClickCallback?: any, onConfigCallback?: any) : IDrawable {
         
         let drawable:IDrawable;
 
@@ -14,7 +14,7 @@ export class DrawableFactory {
                 drawable = new ConditionDrawable(node, onClickCallback);
                 break;
             default:
-                drawable = new NodeDrawable(node, onClickCallback);
+                drawable = new NodeDrawable(node, onClickCallback, onConfigCallback);
                 break;
         }
         return drawable;

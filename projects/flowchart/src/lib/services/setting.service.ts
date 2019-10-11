@@ -1,6 +1,7 @@
-import { EventEmitter, Output } from '@angular/core';
+import { EventEmitter, Output, Injectable } from '@angular/core';
 import { Node } from '../object/node';
 
+@Injectable()
 export class SettingService {
 
   @Output() view: EventEmitter<Node> = new EventEmitter();

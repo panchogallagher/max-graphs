@@ -1,10 +1,11 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
-import { Node } from './object/node';
+import { Node } from '../object/node';
+import { FlowchartModule } from '../flowchart.module';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FlowchartService {
+export class ChartService {
 
   @Output() onClickConfig: EventEmitter<Node> = new EventEmitter();
 
@@ -13,7 +14,6 @@ export class FlowchartService {
   }
 
   clickConfig(node: Node) {
-    console.log("FlowchartService", node);
     this.onClickConfig.emit(node);
   }
 }
