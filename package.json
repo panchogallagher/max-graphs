@@ -8,6 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "build-test": "ng build flowchart-test",
     "flowchart-build": "ng build flowchart",
     "flowchart-dev": "ng build flowchart --watch=true"
   },
