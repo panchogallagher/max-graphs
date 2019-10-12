@@ -4,6 +4,7 @@ import Konva from 'konva';
 import { Node } from '../object/node';
 import { Constants } from './constants';
 import { ChartUtils } from './chartutils';
+import { FullStyle } from '../object/full-style';
 
 export class KonvaUtils {
 
@@ -15,7 +16,7 @@ export class KonvaUtils {
      * @param height 
      * @param onDragCallback 
      */
-    public static createBox(Position:Position, style:Style, width:number, height:number, onDragCallback?:any, onDragStart?:any) : Konva.Rect {
+    public static createBox(Position:Position, style:FullStyle, width:number, height:number, onDragCallback?:any, onDragStart?:any) : Konva.Rect {
         let rect = new Konva.Rect({
             x: Position.x,
             y: Position.y,
@@ -70,7 +71,7 @@ export class KonvaUtils {
         return rect;
     }
 
-    public static createText(text:string, style:Style, Position:Position, xOffset:number, yOffset:number) : Konva.Text {
+    public static createText(text:string, style:FullStyle, Position:Position, xOffset:number, yOffset:number) : Konva.Text {
         return new Konva.Text({
             x: Position.x + xOffset,
             y: Position.y + yOffset,
@@ -78,7 +79,7 @@ export class KonvaUtils {
         });
     }
 
-    public static createTitle(text:string, style:Style, Position:Position, xOffset:number, yOffset:number) : Konva.Text {
+    public static createTitle(text:string, style:FullStyle, Position:Position, xOffset:number, yOffset:number) : Konva.Text {
         let txt = new Konva.Text({
             x: Position.x + xOffset,
             y: Position.y + yOffset,
@@ -99,7 +100,7 @@ export class KonvaUtils {
         return txt;
     }
 
-    public static createDescription(text:string, style:Style, Position:Position, xOffset:number, yOffset:number) : Konva.Text {
+    public static createDescription(text:string, style:FullStyle, Position:Position, xOffset:number, yOffset:number) : Konva.Text {
         let txt = new Konva.Text({
             x: Position.x + xOffset,
             y: Position.y + yOffset,
@@ -120,7 +121,7 @@ export class KonvaUtils {
         return txt;
     }
 
-    public static createIcon(text:string, style:Style, Position:Position, xOffset:number, yOffset:number, onClickCallback?: any) {
+    public static createIcon(text:string, style:FullStyle, Position:Position, xOffset:number, yOffset:number, onClickCallback?: any) {
         let icon =  new Konva.Text({
             x: Position.x + xOffset,
             y: Position.y + yOffset,
@@ -145,7 +146,7 @@ export class KonvaUtils {
         return icon;
     }
 
-    public static createCircle(style:Style, Position:Position, xOffset:number, yOffset:number, onClickCallback?: any) {
+    public static createCircle(style:FullStyle, Position:Position, xOffset:number, yOffset:number, onClickCallback?: any) {
         let circle =  new Konva.Circle({
             x: Position.x + xOffset,
             y: Position.y + yOffset,

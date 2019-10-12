@@ -78,11 +78,11 @@ export class NodeDrawable implements IDrawable {
         }
     }
 
-    update(node: Node) {
-        this.node = Object.assign({}, node);
+    update(newnode: Node) {
+        this.node = ChartUtils.clone(newnode);
 
-        this.title.text(ChartUtils.format(node.title, Constants.MAX_TITLE_LENGTH));
-        this.description.text(ChartUtils.format(node.description));
+        this.title.text(ChartUtils.format(this.node.title, Constants.MAX_TITLE_LENGTH));
+        this.description.text(ChartUtils.format(this.node.description));
 
         this.title.setAbsolutePosition({
             x: this.node.point.x + Constants.TITLE_OFFSET_X,
@@ -94,9 +94,21 @@ export class NodeDrawable implements IDrawable {
         return this.node.id;
     }
 
+    getNode() : Node {
+        return this.node;
+    }
+
+    destroy() {
+        this.box.destroy();
+        this.title.destroy();
+        this.description.destroy();
+        this.config.destroy();
+        this.icon.destroy();
+    }
+
     onClickConfig() {
         if (this.onConfigCallback !== null && this.onConfigCallback !== undefined) {
-            this.onConfigCallback(this.node);
+            this.onConfigCallback(ChartUtils.clone(this.node));
         }
     }
 }

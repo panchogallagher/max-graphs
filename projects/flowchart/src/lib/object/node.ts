@@ -12,4 +12,5 @@ export class Node {
     public description:string;
     public icon:string;    
     public style:Style;
+
 }

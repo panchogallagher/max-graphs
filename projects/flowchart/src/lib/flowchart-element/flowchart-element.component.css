@@ -22,6 +22,7 @@
 
 .draggable-type-S {
     background: #1DE9B6!important;
+    color: #FFFFFF!important;
 }
 
 .draggable-type-N, .draggable-type-C {
@@ -30,6 +31,7 @@
 
 .draggable-type-E {
     background: #F44336!important;
+    color: #FFFFFF!important;
 }
 
 .ui-draggable-dragging {

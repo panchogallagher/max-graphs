@@ -24,10 +24,10 @@ export class FlowchartComponent implements AfterViewInit {
   }
 
   load(graph: Node[]) {
-
+    this.flowchartgraph.load(graph);
   }
 
-  export() {
-    this.flowchartgraph.onSomething();
+  export() : any {
+    return this.flowchartgraph.export()
   }
 }

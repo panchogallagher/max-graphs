@@ -1,3 +1,15 @@
-<lib-flowchart #chart></lib-flowchart>
-<button (click)="this.something()">Export</button>
+<div class="container mt-3">
+    <div class="text-center">
+        <h1>{{title}}</h1>
+    </div>
+    
+    <lib-flowchart #chart></lib-flowchart>
+
+    <div class="row justify-content-center mt-3">
+        <div class="col-12 text-center">
+            <button class="btn btn-primary mr-3" (click)="this.saveState()">Guardar estado</button>
+            <button class="btn btn-secondary" (click)="this.revertState()">Revertir estado</button>
+        </div>
+    </div>
+</div>
 

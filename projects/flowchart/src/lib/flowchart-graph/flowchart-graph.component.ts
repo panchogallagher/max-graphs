@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, AfterViewInit, EventEmitter, Input } from '@angular/core';
 import Konva from 'konva';
 import { Node } from '../object/node';
 import { KonvaUtils } from '../utils/konvautils';
@@ -6,6 +6,7 @@ import { Constants } from '../utils/constants';
 import { IDrawable } from '../drawable/i-drawable';
 import { DrawableFactory } from '../drawable/drawable-factory';
 import { SettingService } from '../services/setting.service';
+import { ChartUtils } from '../utils/chartutils';
 
 declare var $: any;
 
@@ -16,7 +17,7 @@ declare var $: any;
 })
 export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   
-  public onClickConfig: EventEmitter<Node> = null;
+  onClickConfig: EventEmitter<Node> = null;
 
   private layer : Konva.Layer;
   private offset: any;
@@ -76,7 +77,6 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     let y = ui.position.top;
 
     let node = KonvaUtils.createEmptyNode(ui.draggable.data('type'), this.newNodeId(), x, y);
-    //DrawableFactory.create(node, this.initSetting.bind(this));
     this.addDrawable(DrawableFactory.create(node, this.initSetting.bind(this), this.clickConfig.bind(this)));
 
     this.layer.draw();
@@ -89,8 +89,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   }
 
   private initSetting(node: Node) {
-    this._setting.show(node);
-    //this.nodeSetting.init(node);
+    this._setting.show(ChartUtils.clone(node));
   }
 
   private addDrawable(drawable: IDrawable) {
@@ -104,7 +103,30 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     }
   }
 
-  public onSomething() {
-    alert("asdf");
+  public export() : any {
+    let nodes = [];
+    for (let i = 0; i < this.drawables.length; i++) {
+      nodes.push(ChartUtils.clone(this.drawables[i].getNode()));
+    }
+    return nodes;
+  }
+
+  public load(nodes: Node[]) {
+    this.clear();
+
+    nodes.forEach(function (node: Node) {
+      let drawable = DrawableFactory.create(ChartUtils.clone(node), this.initSetting.bind(this));
+      this.addDrawable(drawable);
+    }.bind(this));
+    this.layer.draw();
+  }
+
+  private clear() {
+    for (let i = 0; i < this.drawables.length; i++) {
+      this.drawables[i].destroy();
+    }
+
+    this.drawables.slice(0, this.drawables.length);
+    this.layer.clear();
   }
 }

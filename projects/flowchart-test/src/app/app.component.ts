@@ -8,21 +8,27 @@ import { Node } from 'flowchart/lib/object/node';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
-  title = 'flowchart-test';
 
   @ViewChild("chart", {static: false}) chart : FlowchartComponent;
 
-  constructor() {
-  }
+  nodes: any = [];
+  title: string = "FlowChart Example";
+
+  constructor() {}
 
   ngAfterViewInit(){
-    console.log(this.chart === undefined, "Flowchartcomponent-undefined", "ngAfterViewInit");
     this.chart.onClickConfig.subscribe((node: Node) => {
-      alert("hola desde app-componente " + node.id);
+      alert("hi from app-component listening event node.id: " + node.id);
     });
   }
 
-  something() {
-    this.chart.export();
+  saveState() {
+    this.nodes = this.chart.export();
+    alert("saved snapshot");
+    console.log(this.nodes);
+  }
+
+  revertState() {
+    this.chart.load(this.nodes);
   }
 }

@@ -22,6 +22,12 @@ export class ConditionDrawable extends NodeDrawable {
         layer.add(this.iconPlus);
     }
 
+    destroy() {
+        super.destroy();
+        this.circlePlus.destroy();
+        this.iconPlus.destroy();
+    }
+
     onDrag(e:any) {
         super.onDrag(e);
 
