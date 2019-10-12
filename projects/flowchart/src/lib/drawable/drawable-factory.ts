@@ -11,7 +11,7 @@ export class DrawableFactory {
 
         switch(node.type) {
             case "C":
-                drawable = new ConditionDrawable(node, onClickCallback);
+                drawable = new ConditionDrawable(node, onClickCallback, onConfigCallback);
                 break;
             default:
                 drawable = new NodeDrawable(node, onClickCallback, onConfigCallback);
