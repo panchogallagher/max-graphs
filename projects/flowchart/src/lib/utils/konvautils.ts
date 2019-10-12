@@ -76,6 +76,7 @@ export class KonvaUtils {
             x: Position.x + xOffset,
             y: Position.y + yOffset,
             text: text,
+            listening: false
         });
     }
 
@@ -86,15 +87,8 @@ export class KonvaUtils {
             text: ChartUtils.format(text, Constants.MAX_TITLE_LENGTH),
             fontSize: style.titleFontSize,
             fontFamily: style.titleFontFamily,
-            fill: style.titleFontColor
-        });
-
-        txt.on('mouseover', function() {
-            document.body.style.cursor = 'move';
-        });
-
-        txt.on('mouseout', function() {
-            document.body.style.cursor = 'default';
+            fill: style.titleFontColor,
+            listening: false
         });
 
         return txt;
@@ -107,15 +101,8 @@ export class KonvaUtils {
             text: ChartUtils.format(text),
             fontSize: style.descriptionFontSize,
             fontFamily: style.descriptionFontFamily,
-            fill: style.descriptionFontColor
-        });
-
-        txt.on('mouseover', function() {
-            document.body.style.cursor = 'move';
-        });
-          
-        txt.on('mouseout', function() {
-            document.body.style.cursor = 'default';
+            fill: style.descriptionFontColor,
+            listening: false
         });
 
         return txt;
@@ -128,7 +115,8 @@ export class KonvaUtils {
             text: text,
             fontSize: style.iconSize,
             fontFamily: 'FontAwesome',
-            fill: style.iconColor
+            fill: style.iconColor,
+            listening: onClickCallback !== null && onClickCallback !== undefined
         });
 
         if (onClickCallback !== null && onClickCallback !== undefined) {

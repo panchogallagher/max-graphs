@@ -25,24 +25,26 @@ export class NodeDrawable implements IDrawable {
         this.node = node;
         this.onClickCallback = onClickCallback;
         this.onConfigCallback = onConfigCallback;
+        this.onDrag = this.onDrag.bind(this);
+        this.onDragStart = this.onDragStart.bind(this);
     }
 
     draw(layer:Layer) {
         
-        this.box = KonvaUtils.createBox(this.node.point, this.node.style, Constants.NODE_WIDTH, Constants.NODE_HEIGHT, this.onDrag.bind(this), this.onDragStart.bind(this));
+        this.box = KonvaUtils.createBox(this.node.point, this.node.style, Constants.NODE_WIDTH, Constants.NODE_HEIGHT, this.onDrag, this.onDragStart);
         this.title = KonvaUtils.createTitle(this.node.title, this.node.style, this.node.point, Constants.TITLE_OFFSET_X, this.node.description != '' ? Constants.TITLE_OFFSET_Y : Constants.TITLE_OFFSET_NODESCRIPTION_Y);
         this.description = KonvaUtils.createDescription(this.node.description, this.node.style, this.node.point, Constants.DESCRIPTION_OFFSET_X, Constants.DESCRIPTION_OFFSET_Y);
         this.config = KonvaUtils.createIcon(FontAwesomeUnicode.cog, this.node.style, this.node.point, Constants.ICON_CONFIG_OFFSET_X, Constants.ICON_CONFIG_OFFSET_Y, this.onClickConfig.bind(this));
-        
-        if (this.node.icon !== null) {
-            this.icon = KonvaUtils.createIcon(FontAwesomeUnicode[this.node.icon], this.node.style, this.node.point, Constants.ICON_OFFSET_X, Constants.ICON_OFFSET_Y);
-        }
 
         layer.add(this.box);
         layer.add(this.title);
         layer.add(this.description);
         layer.add(this.config);
-        layer.add(this.icon);
+
+        if (this.node.icon !== null) {
+            this.icon = KonvaUtils.createIcon(FontAwesomeUnicode[this.node.icon], this.node.style, this.node.point, Constants.ICON_OFFSET_X, Constants.ICON_OFFSET_Y);
+            layer.add(this.icon);
+        }
     }
 
     onDrag(e:any) {
@@ -79,7 +81,8 @@ export class NodeDrawable implements IDrawable {
     }
 
     update(newnode: Node) {
-        this.node = ChartUtils.clone(newnode);
+        this.node.title = newnode.title;
+        this.node.description = newnode.description;
 
         this.title.text(ChartUtils.format(this.node.title, Constants.MAX_TITLE_LENGTH));
         this.description.text(ChartUtils.format(this.node.description));
