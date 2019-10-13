@@ -15,11 +15,9 @@ export class DrawableFactory {
             case "C":
                 drawable = new ConditionDrawable(node, graphService, onConfigCallback);
                 break;
-                /*
-            case "S":
-                drawable = new StatementDrawable(node, onClickCallback);
+            case "I":
+                drawable = new StatementDrawable(node, graphService);
                 break;
-                */
             default:
                 drawable = new NodeDrawable(node, graphService, onConfigCallback);
                 break;

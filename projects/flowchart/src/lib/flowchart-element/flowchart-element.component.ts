@@ -14,7 +14,7 @@ declare var $: any;
 })
 export class FlowchartElementComponent implements AfterViewInit {
 
-  public nodeTypes: string[] = Object.keys(Constants.NODE_DEFINITION);
+  public nodeTypes: string[] = Object.keys(Constants.NODE_DEFINITION).filter(value => value !== 'I');
 
   constructor() { }
 

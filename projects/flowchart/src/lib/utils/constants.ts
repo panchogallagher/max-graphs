@@ -3,19 +3,23 @@ import { Style } from '../object/style';
 export class Constants {
 
     public static ICON_WIDTH:number = 15;
+    public static ICON_STATEMENT_WIDTH:number = 13;
     public static CIRCLE_RADIOUS:number = 12;
     public static CIRCLE_COLOR:string = "white";
 
     public static NODE_WIDTH:number = 150;
     public static NODE_HEIGHT:number = 35;
     public static NODE_MARGIN:number = 10;
+    public static NODE_STATEMENT_HEIGHT:number = 25;
 
     public static ICON_OFFSET_X:number = Constants.NODE_MARGIN;
     public static ICON_OFFSET_Y:number = Constants.NODE_HEIGHT/2 - Constants.ICON_WIDTH/2;
+    public static ICON_STATEMENT_OFFSET_Y:number = Constants.NODE_STATEMENT_HEIGHT/2 - Constants.ICON_STATEMENT_WIDTH/2;
 
     public static TITLE_OFFSET_X:number = Constants.ICON_OFFSET_X + Constants.ICON_WIDTH + Constants.NODE_MARGIN;
     public static TITLE_OFFSET_Y:number = 5;
     public static TITLE_OFFSET_NODESCRIPTION_Y:number = Constants.ICON_OFFSET_Y + 2;
+    public static TITLE_STATEMENT_OFFSET_Y:number = 6;
 
     public static DESCRIPTION_OFFSET_X:number = Constants.TITLE_OFFSET_X;
     public static DESCRIPTION_OFFSET_Y:number = Constants.TITLE_OFFSET_Y + 15;
@@ -78,11 +82,17 @@ export class Constants {
         plusCircleSize: 20
     });
 
+    public static NODE_STATEMENT:any = Object.assign({}, Constants.NODE_NORMAL, {
+        boxCornerRadious: 10,
+        iconSize: 14
+    });
+
     public static NODE_STYLE:any = {
         S: Constants.NODE_START,
         E: Constants.NODE_END,
         N: Constants.NODE_NORMAL,
-        C: Constants.NODE_NORMAL
+        C: Constants.NODE_NORMAL,
+        I: Constants.NODE_NORMAL
     };
 
     public static NODE_TYPES:string[] = ["S","E","N","C"];
@@ -107,6 +117,11 @@ export class Constants {
             style: Constants.NODE_CONDITIONAL,
             icon: 'list-ul',
             title: 'Evaluar entrante'
+        },
+        I: {
+            style: Constants.NODE_STATEMENT,
+            icon: 'chevron-right',
+            title: 'Condición'
         }
     }
 }

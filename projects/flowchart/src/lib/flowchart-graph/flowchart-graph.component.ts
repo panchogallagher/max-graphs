@@ -166,6 +166,12 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
    * @param parentNode 
    */
   private addStatement(parentNode: Node) {
-    alert("Create new statement for node " + parentNode.id);
+    //alert("Create new statement for node " + parentNode.id);
+
+    let node = KonvaUtils.createEmptyNode('I', this.newNodeId(), 100, 100);
+    this.addDrawable(DrawableFactory.create(node, this._graphService, this.clickConfig));
+
+    this.layer.draw();
+    this._graphService.showSetting(node);
   }
 }
