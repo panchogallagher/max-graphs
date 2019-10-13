@@ -6,6 +6,7 @@ import { FlowchartElementComponent } from './flowchart-element/flowchart-element
 import { FlowchartSettingComponent } from './flowchart-setting/flowchart-setting.component';
 import { FlowchartGraphComponent } from './flowchart-graph/flowchart-graph.component';
 import { SettingService } from './services/setting.service';
+import { GraphService } from './services/graph.service';
 
 @NgModule({
   declarations: [FlowchartComponent, FlowchartElementComponent, FlowchartSettingComponent, FlowchartGraphComponent],
@@ -14,7 +15,8 @@ import { SettingService } from './services/setting.service';
     CommonModule
   ],
   providers: [
-    SettingService
+    SettingService,
+    GraphService
   ],
   exports: [FlowchartComponent]
 })

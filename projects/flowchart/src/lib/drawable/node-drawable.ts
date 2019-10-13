@@ -7,6 +7,7 @@ import { Constants } from '../utils/constants';
 import { ChartUtils } from '../utils/chartutils';
 import { FontAwesomeUnicode } from '../utils/fontawesome-unicode';
 import { IDrawable } from './i-drawable';
+import { GraphService } from '../services/graph.service';
 
 export class NodeDrawable implements IDrawable {
 
@@ -18,12 +19,12 @@ export class NodeDrawable implements IDrawable {
     public config:Text;
     public icon:Text;
 
-    private onClickCallback:any;
+    protected graphService:GraphService;
     private onConfigCallback:any;
 
-    constructor(node:Node, onClickCallback?:any, onConfigCallback?: any) {
+    constructor(node:Node, graphService?:GraphService, onConfigCallback?: any) {
         this.node = node;
-        this.onClickCallback = onClickCallback;
+        this.graphService = graphService;
         this.onConfigCallback = onConfigCallback;
         this.onDrag = this.onDrag.bind(this);
         this.onDragStart = this.onDragStart.bind(this);
@@ -75,8 +76,8 @@ export class NodeDrawable implements IDrawable {
     }
 
     onDragStart() {
-        if (this.onClickCallback !== null && this.onClickCallback !== undefined) {
-            this.onClickCallback(this.node);
+        if (this.graphService !== null && this.graphService !== undefined) {
+            this.graphService.showSetting(this.node);
         }
     }
 

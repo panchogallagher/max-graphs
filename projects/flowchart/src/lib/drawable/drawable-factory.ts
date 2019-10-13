@@ -2,19 +2,26 @@ import { IDrawable } from './i-drawable';
 import { Node } from '../object/node';
 import { NodeDrawable } from './node-drawable';
 import { ConditionDrawable } from './condition-drawable';
+import { StatementDrawable } from './statement-drawable';
+import { GraphService } from '../services/graph.service';
 
 export class DrawableFactory {
 
-    public static create(node: Node, onClickCallback?: any, onConfigCallback?: any) : IDrawable {
+    public static create(node: Node, graphService?: GraphService, onConfigCallback?: any) : IDrawable {
         
         let drawable:IDrawable;
 
         switch(node.type) {
             case "C":
-                drawable = new ConditionDrawable(node, onClickCallback, onConfigCallback);
+                drawable = new ConditionDrawable(node, graphService, onConfigCallback);
                 break;
+                /*
+            case "S":
+                drawable = new StatementDrawable(node, onClickCallback);
+                break;
+                */
             default:
-                drawable = new NodeDrawable(node, onClickCallback, onConfigCallback);
+                drawable = new NodeDrawable(node, graphService, onConfigCallback);
                 break;
         }
         return drawable;

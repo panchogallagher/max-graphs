@@ -5,8 +5,8 @@ import { KonvaUtils } from '../utils/konvautils';
 import { Constants } from '../utils/constants';
 import { IDrawable } from '../drawable/i-drawable';
 import { DrawableFactory } from '../drawable/drawable-factory';
-import { SettingService } from '../services/setting.service';
 import { ChartUtils } from '../utils/chartutils';
+import { GraphService } from '../services/graph.service';
 
 declare var $: any;
 
@@ -24,10 +24,13 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   private drawables: IDrawable[] = [];
   private counter: number = 0;
 
-  constructor(private _setting: SettingService) { 
-    _setting.apply.subscribe((node:Node) => this.updateNode(node));
+  constructor(private _graphService: GraphService) { 
+    _graphService.onApplySetting.subscribe((node:Node) => this.updateNode(node));
+    _graphService.onNewStatement.subscribe((node:Node) => this.addStatement(node));
+    this.clickConfig = this.clickConfig.bind(this);
   }
 
+  /** ANGULAR EVENTS */
   ngOnInit() {
     var stage = new Konva.Stage({
       container: 'graph-container',
@@ -36,7 +39,6 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     });
 
     this.layer = new Konva.Layer();
-
     this.layer.add(KonvaUtils.createBG(700,500));
     
     /*
@@ -60,7 +62,95 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     this.offset = $("#graph-container").offset();
   }
 
-  public updateNode(node: Node) {
+  /** PUBLIC METHODS */
+
+  /**
+   * Export all the current nodes to a object
+   */
+  public export() : any {
+    let nodes = [];
+    for (let i = 0; i < this.drawables.length; i++) {
+      nodes.push(ChartUtils.clone(this.drawables[i].getNode()));
+    }
+    return nodes;
+  }
+
+  /**
+   * Import the nodes to the canvas
+   * @param nodes 
+   */
+  public load(nodes: Node[]) {
+    this.clear();
+
+    nodes.forEach(function (node: Node) {
+      let drawable = DrawableFactory.create(ChartUtils.clone(node), this._graphService, this.clickConfig);
+      this.addDrawable(drawable);
+    }.bind(this));
+    this.layer.draw();
+  }
+
+
+  /** PRIVATE METHODS */
+
+  /**
+   * Generate a new node Id
+   */
+  private newNodeId() {
+    this.counter++;
+    return "N" + (this.counter);
+  }
+
+  /**
+   * Adds a new drawable to the graph
+   * @param drawable 
+   */
+  private addDrawable(drawable: IDrawable) {
+    drawable.draw(this.layer);
+    this.drawables.push(drawable);
+  }
+
+  /**
+   * Trigger the click config event
+   * @param node 
+   */
+  private clickConfig(node: Node) {
+    if (this.onClickConfig !== null) {
+      this.onClickConfig.emit(node);
+    }
+  }
+
+  /**
+   * Clear the layer destroying all the nodes
+   */
+  private clear() {
+    for (let i = 0; i < this.drawables.length; i++) {
+      this.drawables[i].destroy();
+    }
+
+    this.drawables.slice(0, this.drawables.length);
+    this.layer.clear();
+  }
+
+  /**
+   * Manages the drop event into the canvas creating new nodes
+   */
+  private onDrop(event, ui) {
+    
+    let x = ui.position.left - this.offset.left + Constants.NODE_WIDTH/2;
+    let y = ui.position.top;
+
+    let node = KonvaUtils.createEmptyNode(ui.draggable.data('type'), this.newNodeId(), x, y);
+    this.addDrawable(DrawableFactory.create(node, this._graphService, this.clickConfig));
+
+    this.layer.draw();
+    this._graphService.showSetting(node);
+  }
+
+  /**
+   * Update the data of a node
+   * @param node 
+   */
+  private updateNode(node: Node) {
     for (let i = 0; i < this.drawables.length; i++) {
       let drawable = this.drawables[i];
       if (drawable.getId() == node.id) {
@@ -71,62 +161,11 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private onDrop(event, ui) {
-    
-    let x = ui.position.left - this.offset.left + Constants.NODE_WIDTH/2;
-    let y = ui.position.top;
-
-    let node = KonvaUtils.createEmptyNode(ui.draggable.data('type'), this.newNodeId(), x, y);
-    this.addDrawable(DrawableFactory.create(node, this.initSetting.bind(this), this.clickConfig.bind(this)));
-
-    this.layer.draw();
-    this.initSetting(node);
-  }
-
-  private newNodeId() {
-    this.counter++;
-    return "N" + (this.counter);
-  }
-
-  private initSetting(node: Node) {
-    this._setting.show(ChartUtils.clone(node));
-  }
-
-  private addDrawable(drawable: IDrawable) {
-    drawable.draw(this.layer);
-    this.drawables.push(drawable);
-  }
-
-  private clickConfig(node: Node) {
-    if (this.onClickConfig !== null) {
-      this.onClickConfig.emit(node);
-    }
-  }
-
-  public export() : any {
-    let nodes = [];
-    for (let i = 0; i < this.drawables.length; i++) {
-      nodes.push(ChartUtils.clone(this.drawables[i].getNode()));
-    }
-    return nodes;
-  }
-
-  public load(nodes: Node[]) {
-    this.clear();
-
-    nodes.forEach(function (node: Node) {
-      let drawable = DrawableFactory.create(ChartUtils.clone(node), this.initSetting.bind(this));
-      this.addDrawable(drawable);
-    }.bind(this));
-    this.layer.draw();
-  }
-
-  private clear() {
-    for (let i = 0; i < this.drawables.length; i++) {
-      this.drawables[i].destroy();
-    }
-
-    this.drawables.slice(0, this.drawables.length);
-    this.layer.clear();
+  /**
+   * Create a new statement for a condition node
+   * @param parentNode 
+   */
+  private addStatement(parentNode: Node) {
+    alert("Create new statement for node " + parentNode.id);
   }
 }

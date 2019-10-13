@@ -8,7 +8,6 @@ import { Constants } from '../utils/constants';
 
 export class ConditionDrawable extends NodeDrawable {
 
-
     private iconPlus:Text;
     private circlePlus:Circle;
 
@@ -43,6 +42,6 @@ export class ConditionDrawable extends NodeDrawable {
     }
 
     onClickPlus() {
-        alert("add condition");
+        this.graphService.createStatement(this.node);
     }
 }
