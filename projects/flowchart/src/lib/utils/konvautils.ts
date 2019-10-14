@@ -196,7 +196,8 @@ export class KonvaUtils {
             stroke: 'black',
             id: id,
             fill: 'black',
-            points: []
+            points: [],
+            draggable: true
         });
     }
 
@@ -208,10 +209,10 @@ export class KonvaUtils {
         const radius = 50;
 
         return [
-          from.x + -radius * Math.cos(angle + Math.PI),
-          from.y + radius * Math.sin(angle + Math.PI),
-          to.x + -radius * Math.cos(angle),
-          to.y + radius * Math.sin(angle)
+          from.x,
+          from.y,
+          to.x,
+          to.y
         ];
       }
 

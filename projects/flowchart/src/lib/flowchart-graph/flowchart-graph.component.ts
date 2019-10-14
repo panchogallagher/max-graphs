@@ -142,7 +142,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
       this.drawables[ids[i]].destroy();
     }
 
-    this.drawables.slice(0, this.drawables.length);
+    this.drawables = {};
     this.layer.clear();
   }
 
@@ -178,7 +178,12 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     let node = KonvaUtils.createEmptyNode('I', this.newNodeId(), statement.parentNode.point.x + Constants.CONDITION_OFFSET_X, statement.parentNode.point.y + Constants.CONDITION_OFFSET_Y + (Constants.CONDITION_NODE_OFFSET_Y * statement.totalChilds));
     this.addDrawable(DrawableFactory.create(node, this._graphService, this.clickConfig));
 
+    var line = KonvaUtils.createArrow(this.newNodeId());
+    line.points(KonvaUtils.getConnectorPoints(statement.parentNode.point, node.point));
+    this.layer.add(line);
+
     this.updateSelected(node.id);
+
     this._graphService.showSetting(node);
   }
 
