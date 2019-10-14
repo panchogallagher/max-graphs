@@ -191,6 +191,30 @@ export class KonvaUtils {
         return circle;
     }
 
+    public static createArrow(id: string) {
+        return new Konva.Arrow({
+            stroke: 'black',
+            id: id,
+            fill: 'black',
+            points: []
+        });
+    }
+
+    public static getConnectorPoints(from: Position, to: Position) {
+        const dx = to.x - from.x;
+        const dy = to.y - from.y;
+        let angle = Math.atan2(-dy, dx);
+
+        const radius = 50;
+
+        return [
+          from.x + -radius * Math.cos(angle + Math.PI),
+          from.y + radius * Math.sin(angle + Math.PI),
+          to.x + -radius * Math.cos(angle),
+          to.y + radius * Math.sin(angle)
+        ];
+      }
+
     public static getNodes(total:number) {
         let nodes = [];
         for(let i = 0; i < total; i++) {
@@ -210,6 +234,17 @@ export class KonvaUtils {
           nodes.push(node);
         }
         return nodes;
+    }
+
+    public static getRelationships() {
+        let relationships = [];
+        relationships.push({
+            id:"1",
+            fromId:"N1",
+            targetId:"N2"
+        });
+
+        return relationships;
     }
 
     public static createEmptyNode(type: string, id: string, x: number, y: number) {

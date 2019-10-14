@@ -22,8 +22,9 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
 
   private layer : Konva.Layer;
   private offset: any;
-  private drawables: IDrawable[] = [];
+  private drawables: any = {};
   private counter: number = 0;
+  private selectedNodeId: string = null;
 
   constructor(private _graphService: GraphService) { 
     _graphService.onApplySetting.subscribe(this.updateNode.bind(this));
@@ -42,16 +43,9 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
 
     this.layer = new Konva.Layer();
     this.layer.add(KonvaUtils.createBG(700,500));
-    
-    /*
-    let nodes = KonvaUtils.getNodes(2);
-    nodes.forEach(function (node) {
-      node.id = this.newNodeId();
-      let drawable = DrawableFactory.create(node, this.initSetting.bind(this));
-      this.addDrawable(drawable);
-    }.bind(this));
-    */
-
+  /*  
+    this.randomScene();
+*/
     stage.add(this.layer);
     this.layer.draw();
 
@@ -64,6 +58,23 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     this.offset = $("#graph-container").offset();
   }
 
+  private randomScene() {
+    let nodes = KonvaUtils.getNodes(2);
+    nodes.forEach(function (node) {
+      node.id = this.newNodeId();
+      let drawable = DrawableFactory.create(node, this._graphService, this.clickConfig);
+      this.addDrawable(drawable);
+    }.bind(this));
+
+    let relationships = KonvaUtils.getRelationships();
+
+    relationships.forEach(connect => {
+      var line = KonvaUtils.createArrow(connect.id);
+      line.points(KonvaUtils.getConnectorPoints(nodes[0].point, nodes[1].point));
+      this.layer.add(line);
+    });
+  }
+
   /** PUBLIC METHODS */
 
   /**
@@ -71,8 +82,9 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
    */
   public export() : any {
     let nodes = [];
-    for (let i = 0; i < this.drawables.length; i++) {
-      nodes.push(ChartUtils.clone(this.drawables[i].getNode()));
+    let ids = Object.keys(this.drawables);
+    for (let i = 0; i < ids.length; i++) {
+      nodes.push(ChartUtils.clone(this.drawables[ids[i]].getNode()));
     }
     return nodes;
   }
@@ -88,7 +100,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
       let drawable = DrawableFactory.create(ChartUtils.clone(node), this._graphService, this.clickConfig);
       this.addDrawable(drawable);
     }.bind(this));
-    this.layer.draw();
+    this.layer.batchDraw();
   }
 
 
@@ -108,7 +120,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
    */
   private addDrawable(drawable: IDrawable) {
     drawable.draw(this.layer);
-    this.drawables.push(drawable);
+    this.drawables[drawable.getId()] = drawable;
   }
 
   /**
@@ -125,8 +137,9 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
    * Clear the layer destroying all the nodes
    */
   private clear() {
-    for (let i = 0; i < this.drawables.length; i++) {
-      this.drawables[i].destroy();
+    let ids = Object.keys(this.drawables);
+    for (let i = 0; i < ids.length; i++) {
+      this.drawables[ids[i]].destroy();
     }
 
     this.drawables.slice(0, this.drawables.length);
@@ -153,14 +166,8 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
    * @param node 
    */
   private updateNode(node: Node) {
-    for (let i = 0; i < this.drawables.length; i++) {
-      let drawable = this.drawables[i];
-      if (drawable.getId() == node.id) {
-        drawable.update(node);
-        this.layer.draw();
-        break;
-      }
-    }
+    this.drawables[node.id].update(node);
+    this.layer.batchDraw();
   }
 
   /**
@@ -175,10 +182,19 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     this._graphService.showSetting(node);
   }
 
+  /**
+   * Set the current selected node
+   * @param nodeId 
+   */
   private updateSelected(nodeId: string) {
-    this.drawables.forEach((element:IDrawable) => {
-      element.setSelected(nodeId === element.getId());
-    });    
-    this.layer.draw();
+
+    if (this.selectedNodeId !== null) {
+      this.drawables[this.selectedNodeId].setSelected(false);
+    }
+
+    this.selectedNodeId = nodeId;
+    this.drawables[nodeId].setSelected(true);
+
+    this.layer.batchDraw();
   }
 }
