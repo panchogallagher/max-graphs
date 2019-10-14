@@ -4,7 +4,7 @@
         <label for="fi-title">T&iacute;tulo</label>
         <input type="email" class="form-control form-control-sm" id="fi-title" name="fi-title" placeholder="Ingrese el título" [(ngModel)]="node.title">
     </div>
-    <div class="form-group">
+    <div class="form-group" *ngIf="node.type !== 'I'">
         <label for="fi-description">Descripci&oacute;n</label>
         <textarea class="form-control form-control-sm" id="fi-description" name="fi-description" placeholder="Ingrese la descripci&oacute;n" [(ngModel)]="node.description"></textarea>
     </div>

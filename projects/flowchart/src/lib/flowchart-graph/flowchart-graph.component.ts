@@ -7,6 +7,7 @@ import { IDrawable } from '../drawable/i-drawable';
 import { DrawableFactory } from '../drawable/drawable-factory';
 import { ChartUtils } from '../utils/chartutils';
 import { GraphService } from '../services/graph.service';
+import { Statement } from '../object/statement';
 
 declare var $: any;
 
@@ -25,8 +26,9 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   private counter: number = 0;
 
   constructor(private _graphService: GraphService) { 
-    _graphService.onApplySetting.subscribe((node:Node) => this.updateNode(node));
-    _graphService.onNewStatement.subscribe((node:Node) => this.addStatement(node));
+    _graphService.onApplySetting.subscribe(this.updateNode.bind(this));
+    _graphService.onNewStatement.subscribe(this.addStatement.bind(this));
+    _graphService.onNodeSelected.subscribe(this.updateSelected.bind(this));
     this.clickConfig = this.clickConfig.bind(this);
   }
 
@@ -142,7 +144,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     let node = KonvaUtils.createEmptyNode(ui.draggable.data('type'), this.newNodeId(), x, y);
     this.addDrawable(DrawableFactory.create(node, this._graphService, this.clickConfig));
 
-    this.layer.draw();
+    this.updateSelected(node.id);
     this._graphService.showSetting(node);
   }
 
@@ -165,13 +167,18 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
    * Create a new statement for a condition node
    * @param parentNode 
    */
-  private addStatement(parentNode: Node) {
-    //alert("Create new statement for node " + parentNode.id);
-
-    let node = KonvaUtils.createEmptyNode('I', this.newNodeId(), 100, 100);
+  private addStatement(statement: Statement) {
+    let node = KonvaUtils.createEmptyNode('I', this.newNodeId(), statement.parentNode.point.x + Constants.CONDITION_OFFSET_X, statement.parentNode.point.y + Constants.CONDITION_OFFSET_Y + (Constants.CONDITION_NODE_OFFSET_Y * statement.totalChilds));
     this.addDrawable(DrawableFactory.create(node, this._graphService, this.clickConfig));
 
-    this.layer.draw();
+    this.updateSelected(node.id);
     this._graphService.showSetting(node);
+  }
+
+  private updateSelected(nodeId: string) {
+    this.drawables.forEach((element:IDrawable) => {
+      element.setSelected(nodeId === element.getId());
+    });    
+    this.layer.draw();
   }
 }

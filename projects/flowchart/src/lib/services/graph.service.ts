@@ -1,13 +1,15 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { Node } from '../object/node';
 import { ChartUtils } from '../utils/chartutils';
+import { Statement } from '../object/statement';
 
 @Injectable()
 export class GraphService {
 
   @Output() onNewRelationship: EventEmitter<Node> = new EventEmitter();
-  @Output() onNewStatement: EventEmitter<Node> = new EventEmitter();
+  @Output() onNewStatement: EventEmitter<Statement> = new EventEmitter();
 
+  @Output() onNodeSelected: EventEmitter<string> = new EventEmitter();
   @Output() onViewSetting: EventEmitter<Node> = new EventEmitter();
   @Output() onApplySetting: EventEmitter<Node> = new EventEmitter();
 
@@ -15,8 +17,8 @@ export class GraphService {
 
   }
 
-  createStatement(parentNode: Node) {
-    this.onNewStatement.emit(parentNode);
+  createStatement(statement: Statement) {
+    this.onNewStatement.emit(statement);
   }
 
   createRelationship(parentNode: Node) {
@@ -29,5 +31,9 @@ export class GraphService {
 
   applyNodeSetting(node: Node) {
     this.onApplySetting.emit(node);
+  }
+
+  nodeSelected(node: Node) {
+    this.onNodeSelected.emit(node.id);
   }
 }

@@ -7,4 +7,5 @@ export interface IDrawable {
     draw(layer:Layer): void;
     update(node: Node) : void;
     destroy(): void;
+    setSelected(isSelected: boolean) : void;
 }

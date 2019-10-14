@@ -78,6 +78,7 @@ export class NodeDrawable implements IDrawable {
     onDragStart() {
         if (this.graphService !== null && this.graphService !== undefined) {
             this.graphService.showSetting(this.node);
+            this.graphService.nodeSelected(this.node);
         }
     }
 
@@ -114,5 +115,16 @@ export class NodeDrawable implements IDrawable {
         if (this.onConfigCallback !== null && this.onConfigCallback !== undefined) {
             this.onConfigCallback(ChartUtils.clone(this.node));
         }
+    }
+
+    setSelected(isSelected: boolean) {
+        if (isSelected) {
+            this.box.strokeWidth(2);
+            this.box.strokeEnabled(true);
+        } else {
+            this.box.strokeWidth(0);
+            this.box.strokeEnabled(false);
+        }
+        
     }
 }

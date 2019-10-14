@@ -24,6 +24,7 @@ export class StatementDrawable implements IDrawable {
         this.node = node;
         this.graphService = graphService;
         this.onConfigCallback = onConfigCallback;
+        this.onClick = this.onClick.bind(this);
     }
 
     getNode(): Node {
@@ -35,8 +36,8 @@ export class StatementDrawable implements IDrawable {
     }
 
     draw(layer: Layer): void {
-        this.box = KonvaUtils.createBox(this.node.point, this.node.style, Constants.NODE_WIDTH, Constants.NODE_STATEMENT_HEIGHT);
-        this.title = KonvaUtils.createTitle(this.node.title, this.node.style, this.node.point, Constants.TITLE_OFFSET_X, Constants.TITLE_STATEMENT_OFFSET_Y);
+        this.box = KonvaUtils.createBoxNoDrag(this.node.point, this.node.style, Constants.NODE_WIDTH, Constants.NODE_STATEMENT_HEIGHT, this.onClick);
+        this.title = KonvaUtils.createTitle(this.node.title, this.node.style, this.node.point, Constants.TITLE_OFFSET_X, Constants.TITLE_STATEMENT_OFFSET_Y);        
 
         layer.add(this.box);
         layer.add(this.title);
@@ -62,5 +63,23 @@ export class StatementDrawable implements IDrawable {
         this.box.destroy();
         this.title.destroy();
         this.icon.destroy();
+    }
+
+    onClick() {
+        if (this.graphService !== null && this.graphService !== undefined) {
+            this.graphService.showSetting(this.node);
+            this.graphService.nodeSelected(this.node);
+        }
+    }
+
+    setSelected(isSelected: boolean) {
+        if (isSelected) {
+            this.box.strokeWidth(1);
+            this.box.strokeEnabled(true);
+        } else {
+            this.box.strokeWidth(0);
+            this.box.strokeEnabled(false);
+        }
+        
     }
 }

@@ -33,8 +33,14 @@ export class Constants {
     public static ICON_PLUS_CIRCLE_OFFSET_X:number = Constants.ICON_PLUS_OFFSET_X + Constants.CIRCLE_RADIOUS/2 + 1;
     public static ICON_PLUS_CIRCLE_OFFSET_Y:number = Constants.ICON_PLUS_OFFSET_Y + Constants.CIRCLE_RADIOUS/2 + 2;
 
+    public static CONDITION_OFFSET_X:number = Constants.ICON_PLUS_OFFSET_X + 25;
+    public static CONDITION_OFFSET_Y:number = Constants.ICON_PLUS_OFFSET_Y + 20;
+    public static CONDITION_NODE_OFFSET_Y:number = 40;
+
     public static MAX_TITLE_LENGTH:number = 16;
     public static MAX_DESCRIPTION_LENGTH:number = 19;
+
+    public static COLOR_SELECTION = "#80bdff";
 
     public static DEFAULT_STYLE:any = {
         boxBackgroundColor: "#1DE9B6",
@@ -61,17 +67,20 @@ export class Constants {
 
     public static NODE_START:any = Object.assign({}, Constants.DEFAULT_STYLE, {
         boxBackgroundColor: "#1DE9B6",
-        boxBorderColor: "#1DE9B6"
+        boxBorderColor: Constants.COLOR_SELECTION,
+        boxBorderWidth: 1
     });
 
     public static NODE_END:any = Object.assign({}, Constants.DEFAULT_STYLE, {
         boxBackgroundColor: "#F44336",
-        boxBorderColor: "#F44336"
+        boxBorderColor: Constants.COLOR_SELECTION,
+        boxBorderWidth: 1
     });
 
     public static NODE_NORMAL:any = Object.assign({}, Constants.DEFAULT_STYLE, {
         boxBackgroundColor: "#FFFFFF",
-        boxBorderColor: "#FFFFFF",
+        boxBorderColor: Constants.COLOR_SELECTION,
+        boxBorderWidth: 1,
         titleFontColor: "#424242",
         descriptionFontColor: "#424242",
         iconColor: "#424242"

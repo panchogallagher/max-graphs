@@ -18,7 +18,7 @@ export class FlowchartSettingComponent implements OnInit {
   private original: Node;
 
   constructor(private _service: GraphService) { 
-    _service.onViewSetting.subscribe(node => this.init(node));
+    _service.onViewSetting.subscribe(this.init.bind(this));
   }
 
   ngOnInit() {

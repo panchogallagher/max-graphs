@@ -10,6 +10,7 @@ export class ConditionDrawable extends NodeDrawable {
 
     private iconPlus:Text;
     private circlePlus:Circle;
+    private totalChilds:number = 0;
 
     draw(layer:Layer) {
         super.draw(layer);
@@ -42,6 +43,11 @@ export class ConditionDrawable extends NodeDrawable {
     }
 
     onClickPlus() {
-        this.graphService.createStatement(this.node);
+        this.graphService.createStatement({
+            parentNode: this.node,
+            totalChilds: this.totalChilds
+        });
+
+        this.totalChilds++;
     }
 }

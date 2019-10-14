@@ -53,6 +53,38 @@ export class KonvaUtils {
         return rect;
     }
 
+    public static createBoxNoDrag(Position:Position, style:FullStyle, width:number, height:number, onClickCallback?:any) : Konva.Rect {
+        let rect = new Konva.Rect({
+            x: Position.x,
+            y: Position.y,
+            width: width,
+            height: height,
+            listening: onClickCallback !== null && onClickCallback !== undefined,
+            fill: style.boxBackgroundColor,
+            shadowBlur: style.boxShadowBlur,
+            cornerRadius: style.boxCornerRadious,
+            shadowOffset: style.boxShadowOffset,
+            shadowOpacity: 0.4,
+            stroke: style.boxBorderColor,
+            strokeWidth: style.boxBorderWidth,
+            draggable: false
+        });
+
+        if (onClickCallback !== null && onClickCallback !== undefined) {
+            rect.on('mouseover', function() {
+                document.body.style.cursor = 'pointer';
+            });
+              
+            rect.on('mouseout', function() {
+                document.body.style.cursor = 'default';
+            });
+
+            rect.on('click', onClickCallback);
+        }
+
+        return rect;
+    }
+
     public static createBG(width:number, height:number, onClickCallback?:any) : Konva.Rect {
         let rect = new Konva.Rect({
             x: 0,
