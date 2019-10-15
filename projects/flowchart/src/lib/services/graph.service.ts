@@ -8,8 +8,8 @@ export class GraphService {
 
   @Output() onNewRelationship: EventEmitter<Node> = new EventEmitter();
   @Output() onNewStatement: EventEmitter<Statement> = new EventEmitter();
-
   @Output() onNodeSelected: EventEmitter<string> = new EventEmitter();
+  @Output() onPositionChanged: EventEmitter<Node> = new EventEmitter();
   @Output() onViewSetting: EventEmitter<Node> = new EventEmitter();
   @Output() onApplySetting: EventEmitter<Node> = new EventEmitter();
 
@@ -35,5 +35,9 @@ export class GraphService {
 
   nodeSelected(node: Node) {
     this.onNodeSelected.emit(node.id);
+  }
+
+  positionChanged(node: Node) {
+    this.onPositionChanged.emit(node);
   }
 }

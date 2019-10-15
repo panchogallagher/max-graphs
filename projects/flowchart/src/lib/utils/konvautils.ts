@@ -197,23 +197,26 @@ export class KonvaUtils {
             id: id,
             fill: 'black',
             points: [],
-            draggable: true
+            listening: false,
+            draggable: false
         });
     }
 
-    public static getConnectorPoints(from: Position, to: Position) {
-        const dx = to.x - from.x;
-        const dy = to.y - from.y;
-        let angle = Math.atan2(-dy, dx);
+    public static getConnectorPoints(originType: string, from: Position, to: Position) {
 
-        const radius = 50;
+        let offset = Constants.NODE_DEFINITION[originType];
 
-        return [
-          from.x,
-          from.y,
-          to.x,
-          to.y
-        ];
+        let points = [];
+        points.push(from.x + offset.relationship.x);
+        points.push(from.y + offset.relationship.y);
+
+        points.push(from.x + offset.relationship.x);
+        points.push(to.y + Constants.NODE_STATEMENT_HEIGHT/2);
+
+        points.push(to.x);
+        points.push(to.y + Constants.NODE_STATEMENT_HEIGHT/2);
+
+        return points;
       }
 
     public static getNodes(total:number) {
@@ -265,6 +268,14 @@ export class KonvaUtils {
                 x: x,
                 y: y,
             }
+        };
+    }
+
+    public static createEmptyRelationship(id: string, fromId: string, toId: string) {
+        return {
+            id: id,
+            fromId: fromId,
+            toId: toId
         };
     }
 }

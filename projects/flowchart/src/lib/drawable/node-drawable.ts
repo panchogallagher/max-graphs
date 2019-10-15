@@ -73,6 +73,8 @@ export class NodeDrawable implements IDrawable {
                 y: this.node.point.y + Constants.ICON_OFFSET_Y
             }); 
         }
+
+        this.graphService.positionChanged(this.node);
     }
 
     onDragStart() {

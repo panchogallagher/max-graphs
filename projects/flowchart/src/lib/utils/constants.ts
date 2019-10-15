@@ -106,11 +106,22 @@ export class Constants {
 
     public static NODE_TYPES:string[] = ["S","E","N","C"];
 
+    public static DEFAULT_RELATIONSHIP:any = {
+        x: Constants.NODE_WIDTH,
+        y: Constants.NODE_HEIGHT/2
+    };
+
+    public static CONDITION_RELATIONSHIP:any = {
+        x: Constants.ICON_PLUS_OFFSET_X + Constants.ICON_WIDTH/2,
+        y: Constants.ICON_PLUS_OFFSET_Y + Constants.ICON_WIDTH + 5
+    };
+
     public static NODE_DEFINITION:any = {
         S: {
             style: Constants.NODE_START,
             icon: 'play',
-            title: 'Punto entrada'
+            title: 'Punto entrada',
+            relationship: Constants.DEFAULT_RELATIONSHIP
         },
         E: {
             style: Constants.NODE_END,
@@ -120,17 +131,20 @@ export class Constants {
         N: {
             style: Constants.NODE_NORMAL,
             icon: 'arrow-right',
-            title: 'Envía mensaje'
+            title: 'Envía mensaje',
+            relationship: Constants.DEFAULT_RELATIONSHIP
         },
         C: {
             style: Constants.NODE_CONDITIONAL,
             icon: 'list-ul',
-            title: 'Evaluar entrante'
+            title: 'Evaluar entrante',
+            relationship: Constants.CONDITION_RELATIONSHIP
         },
         I: {
             style: Constants.NODE_STATEMENT,
             icon: 'chevron-right',
-            title: 'Condición'
+            title: 'Condición',
+            relationship: Constants.DEFAULT_RELATIONSHIP
         }
     }
 }

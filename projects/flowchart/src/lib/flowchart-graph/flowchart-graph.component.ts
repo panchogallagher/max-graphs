@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, AfterViewInit, EventEmitter } from '@angular/core';
 import Konva from 'konva';
 import { Node } from '../object/node';
 import { KonvaUtils } from '../utils/konvautils';
@@ -18,18 +18,24 @@ declare var $: any;
 })
 export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   
+
   onClickConfig: EventEmitter<Node> = null;
 
+  /** PRIVATE PROPERTIES */
   private layer : Konva.Layer;
+  private layerRelationship : Konva.Layer;
   private offset: any;
-  private drawables: any = {};
   private counter: number = 0;
   private selectedNodeId: string = null;
+
+  private relationship: any = {};
+  private drawables: any = {};
 
   constructor(private _graphService: GraphService) { 
     _graphService.onApplySetting.subscribe(this.updateNode.bind(this));
     _graphService.onNewStatement.subscribe(this.addStatement.bind(this));
     _graphService.onNodeSelected.subscribe(this.updateSelected.bind(this));
+    _graphService.onPositionChanged.subscribe(this.updatePosition.bind(this));
     this.clickConfig = this.clickConfig.bind(this);
   }
 
@@ -41,12 +47,16 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
       height: 500
     });
 
+    this.layerRelationship = new Konva.Layer();
     this.layer = new Konva.Layer();
+
     this.layer.add(KonvaUtils.createBG(700,500));
   /*  
     this.randomScene();
 */
+    stage.add(this.layerRelationship);
     stage.add(this.layer);
+    this.layerRelationship.draw();
     this.layer.draw();
 
     $("#graph-container" ).droppable({
@@ -70,7 +80,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
 
     relationships.forEach(connect => {
       var line = KonvaUtils.createArrow(connect.id);
-      line.points(KonvaUtils.getConnectorPoints(nodes[0].point, nodes[1].point));
+      line.points(KonvaUtils.getConnectorPoints(nodes[0].type, nodes[0].point, nodes[1].point));
       this.layer.add(line);
     });
   }
@@ -121,6 +131,15 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   private addDrawable(drawable: IDrawable) {
     drawable.draw(this.layer);
     this.drawables[drawable.getId()] = drawable;
+  }
+
+  /**
+   * Adds a new relationship drawable to the graph
+   * @param drawable 
+   */
+  private addRelationship(drawable: IDrawable) {
+    drawable.draw(this.layer);
+    this.relationship[drawable.getId()] = drawable;
   }
 
   /**
@@ -178,13 +197,12 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     let node = KonvaUtils.createEmptyNode('I', this.newNodeId(), statement.parentNode.point.x + Constants.CONDITION_OFFSET_X, statement.parentNode.point.y + Constants.CONDITION_OFFSET_Y + (Constants.CONDITION_NODE_OFFSET_Y * statement.totalChilds));
     this.addDrawable(DrawableFactory.create(node, this._graphService, this.clickConfig));
 
-    var line = KonvaUtils.createArrow(this.newNodeId());
-    line.points(KonvaUtils.getConnectorPoints(statement.parentNode.point, node.point));
-    this.layer.add(line);
-
+    let relation = KonvaUtils.createEmptyRelationship(this.newNodeId(), statement.parentNode.id, node.id);
+    this.addRelationship(DrawableFactory.createRelationship(relation, statement.parentNode, node));
+    
     this.updateSelected(node.id);
-
     this._graphService.showSetting(node);
+    this.layer.batchDraw();
   }
 
   /**
@@ -197,9 +215,22 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
       this.drawables[this.selectedNodeId].setSelected(false);
     }
 
-    this.selectedNodeId = nodeId;
-    this.drawables[nodeId].setSelected(true);
+    if (nodeId !== null) {
+      this.selectedNodeId = nodeId;
+      this.drawables[nodeId].setSelected(true);
+    }
 
+    this.layer.batchDraw();
+  }
+
+  private updatePosition(node: Node) {
+    let ids = Object.keys(this.relationship);
+    for (let i = 0; i < ids.length; i++) {
+      let drawable = this.relationship[ids[i]];
+      if (drawable.relationship.fromId === node.id || drawable.relationship.toId === node.id) {
+        drawable.update(node);
+      }
+    }
     this.layer.batchDraw();
   }
 }

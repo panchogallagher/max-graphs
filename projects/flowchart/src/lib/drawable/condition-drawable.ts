@@ -40,6 +40,8 @@ export class ConditionDrawable extends NodeDrawable {
             x: this.node.point.x + Constants.ICON_PLUS_OFFSET_X,
             y: this.node.point.y + Constants.ICON_PLUS_OFFSET_Y
         });
+
+        this.graphService.positionChanged(this.node);
     }
 
     onClickPlus() {

@@ -4,6 +4,8 @@ import { NodeDrawable } from './node-drawable';
 import { ConditionDrawable } from './condition-drawable';
 import { StatementDrawable } from './statement-drawable';
 import { GraphService } from '../services/graph.service';
+import { Relationship } from '../object/relationship';
+import { RelationshipDrawable } from './relationship-drawable';
 
 export class DrawableFactory {
 
@@ -23,5 +25,9 @@ export class DrawableFactory {
                 break;
         }
         return drawable;
+    }
+
+    public static createRelationship(relationship: Relationship,fromNode: Node, toNode: Node, graphService?: GraphService) : IDrawable {
+        return new RelationshipDrawable(relationship, fromNode, toNode, graphService);
     }
 }
