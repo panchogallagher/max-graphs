@@ -51,7 +51,7 @@ export class NodeDrawable implements IDrawable {
             layer.add(this.icon);
         }
 
-        if (this.node.type !== 'E') {
+        if (this.node.type !== 'E' && this.node.type !== 'C') {
             this.arrow = new ArrowDrawable(this.node, this.graphService);
             this.arrow.draw(layer);
         }

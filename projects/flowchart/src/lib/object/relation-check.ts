@@ -1,4 +1,4 @@
-import { Node } from 'flowchart/lib/object/node';
+import { Node } from './node';
 
 export class RelationCheck {
 

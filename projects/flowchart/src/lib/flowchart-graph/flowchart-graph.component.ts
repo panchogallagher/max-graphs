@@ -248,13 +248,29 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     this.layer.batchDraw();
   }
 
+  /**
+   * Check if the relation intersects 
+   * @param check 
+   */
   private checkRelationship(check:RelationCheck) {
     let ids = Object.keys(this.drawables);
     for (let i = 0; i < ids.length; i++) {
       let drawable = this.drawables[ids[i]];
       if (ChartUtils.haveIntersect(check, drawable.getNode())) {
-        console.log("do-intersect");
+        this.createRelationship(check.node, drawable.getNode());
       }
     }
   }
+
+  /**
+   * Create a new relationship between two nodes
+   * @param fromNode 
+   * @param toNode 
+   */
+  private createRelationship(fromNode: Node, toNode:Node) {
+    let relation = KonvaUtils.createEmptyRelationship(this.newNodeId(), fromNode.id, toNode.id);
+    this.addRelationship(DrawableFactory.createRelationship(relation, fromNode, toNode));
+    this.redraw();
+  }
+  
 }
