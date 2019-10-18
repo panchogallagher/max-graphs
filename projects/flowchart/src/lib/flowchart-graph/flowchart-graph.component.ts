@@ -8,6 +8,7 @@ import { DrawableFactory } from '../drawable/drawable-factory';
 import { ChartUtils } from '../utils/chartutils';
 import { GraphService } from '../services/graph.service';
 import { Statement } from '../object/statement';
+import { RelationCheck } from '../object/relation-check';
 
 declare var $: any;
 
@@ -36,6 +37,8 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     _graphService.onNewStatement.subscribe(this.addStatement.bind(this));
     _graphService.onNodeSelected.subscribe(this.updateSelected.bind(this));
     _graphService.onPositionChanged.subscribe(this.updatePosition.bind(this));
+    _graphService.onRedraw.subscribe(this.redraw.bind(this));
+    _graphService.onCheckRelation.subscribe(this.checkRelationship.bind(this));
     this.clickConfig = this.clickConfig.bind(this);
   }
 
@@ -110,7 +113,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
       let drawable = DrawableFactory.create(ChartUtils.clone(node), this._graphService, this.clickConfig);
       this.addDrawable(drawable);
     }.bind(this));
-    this.layer.batchDraw();
+    this.redraw();
   }
 
 
@@ -186,7 +189,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
    */
   private updateNode(node: Node) {
     this.drawables[node.id].update(node);
-    this.layer.batchDraw();
+    this.redraw();
   }
 
   /**
@@ -202,7 +205,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     
     this.updateSelected(node.id);
     this._graphService.showSetting(node);
-    this.layer.batchDraw();
+    this.redraw();
   }
 
   /**
@@ -220,9 +223,13 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
       this.drawables[nodeId].setSelected(true);
     }
 
-    this.layer.batchDraw();
+    this.redraw();
   }
 
+  /**
+   * Update the node position
+   * @param node 
+   */
   private updatePosition(node: Node) {
     let ids = Object.keys(this.relationship);
     for (let i = 0; i < ids.length; i++) {
@@ -231,6 +238,23 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
         drawable.update(node);
       }
     }
+    this.redraw();
+  }
+
+  /**
+   * Redraw the scene
+   */
+  private redraw() {
     this.layer.batchDraw();
+  }
+
+  private checkRelationship(check:RelationCheck) {
+    let ids = Object.keys(this.drawables);
+    for (let i = 0; i < ids.length; i++) {
+      let drawable = this.drawables[ids[i]];
+      if (ChartUtils.haveIntersect(check, drawable.getNode())) {
+        console.log("do-intersect");
+      }
+    }
   }
 }

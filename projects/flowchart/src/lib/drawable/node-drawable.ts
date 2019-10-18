@@ -8,6 +8,8 @@ import { ChartUtils } from '../utils/chartutils';
 import { FontAwesomeUnicode } from '../utils/fontawesome-unicode';
 import { IDrawable } from './i-drawable';
 import { GraphService } from '../services/graph.service';
+import { Arrow } from 'konva/types/shapes/Arrow';
+import { ArrowDrawable } from './arrow-drawable';
 
 export class NodeDrawable implements IDrawable {
 
@@ -18,6 +20,7 @@ export class NodeDrawable implements IDrawable {
     public description:Text;
     public config:Text;
     public icon:Text;
+    public arrow:ArrowDrawable = null;
 
     protected graphService:GraphService;
     private onConfigCallback:any;
@@ -37,6 +40,7 @@ export class NodeDrawable implements IDrawable {
         this.description = KonvaUtils.createDescription(this.node.description, this.node.style, this.node.point, Constants.DESCRIPTION_OFFSET_X, Constants.DESCRIPTION_OFFSET_Y);
         this.config = KonvaUtils.createIcon(FontAwesomeUnicode.cog, this.node.style, this.node.point, Constants.ICON_CONFIG_OFFSET_X, Constants.ICON_CONFIG_OFFSET_Y, this.onClickConfig.bind(this));
 
+
         layer.add(this.box);
         layer.add(this.title);
         layer.add(this.description);
@@ -45,6 +49,11 @@ export class NodeDrawable implements IDrawable {
         if (this.node.icon !== null) {
             this.icon = KonvaUtils.createIcon(FontAwesomeUnicode[this.node.icon], this.node.style, this.node.point, Constants.ICON_OFFSET_X, Constants.ICON_OFFSET_Y);
             layer.add(this.icon);
+        }
+
+        if (this.node.type !== 'E') {
+            this.arrow = new ArrowDrawable(this.node, this.graphService);
+            this.arrow.draw(layer);
         }
     }
 
@@ -72,6 +81,10 @@ export class NodeDrawable implements IDrawable {
                 x: this.node.point.x + Constants.ICON_OFFSET_X,
                 y: this.node.point.y + Constants.ICON_OFFSET_Y
             }); 
+        }
+
+        if (this.arrow !== null && this.arrow !== undefined) {
+            this.arrow.update(this.node);
         }
 
         this.graphService.positionChanged(this.node);

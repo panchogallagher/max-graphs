@@ -191,15 +191,68 @@ export class KonvaUtils {
         return circle;
     }
 
-    public static createArrow(id: string) {
-        return new Konva.Arrow({
+    public static createCircleDragged(style:FullStyle, Position:Position, xOffset:number, yOffset:number, onClickCallback?: any, onDragMoveCallback?:any, onDragEndCallback?:any) {
+        let circle =  new Konva.Circle({
+            x: Position.x + xOffset,
+            y: Position.y + yOffset,
+            radius: Constants.POINT_RADIOUS,
+            fill: Constants.POINT_COLOR,
+            stroke: '#cccccc',
+            strokeWidth: 1,
+            listening: onClickCallback !== null && onClickCallback !== undefined,
+            draggable: onDragMoveCallback !== null && onDragMoveCallback !== undefined
+        });
+
+        if (onClickCallback !== null && onClickCallback !== undefined) {
+            circle.on('mouseover', function() {
+                document.body.style.cursor = 'pointer';
+            });
+              
+            circle.on('mouseout', function() {
+                document.body.style.cursor = 'default';
+            });
+
+            //circle.on('click', onClickCallback);
+        }
+
+        if (onDragMoveCallback !== null && onDragMoveCallback !== undefined) {
+            circle.on('dragmove', onDragMoveCallback);
+        }
+
+        if (onDragEndCallback !== null && onDragEndCallback !== undefined) {
+            circle.on('dragend', onDragEndCallback);
+        }
+
+        return circle;
+    }
+
+    public static createArrow(id: string, onClickCallback?:any, onDragCallback?:any) {
+        let arrow = new Konva.Arrow({
             stroke: 'black',
             id: id,
             fill: 'black',
             points: [],
-            listening: false,
-            draggable: false
+            listening: onClickCallback !== null && onClickCallback !== undefined,
+            draggable: onDragCallback !== null && onDragCallback !== undefined
         });
+
+        if (onClickCallback !== null && onClickCallback !== undefined) {
+            arrow.on('mouseover', function() {
+                document.body.style.cursor = 'pointer';
+            });
+              
+            arrow.on('mouseout', function() {
+                document.body.style.cursor = 'default';
+            });
+
+            arrow.on('click', onClickCallback);
+        }
+
+        if (onDragCallback !== null && onDragCallback !== undefined) {
+            arrow.on('dragmove', onDragCallback);
+        }
+
+        return arrow;
     }
 
     public static getConnectorPoints(originType: string, from: Position, to: Position) {

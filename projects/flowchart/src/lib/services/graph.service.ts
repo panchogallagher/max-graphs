@@ -2,6 +2,7 @@ import { Injectable, Output, EventEmitter } from '@angular/core';
 import { Node } from '../object/node';
 import { ChartUtils } from '../utils/chartutils';
 import { Statement } from '../object/statement';
+import { RelationCheck } from '../object/relation-check';
 
 @Injectable()
 export class GraphService {
@@ -12,6 +13,8 @@ export class GraphService {
   @Output() onPositionChanged: EventEmitter<Node> = new EventEmitter();
   @Output() onViewSetting: EventEmitter<Node> = new EventEmitter();
   @Output() onApplySetting: EventEmitter<Node> = new EventEmitter();
+  @Output() onRedraw = new EventEmitter();
+  @Output() onCheckRelation: EventEmitter<RelationCheck> = new EventEmitter();
 
   constructor() { 
 
@@ -39,5 +42,13 @@ export class GraphService {
 
   positionChanged(node: Node) {
     this.onPositionChanged.emit(node);
+  }
+
+  redraw() {
+    this.onRedraw.emit();
+  }
+
+  checkRelation(check:RelationCheck) {
+    this.onCheckRelation.emit(check);
   }
 }

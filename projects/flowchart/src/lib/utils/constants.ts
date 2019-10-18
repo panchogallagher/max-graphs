@@ -6,6 +6,8 @@ export class Constants {
     public static ICON_STATEMENT_WIDTH:number = 13;
     public static CIRCLE_RADIOUS:number = 12;
     public static CIRCLE_COLOR:string = "white";
+    public static POINT_RADIOUS:number = 6;
+    public static POINT_COLOR:string = "black";
 
     public static NODE_WIDTH:number = 150;
     public static NODE_HEIGHT:number = 35;
@@ -26,6 +28,12 @@ export class Constants {
 
     public static ICON_CONFIG_OFFSET_X:number = Constants.NODE_WIDTH - 25;
     public static ICON_CONFIG_OFFSET_Y:number = Constants.TITLE_OFFSET_Y;
+
+    public static ICON_ARROW_OFFSET_X:number = Constants.NODE_WIDTH + 5;
+    public static ICON_ARROW_OFFSET_Y:number = Constants.ICON_OFFSET_Y + 10;
+
+    public static ICON_CIRCLERELATION_OFFSET_X:number = Constants.NODE_WIDTH + 10;
+    public static ICON_CIRCLERELATION_OFFSET_Y:number = Constants.ICON_OFFSET_Y + 10;
 
     public static ICON_PLUS_OFFSET_X:number = Constants.ICON_OFFSET_X + 10;
     public static ICON_PLUS_OFFSET_Y:number = Constants.NODE_HEIGHT + 10;
