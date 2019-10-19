@@ -16,9 +16,11 @@ export class FlowchartSettingComponent implements OnInit {
 
   public node: Node;
   private original: Node;
+  public visible:boolean = false;
 
   constructor(private _service: GraphService) { 
     _service.onViewSetting.subscribe(this.init.bind(this));
+    _service.onHideSetting.subscribe(this.hide.bind(this));
   }
 
   ngOnInit() {
@@ -26,6 +28,7 @@ export class FlowchartSettingComponent implements OnInit {
   }
 
   public init(node: Node) {
+    this.visible = true;
     this.node = ChartUtils.clone(node);
     this.original = ChartUtils.clone(node);
   }
@@ -37,5 +40,10 @@ export class FlowchartSettingComponent implements OnInit {
   public onRevert() {
     this.node = ChartUtils.clone(this.original);
     this.onApply();
+  }
+
+  public hide() {
+    console.log("do-hide-vieibility");
+    this.visible = false;
   }
 }

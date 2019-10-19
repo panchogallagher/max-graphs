@@ -4,6 +4,7 @@ import { Node } from '../object/node';
 @Injectable()
 export class SettingService {
 
+  @Output() onHide = new EventEmitter();
   @Output() view: EventEmitter<Node> = new EventEmitter();
   @Output() apply: EventEmitter<Node> = new EventEmitter();
 
@@ -17,5 +18,9 @@ export class SettingService {
 
   update(node: Node) {
     this.apply.emit(node);
+  }
+
+  hide() {
+    this.onHide.emit();
   }
 }

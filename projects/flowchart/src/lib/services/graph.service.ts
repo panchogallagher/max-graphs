@@ -15,6 +15,7 @@ export class GraphService {
   @Output() onApplySetting: EventEmitter<Node> = new EventEmitter();
   @Output() onRedraw = new EventEmitter();
   @Output() onCheckRelation: EventEmitter<RelationCheck> = new EventEmitter();
+  @Output() onHideSetting = new EventEmitter();
 
   constructor() { 
 
@@ -50,5 +51,9 @@ export class GraphService {
 
   checkRelation(check:RelationCheck) {
     this.onCheckRelation.emit(check);
+  }
+
+  hideSetting() {
+    this.onHideSetting.emit();
   }
 }

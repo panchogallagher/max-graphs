@@ -59,7 +59,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     this.layer = new Konva.Layer();
     this.layerBG = new Konva.Layer();
 
-    this.layerBG.add(KonvaUtils.createBG(700,500));
+    this.layerBG.add(KonvaUtils.createBG(700,500, this.hideSetting.bind(this)));
   /*  
     this.randomScene();
 */
@@ -124,24 +124,27 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   public load(graph: Graph) {
     this.clear();
 
-    graph.nodes.forEach(function (node: Node) {
-      let drawable = DrawableFactory.create(ChartUtils.clone(node), this._graphService, this.clickConfig);
-      this.addDrawable(drawable);
-      drawable.setSelected(false);
-    }.bind(this));
+    if (graph.nodes !== undefined) {
+      graph.nodes.forEach(function (node: Node) {
+        let drawable = DrawableFactory.create(ChartUtils.clone(node), this._graphService, this.clickConfig);
+        this.addDrawable(drawable);
+        drawable.setSelected(false);
+      }.bind(this));
+    }
 
-    console.log(graph.relationship);
+    if (graph.relationship !== undefined) {
+      graph.relationship.forEach(function (relation: Relationship) {
+        let fromDrawable = this.drawables[relation.fromId];
 
-    graph.relationship.forEach(function (relation: Relationship) {
-      let fromDrawable = this.drawables[relation.fromId];
+        let fromNode: Node = fromDrawable.getNode();
+        let toNode: Node = this.drawables[relation.toId].getNode();
 
-      let fromNode: Node = fromDrawable.getNode();
-      let toNode: Node = this.drawables[relation.toId].getNode();
+        this.addRelationship(DrawableFactory.createRelationship(ChartUtils.cloneRelation(relation), fromNode, toNode));
+        fromDrawable.relation(true);
+      }.bind(this));
+    }
 
-      this.addRelationship(DrawableFactory.createRelationship(ChartUtils.cloneRelation(relation), fromNode, toNode));
-      fromDrawable.relation(true);
-    }.bind(this));
-
+    this.hideSetting();
     this.redraw();
   }
 
@@ -257,10 +260,10 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     }
 
     if (nodeId !== null) {
-      this.selectedNodeId = nodeId;
       this.drawables[nodeId].setSelected(true);
     }
 
+    this.selectedNodeId = nodeId;
     this.redraw();
   }
 
@@ -312,6 +315,10 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     let relation = KonvaUtils.createEmptyRelationship(this.newNodeId(), fromNode, toNode);
     this.addRelationship(DrawableFactory.createRelationship(relation, fromNode, toNode));
     this.redraw();
+  } 
+
+  private hideSetting() {
+    this.updateSelected(null);
+    this._graphService.hideSetting();
   }
-  
 }

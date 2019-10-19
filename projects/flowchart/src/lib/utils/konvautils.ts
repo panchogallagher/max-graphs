@@ -96,9 +96,7 @@ export class KonvaUtils {
             listening: true 
         });
         if (onClickCallback !== null && onClickCallback !== undefined) {
-            rect.on('click', function() {
-                console.log('Stage click');
-            });
+            rect.on('click', onClickCallback);
         }
 
         return rect;
