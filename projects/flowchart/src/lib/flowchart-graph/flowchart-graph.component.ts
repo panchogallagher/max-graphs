@@ -342,18 +342,22 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     this.updateSelected(null);
     this._graphService.hideSetting();
   }
-  
-  /**
-   * Detele a node
-   * @param nodeId 
-   */
-  private deleteNode(nodeId: string) {
+
+  private dropNode(nodeId: string) {
     if (this.drawables[nodeId] !== undefined) {
       let drawable = this.drawables[nodeId];
       drawable.destroy();
       delete this.drawables[nodeId];
       this.selectedNodeId = null;
     }
+  }
+  
+  /**
+   * Detele a node
+   * @param nodeId 
+   */
+  private deleteNode(nodeId: string) {
+    this.dropNode(nodeId);
 
     let ids = Object.keys(this.relationship);
     for (let i = 0; i < ids.length; i++) {
@@ -399,12 +403,8 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
         fromDrawable.relation(false);
       }
 
-      if (this.drawables[toId] !== undefined) {
-        let toDrawable = this.drawables[toId];
-        if (removeTo) {
-          toDrawable.destroy();
-          delete this.drawables[toId];
-        }
+      if (this.drawables[toId] !== undefined && removeTo) {
+        this.deleteNode(toId);
       }
 
       drawable.destroy();

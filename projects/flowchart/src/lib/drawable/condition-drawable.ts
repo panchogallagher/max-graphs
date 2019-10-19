@@ -54,6 +54,8 @@ export class ConditionDrawable extends NodeDrawable {
     }
 
     removeChild() {
-        this.totalChilds--;
+        if (this.totalChilds > 0) {
+            this.totalChilds--;
+        }
     }
 }
