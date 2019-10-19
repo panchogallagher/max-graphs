@@ -32,7 +32,7 @@
             <span class="font-weight-bold">¿Desea eliminar el nodo?</span>
             <div class="alert alert-warning mt-2 mb-2 p-2">
                 <span><b>Advertencia:</b> Esta acción no se puede revertir.</span>
-                <span *ngIf="node.type === 'C'" class="font-italic">&nbsp;Se eliminarán todos los nodos relacionados con el nodo actual</span>
+                <span *ngIf="node.type === 'C'" class="font-italic">&nbsp;Se eliminarán todos los nodos de condición relacionados con el nodo actual</span>
             </div>
             <button type="button" class="btn btn-danger btn-block" (click)="onDelete()">Eliminar</button>
         </div>
