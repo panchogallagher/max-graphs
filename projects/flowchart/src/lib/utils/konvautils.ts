@@ -231,7 +231,7 @@ export class KonvaUtils {
             id: id,
             fill: Constants.COLOR_ARROW,
             points: [],
-            strokeWidth: onClickCallback !== null && onClickCallback !== undefined ? 3 : 3,
+            strokeWidth: 2,
             listening: onClickCallback !== null && onClickCallback !== undefined,
             draggable: onDragCallback !== null && onDragCallback !== undefined
         });

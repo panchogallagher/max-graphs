@@ -9,7 +9,7 @@
     display: block;
     margin-bottom: 20px;
     border-radius: 5px;
-    border: none;
+    border: 1px solid #ccc;
 }
 
 .draggable:hover {

@@ -7,7 +7,9 @@ export class Constants {
     public static CIRCLE_RADIOUS:number = 12;
     public static CIRCLE_COLOR:string = "white";
     public static POINT_RADIOUS:number = 6;
-    public static POINT_COLOR:string = "black";
+    public static COLOR_SELECTION:string = "#80bdff";
+    public static COLOR_ARROW:string = "#333333";
+    public static POINT_COLOR:string = Constants.COLOR_ARROW;
 
     public static NODE_WIDTH:number = 150;
     public static NODE_HEIGHT:number = 35;
@@ -50,9 +52,6 @@ export class Constants {
 
     public static MAX_TITLE_LENGTH:number = 16;
     public static MAX_DESCRIPTION_LENGTH:number = 19;
-
-    public static COLOR_SELECTION = "#80bdff";
-    public static COLOR_ARROW = "#333333";
 
     public static DEFAULT_STYLE:any = {
         boxBackgroundColor: "#1DE9B6",

@@ -404,9 +404,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
       }
 
       if (this.drawables[toId] !== undefined) {
-
         let toDrawable = this.drawables[toId];
-        toDrawable.relation(false);
         if (removeTo) {
           toDrawable.destroy();
           delete this.drawables[toId];
