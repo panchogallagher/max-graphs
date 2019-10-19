@@ -211,7 +211,8 @@ export class KonvaUtils {
                 document.body.style.cursor = 'default';
             });
 
-            //circle.on('click', onClickCallback);
+            circle.on('click', onClickCallback);
+            circle.on('dragstart', onClickCallback);
         }
 
         if (onDragMoveCallback !== null && onDragMoveCallback !== undefined) {

@@ -44,6 +44,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     _graphService.onPositionChanged.subscribe(this.updatePosition.bind(this));
     _graphService.onRedraw.subscribe(this.redraw.bind(this));
     _graphService.onCheckRelation.subscribe(this.checkRelationship.bind(this));
+    _graphService.onCollisionCheck.subscribe(this.checkCollision.bind(this));
     _graphService.onDeleteNode.subscribe(this.deleteNode.bind(this));
     _graphService.onRelationSelected.subscribe(this.selectedRelationship.bind(this));
     _graphService.onDeleteRelation.subscribe(this.deleteRelationship.bind(this));
@@ -312,14 +313,41 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
    */
   private checkRelationship(check:RelationCheck) {
     let ids = Object.keys(this.drawables);
+    let relationCreated = false;
     for (let i = 0; i < ids.length; i++) {
       let drawable = this.drawables[ids[i]];
       let node = drawable.getNode();
-      if (ChartUtils.haveIntersect(check, node) && ChartUtils.isRelationable(node)) {
+      if (!relationCreated && ChartUtils.haveIntersect(check, node) && ChartUtils.isRelationable(node)) {
+        drawable.setSelected(false);
         this.createRelationship(check.drawable.getNode(), node);
         check.drawable.relation(true);
+        relationCreated = true;
+      } else {
+        drawable.setSelected(false);
       }
     }
+    this.redraw();
+  }
+
+  /**
+   * Check node relation collision
+   * @param check 
+   */
+  private checkCollision(check:RelationCheck) {
+    let checkId = check.drawable.getNode().id;
+    let collisionDetected = false;
+    let ids = Object.keys(this.drawables);
+    for (let i = 0; i < ids.length; i++) {
+      let drawable = this.drawables[ids[i]];
+      let node = drawable.getNode();
+      if (!collisionDetected && ChartUtils.haveIntersect(check, node) && ChartUtils.isRelationable(node)) {
+        drawable.setSelected(true);
+        collisionDetected = true;
+      } else if (checkId !== node.id) {
+        drawable.setSelected(false);
+      }
+    }
+    this.redraw();
   }
 
   /**
@@ -394,6 +422,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     }
 
     this.dropNode(nodeId);
+    this.updateSelected(null);
     this.redraw();
   }
 
@@ -436,6 +465,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
       drawable.destroy();
       delete this.relationship[relationId];
 
+      this.updateSelected(null);
       this.redraw();
   }
 

@@ -73,6 +73,9 @@ export class ArrowDrawable implements IDrawable {
         newpoints.push(e.target.attrs.x, e.target.attrs.y);
         this.arrow.points(newpoints);
         this.arrow.show();
+
+        let check = new RelationCheck(e.target.attrs.x, e.target.attrs.y, this.drawable);
+        this.graphService.checkCollision(check);
     }
 
     private onDragEnd(e) {
@@ -87,16 +90,17 @@ export class ArrowDrawable implements IDrawable {
         this.arrow.hide();
 
         this.graphService.checkRelation(check);
-        this.graphService.redraw();
     }
 
     private onClick() {
-        /*
         if (this.graphService !== null && this.graphService !== undefined) {
-            this.graphService.showSetting(this.node);
-            this.graphService.nodeSelected(this.node);
+            let node = this.drawable.getNode();
+            this.graphService.showSetting(node);
+            this.graphService.nodeSelected(node);
         }
-        */
+
+        this.arrow.moveToTop();
+        this.circle.moveToTop();
     }
 
     private getBaseCoordinate() {
