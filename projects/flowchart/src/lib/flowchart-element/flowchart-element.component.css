@@ -9,7 +9,12 @@
     display: block;
     margin-bottom: 20px;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: none;
+
+    -webkit-user-select: none;  
+    -moz-user-select: none;    
+    -ms-user-select: none;      
+    user-select: none;
 }
 
 .draggable:hover {
@@ -27,6 +32,7 @@
 
 .draggable-type-N, .draggable-type-C {
     background: #FFFFFF!important;
+    border: 1px solid #ccc;
 }
 
 .draggable-type-E {
