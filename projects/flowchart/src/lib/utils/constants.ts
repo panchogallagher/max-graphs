@@ -52,6 +52,7 @@ export class Constants {
     public static MAX_DESCRIPTION_LENGTH:number = 19;
 
     public static COLOR_SELECTION = "#80bdff";
+    public static COLOR_ARROW = "#333333";
 
     public static DEFAULT_STYLE:any = {
         boxBackgroundColor: "#1DE9B6",

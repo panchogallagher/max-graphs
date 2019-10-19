@@ -331,6 +331,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     let relation = KonvaUtils.createEmptyRelationship(this.newNodeId(), fromNode, toNode);
     this.addRelationship(DrawableFactory.createRelationship(relation, fromNode, toNode, this._graphService));
     this.updateSelected(relation.id);
+    this._graphService.showRelationSetting(new RelationSetting(fromNode, toNode, relation));
     this.redraw();
   } 
 
@@ -362,7 +363,14 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
       if (fromId === nodeId || toId === nodeId) {
 
         if (this.drawables[fromId] !== undefined) {
-          this.drawables[fromId].relation(false);
+          let fromDrawable = this.drawables[fromId];
+          let fromNode = fromDrawable.getNode();
+          
+          if (fromNode.type === 'C') {
+            fromDrawable.removeChild();
+          }
+  
+          fromDrawable.relation(false);
         }
 
         if (this.drawables[toId] !== undefined) {
@@ -380,14 +388,29 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   deleteRelationship(relationId: string) {
       let drawable = this.relationship[relationId];
       let fromId = drawable.relationship.fromId;
+      let removeTo = false;
       let toId = drawable.relationship.toId;
 
       if (this.drawables[fromId] !== undefined) {
-        this.drawables[fromId].relation(false);
+        let fromDrawable = this.drawables[fromId];
+        let fromNode = fromDrawable.getNode();
+        
+        if (fromNode.type === 'C') {
+          fromDrawable.removeChild();
+          removeTo = true;
+        }
+
+        fromDrawable.relation(false);
       }
 
       if (this.drawables[toId] !== undefined) {
-        this.drawables[toId].relation(false);
+
+        let toDrawable = this.drawables[toId];
+        toDrawable.relation(false);
+        if (removeTo) {
+          toDrawable.destroy();
+          delete this.drawables[toId];
+        }
       }
 
       drawable.destroy();

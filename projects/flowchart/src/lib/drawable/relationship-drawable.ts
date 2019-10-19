@@ -62,9 +62,11 @@ export class RelationshipDrawable {
         if (isSelected) {
             this.line.fill(Constants.COLOR_SELECTION);
             this.line.stroke(Constants.COLOR_SELECTION);
+            this.line.moveToTop();
         } else {
-            this.line.fill('black');
-            this.line.stroke('black');
+            this.line.fill(Constants.COLOR_ARROW);
+            this.line.stroke(Constants.COLOR_ARROW);
+            this.line.moveToBottom();
         }        
     }
 }

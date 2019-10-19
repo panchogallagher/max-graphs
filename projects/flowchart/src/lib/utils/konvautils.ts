@@ -227,10 +227,11 @@ export class KonvaUtils {
 
     public static createArrow(id: string, onClickCallback?:any, onDragCallback?:any) {
         let arrow = new Konva.Arrow({
-            stroke: 'black',
+            stroke: Constants.COLOR_ARROW,
             id: id,
-            fill: 'black',
+            fill: Constants.COLOR_ARROW,
             points: [],
+            strokeWidth: onClickCallback !== null && onClickCallback !== undefined ? 3 : 3,
             listening: onClickCallback !== null && onClickCallback !== undefined,
             draggable: onDragCallback !== null && onDragCallback !== undefined
         });

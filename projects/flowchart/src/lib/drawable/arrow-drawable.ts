@@ -41,13 +41,14 @@ export class ArrowDrawable implements IDrawable {
     draw(layer: Layer): void {
         this.circle = KonvaUtils.createCircleDragged({}, this.getNode().point, this.offset.x, this.offset.y, this.onClick, this.onDragMove, this.onDragEnd);
         this.arrow = KonvaUtils.createArrow(this.id);
+        this.arrow.points([]);
+        this.arrow.hide();
 
         layer.add(this.arrow);
         layer.add(this.circle);
     }
 
     update(node: Node): void {
-        //this.node = node;
 
         this.circle.setAbsolutePosition({
             x: node.point.x + this.offset.x,
@@ -55,6 +56,7 @@ export class ArrowDrawable implements IDrawable {
         }); 
 
         this.arrow.points([]);
+        this.arrow.hide();
     }
 
     destroy(): void {
@@ -70,6 +72,7 @@ export class ArrowDrawable implements IDrawable {
         let newpoints = this.getBaseCoordinate();
         newpoints.push(e.target.attrs.x, e.target.attrs.y);
         this.arrow.points(newpoints);
+        this.arrow.show();
     }
 
     private onDragEnd(e) {
@@ -81,6 +84,7 @@ export class ArrowDrawable implements IDrawable {
             y: node.point.y + this.offset.y
         }); 
         this.arrow.points([]);
+        this.arrow.hide();
 
         this.graphService.checkRelation(check);
         this.graphService.redraw();

@@ -77,7 +77,7 @@ export class StatementDrawable implements IDrawable {
         if (this.icon !== null) {
             this.icon.setAbsolutePosition({
                 x: this.node.point.x + Constants.ICON_OFFSET_X,
-                y: this.node.point.y + Constants.ICON_OFFSET_Y
+                y: this.node.point.y + Constants.ICON_STATEMENT_OFFSET_Y
             }); 
         }
 
