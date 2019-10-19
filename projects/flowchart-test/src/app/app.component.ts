@@ -11,7 +11,7 @@ export class AppComponent implements AfterViewInit {
 
   @ViewChild("chart", {static: false}) chart : FlowchartComponent;
 
-  nodes: any = [];
+  graph: any = {};
   title: string = "FlowChart Example";
 
   constructor() {}
@@ -23,12 +23,12 @@ export class AppComponent implements AfterViewInit {
   }
 
   saveState() {
-    this.nodes = this.chart.export();
+    this.graph = this.chart.export();
     alert("saved snapshot");
-    console.log(this.nodes);
+    console.log(this.graph);
   }
 
   revertState() {
-    this.chart.load(this.nodes);
+    this.chart.load(this.graph);
   }
 }

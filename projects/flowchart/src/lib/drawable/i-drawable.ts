@@ -8,4 +8,5 @@ export interface IDrawable {
     update(node: Node) : void;
     destroy(): void;
     setSelected(isSelected: boolean) : void;
+    relation(hasRelation: boolean) : void;
 }

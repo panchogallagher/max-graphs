@@ -5,6 +5,7 @@ import { Node } from '../object/node';
 import { Constants } from './constants';
 import { ChartUtils } from './chartutils';
 import { FullStyle } from '../object/full-style';
+import { Relationship } from '../object/relationship';
 
 export class KonvaUtils {
 
@@ -255,23 +256,6 @@ export class KonvaUtils {
         return arrow;
     }
 
-    public static getConnectorPoints(originType: string, from: Position, to: Position) {
-
-        let offset = Constants.NODE_DEFINITION[originType];
-
-        let points = [];
-        points.push(from.x + offset.relationship.x);
-        points.push(from.y + offset.relationship.y);
-
-        points.push(from.x + offset.relationship.x);
-        points.push(to.y + Constants.NODE_STATEMENT_HEIGHT/2);
-
-        points.push(to.x);
-        points.push(to.y + Constants.NODE_STATEMENT_HEIGHT/2);
-
-        return points;
-      }
-
     public static getNodes(total:number) {
         let nodes = [];
         for(let i = 0; i < total; i++) {
@@ -324,11 +308,42 @@ export class KonvaUtils {
         };
     }
 
-    public static createEmptyRelationship(id: string, fromId: string, toId: string) {
+    public static createEmptyRelationship(id: string, fromNode: Node, toNode: Node) : Relationship {
         return {
             id: id,
-            fromId: fromId,
-            toId: toId
+            fromId: fromNode.id,
+            toId: toNode.id,
+            points: KonvaUtils.getConnectorPoints(fromNode.type, fromNode.point, toNode.point)
         };
+    }
+
+    public static getConnectorPoints(originType: string, from: Position, to: Position) {
+        let offset = Constants.NODE_DEFINITION[originType];
+        return originType === 'C' ? KonvaUtils.getPointsCondition(from, to, offset) : KonvaUtils.getPointsNodes(from, to, offset);
+    }
+
+    public static getPointsCondition(from: Position, to: Position, offset: any) {
+        let points = [];
+        points.push(from.x + offset.relationship.x);
+        points.push(from.y + offset.relationship.y);
+
+        points.push(from.x + offset.relationship.x);
+        points.push(to.y + Constants.NODE_STATEMENT_HEIGHT/2);
+
+        points.push(to.x);
+        points.push(to.y + Constants.NODE_STATEMENT_HEIGHT/2);
+
+        return points;
+    }
+
+    public static getPointsNodes(from: Position, to: Position, offset: any) {
+        let points = [];
+        points.push(from.x + offset.relationship.x);
+        points.push(from.y + offset.relationship.y);
+
+        points.push(to.x);
+        points.push(to.y + Constants.NODE_STATEMENT_HEIGHT/2);
+
+        return points;
     }
 }

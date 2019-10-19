@@ -1,6 +1,7 @@
 import { Constants } from './constants';
 import { Node } from '../object/node';
 import { RelationCheck } from '../object/relation-check';
+import { Relationship } from '../object/relationship';
 
 export class ChartUtils {
 
@@ -21,6 +22,10 @@ export class ChartUtils {
      * @param object 
      */
     public static clone(object: Node) : Node {
+        return JSON.parse(JSON.stringify(object));
+    }
+
+    public static cloneRelation(object: Relationship) : Relationship {
         return JSON.parse(JSON.stringify(object));
     }
 

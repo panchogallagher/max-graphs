@@ -52,7 +52,7 @@ export class NodeDrawable implements IDrawable {
         }
 
         if (this.node.type !== 'E' && this.node.type !== 'C') {
-            this.arrow = new ArrowDrawable(this.node, this.graphService);
+            this.arrow = new ArrowDrawable(this, this.graphService);
             this.arrow.draw(layer);
         }
     }
@@ -124,6 +124,10 @@ export class NodeDrawable implements IDrawable {
         this.description.destroy();
         this.config.destroy();
         this.icon.destroy();
+
+        if (this.arrow !== undefined && this.arrow !== null) {
+            this.arrow.destroy();
+        }
     }
 
     onClickConfig() {
@@ -141,5 +145,16 @@ export class NodeDrawable implements IDrawable {
             this.box.strokeEnabled(false);
         }
         
+    }
+
+    relation(hasRelation: boolean) {
+        if (this.node.type !== 'E' && this.node.type !== 'C') {
+        
+            if (hasRelation) {
+                this.arrow.hide();
+            } else {
+                this.arrow.show();
+            }
+        }       
     }
 }

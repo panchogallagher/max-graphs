@@ -5,6 +5,6 @@ export class Relationship {
     public id:string;
     public fromId:string;
     public toId:string;
-    public points?:Position[];
+    public points? = [];
 
 }

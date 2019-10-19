@@ -15,12 +15,12 @@ export class ArrowDrawable implements IDrawable {
     public circle:Circle;
     
     private id:string;
-    private node:Node;
+    private drawable:IDrawable;
     private graphService:GraphService;
 
-    constructor(node:Node, graphService?:GraphService) {
-        this.id = "arrow-" + node.id;
-        this.node = node;
+    constructor(drawable:IDrawable, graphService?:GraphService) {
+        this.id = "arrow-" + drawable.getId();
+        this.drawable = drawable;
         this.graphService = graphService;
         this.onDragMove = this.onDragMove.bind(this);
         this.onDragEnd = this.onDragEnd.bind(this);
@@ -29,7 +29,7 @@ export class ArrowDrawable implements IDrawable {
     }
 
     getNode(): Node {
-        return this.node;
+        return this.drawable.getNode();
     }    
 
     getId(): string {
@@ -37,7 +37,7 @@ export class ArrowDrawable implements IDrawable {
     }
     
     draw(layer: Layer): void {
-        this.circle = KonvaUtils.createCircleDragged({}, this.node.point, Constants.ICON_CIRCLERELATION_OFFSET_X, Constants.ICON_CIRCLERELATION_OFFSET_Y, this.onClick, this.onDragMove, this.onDragEnd);
+        this.circle = KonvaUtils.createCircleDragged({}, this.getNode().point, Constants.ICON_CIRCLERELATION_OFFSET_X, Constants.ICON_CIRCLERELATION_OFFSET_Y, this.onClick, this.onDragMove, this.onDragEnd);
         this.arrow = KonvaUtils.createArrow(this.id);
 
         layer.add(this.arrow);
@@ -45,17 +45,18 @@ export class ArrowDrawable implements IDrawable {
     }
 
     update(node: Node): void {
-        this.node = node;
+        //this.node = node;
 
         this.circle.setAbsolutePosition({
-            x: this.node.point.x + Constants.ICON_CIRCLERELATION_OFFSET_X,
-            y: this.node.point.y + Constants.ICON_CIRCLERELATION_OFFSET_Y
+            x: node.point.x + Constants.ICON_CIRCLERELATION_OFFSET_X,
+            y: node.point.y + Constants.ICON_CIRCLERELATION_OFFSET_Y
         }); 
 
         this.arrow.points([]);
     }
 
     destroy(): void {
+        this.circle.destroy();
         this.arrow.destroy();
     }
 
@@ -70,11 +71,12 @@ export class ArrowDrawable implements IDrawable {
     }
 
     private onDragEnd(e) {
-        let check = new RelationCheck(e.target.attrs.x, e.target.attrs.y, this.node);
+        let check = new RelationCheck(e.target.attrs.x, e.target.attrs.y, this.drawable);
         //console.log(e.target.attrs.x, e.target.attrs.y, check);
+        let node = this.drawable.getNode();
         this.circle.setAbsolutePosition({
-            x: this.node.point.x + Constants.ICON_CIRCLERELATION_OFFSET_X,
-            y: this.node.point.y + Constants.ICON_CIRCLERELATION_OFFSET_Y
+            x: node.point.x + Constants.ICON_CIRCLERELATION_OFFSET_X,
+            y: node.point.y + Constants.ICON_CIRCLERELATION_OFFSET_Y
         }); 
         this.arrow.points([]);
 
@@ -92,7 +94,21 @@ export class ArrowDrawable implements IDrawable {
     }
 
     private getBaseCoordinate() {
-        return [this.node.point.x + Constants.ICON_ARROW_OFFSET_X, this.node.point.y + Constants.ICON_ARROW_OFFSET_Y];
+        let node = this.drawable.getNode();
+        return [node.point.x + Constants.ICON_ARROW_OFFSET_X, node.point.y + Constants.ICON_ARROW_OFFSET_Y];
     }
 
+    hide() {
+        this.circle.hide();
+        this.arrow.hide();
+    }
+
+    show() {
+        this.circle.show();
+        this.arrow.show();
+    }
+
+    relation(hasRelation: boolean) {
+        // do nothing
+    }
 }

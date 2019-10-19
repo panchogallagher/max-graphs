@@ -27,7 +27,7 @@ export class DrawableFactory {
         return drawable;
     }
 
-    public static createRelationship(relationship: Relationship,fromNode: Node, toNode: Node, graphService?: GraphService) : IDrawable {
+    public static createRelationship(relationship: Relationship,fromNode: Node, toNode: Node, graphService?: GraphService) : RelationshipDrawable {
         return new RelationshipDrawable(relationship, fromNode, toNode, graphService);
     }
 }

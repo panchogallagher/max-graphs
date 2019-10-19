@@ -1,4 +1,3 @@
-import { IDrawable } from './i-drawable';
 import { GraphService } from '../services/graph.service';
 import { Node } from '../object/node';
 import { Layer } from 'konva/types/Layer';
@@ -9,15 +8,13 @@ import { Arrow } from 'konva/types/shapes/Arrow';
 import { ChartUtils } from '../utils/chartutils';
 
 
-export class RelationshipDrawable implements IDrawable {
+export class RelationshipDrawable {
 
     public relationship:Relationship;
+    public fromNode:Node;
+    public toNode:Node;
 
     private line: Arrow;
-
-    private fromNode:Node;
-    private toNode:Node;
-
     private graphService:GraphService;
 
     constructor(relationship:Relationship, fromNode: Node, toNode: Node, graphService?:GraphService) {
@@ -26,10 +23,6 @@ export class RelationshipDrawable implements IDrawable {
         this.toNode = toNode;
         this.graphService = graphService;
     }
-
-    getNode(): Node {
-        return null;
-    }    
     
     getId(): string {
         return this.relationship.id;
@@ -37,7 +30,7 @@ export class RelationshipDrawable implements IDrawable {
 
     draw(layer: Layer): void {
         this.line = KonvaUtils.createArrow(this.relationship.id);
-        this.line.points(KonvaUtils.getConnectorPoints(this.fromNode.type, this.fromNode.point, this.toNode.point));
+        this.line.points(this.relationship.points);
         layer.add(this.line);
     }
 
@@ -50,20 +43,17 @@ export class RelationshipDrawable implements IDrawable {
             this.toNode = ChartUtils.clone(newnode);
         }
 
-        this.line.points(KonvaUtils.getConnectorPoints(this.fromNode.type, this.fromNode.point, this.toNode.point));
+        this.relationship.points = KonvaUtils.getConnectorPoints(this.fromNode.type, this.fromNode.point, this.toNode.point);
+        this.line.points(this.relationship.points);
     }
 
     destroy(): void {
-        
+        this.line.destroy();
     }
 
     onClick() {
         if (this.graphService !== null && this.graphService !== undefined) {
             
         }
-    }
-
-    setSelected(isSelected: boolean) {
-        
     }
 }

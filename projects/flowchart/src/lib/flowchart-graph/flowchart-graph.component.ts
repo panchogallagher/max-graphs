@@ -9,6 +9,9 @@ import { ChartUtils } from '../utils/chartutils';
 import { GraphService } from '../services/graph.service';
 import { Statement } from '../object/statement';
 import { RelationCheck } from '../object/relation-check';
+import { RelationshipDrawable } from '../drawable/relationship-drawable';
+import { Graph } from '../object/graph';
+import { Relationship } from '../object/relationship';
 
 declare var $: any;
 
@@ -93,26 +96,47 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   /**
    * Export all the current nodes to a object
    */
-  public export() : any {
+  public export() : Graph {
     let nodes = [];
+    let relations = [];
+    
     let ids = Object.keys(this.drawables);
     for (let i = 0; i < ids.length; i++) {
       nodes.push(ChartUtils.clone(this.drawables[ids[i]].getNode()));
     }
-    return nodes;
+
+    let relationIds = Object.keys(this.relationship);
+    for (let i = 0; i < relationIds.length; i++) {
+      relations.push(ChartUtils.clone(this.relationship[relationIds[i]].relationship));
+    }
+
+    return new Graph(nodes, relations);
   }
 
   /**
    * Import the nodes to the canvas
    * @param nodes 
    */
-  public load(nodes: Node[]) {
+  public load(graph: Graph) {
     this.clear();
 
-    nodes.forEach(function (node: Node) {
+    graph.nodes.forEach(function (node: Node) {
       let drawable = DrawableFactory.create(ChartUtils.clone(node), this._graphService, this.clickConfig);
       this.addDrawable(drawable);
     }.bind(this));
+
+    console.log(graph.relationship);
+
+    graph.relationship.forEach(function (relation: Relationship) {
+      let fromDrawable = this.drawables[relation.fromId];
+
+      let fromNode: Node = fromDrawable.getNode();
+      let toNode: Node = this.drawables[relation.toId].getNode();
+
+      this.addRelationship(DrawableFactory.createRelationship(ChartUtils.cloneRelation(relation), fromNode, toNode));
+      fromDrawable.relation(true);
+    }.bind(this));
+
     this.redraw();
   }
 
@@ -140,7 +164,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
    * Adds a new relationship drawable to the graph
    * @param drawable 
    */
-  private addRelationship(drawable: IDrawable) {
+  private addRelationship(drawable: RelationshipDrawable) {
     drawable.draw(this.layer);
     this.relationship[drawable.getId()] = drawable;
   }
@@ -164,7 +188,15 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
       this.drawables[ids[i]].destroy();
     }
 
+    let relationIds = Object.keys(this.relationship);
+    for (let i = 0; i < relationIds.length; i++) {
+      this.relationship[relationIds[i]].destroy();
+    }
+
     this.drawables = {};
+    this.relationship = {};
+    this.selectedNodeId = null;
+
     this.layer.clear();
   }
 
@@ -200,7 +232,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     let node = KonvaUtils.createEmptyNode('I', this.newNodeId(), statement.parentNode.point.x + Constants.CONDITION_OFFSET_X, statement.parentNode.point.y + Constants.CONDITION_OFFSET_Y + (Constants.CONDITION_NODE_OFFSET_Y * statement.totalChilds));
     this.addDrawable(DrawableFactory.create(node, this._graphService, this.clickConfig));
 
-    let relation = KonvaUtils.createEmptyRelationship(this.newNodeId(), statement.parentNode.id, node.id);
+    let relation = KonvaUtils.createEmptyRelationship(this.newNodeId(), statement.parentNode, node);
     this.addRelationship(DrawableFactory.createRelationship(relation, statement.parentNode, node));
     
     this.updateSelected(node.id);
@@ -257,7 +289,8 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     for (let i = 0; i < ids.length; i++) {
       let drawable = this.drawables[ids[i]];
       if (ChartUtils.haveIntersect(check, drawable.getNode())) {
-        this.createRelationship(check.node, drawable.getNode());
+        this.createRelationship(check.drawable.getNode(), drawable.getNode());
+        check.drawable.relation(true);
       }
     }
   }
@@ -268,7 +301,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
    * @param toNode 
    */
   private createRelationship(fromNode: Node, toNode:Node) {
-    let relation = KonvaUtils.createEmptyRelationship(this.newNodeId(), fromNode.id, toNode.id);
+    let relation = KonvaUtils.createEmptyRelationship(this.newNodeId(), fromNode, toNode);
     this.addRelationship(DrawableFactory.createRelationship(relation, fromNode, toNode));
     this.redraw();
   }

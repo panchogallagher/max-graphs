@@ -82,4 +82,8 @@ export class StatementDrawable implements IDrawable {
         }
         
     }
+
+    relation(hasRelation: boolean) {
+        // do nothing
+    }
 }
