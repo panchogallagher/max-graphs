@@ -8,6 +8,7 @@ import { Constants } from '../utils/constants';
 import { KonvaUtils } from '../utils/konvautils';
 import { FontAwesomeUnicode } from '../utils/fontawesome-unicode';
 import { GraphService } from '../services/graph.service';
+import { ArrowDrawable } from './arrow-drawable';
 
 export class StatementDrawable implements IDrawable {
 
@@ -16,6 +17,7 @@ export class StatementDrawable implements IDrawable {
     public box:Rect;
     public title:Text;
     public icon:Text;
+    public arrow:ArrowDrawable;
 
     protected graphService:GraphService;
     private onConfigCallback:any;
@@ -46,6 +48,9 @@ export class StatementDrawable implements IDrawable {
             this.icon = KonvaUtils.createIcon(FontAwesomeUnicode[this.node.icon], this.node.style, this.node.point, Constants.ICON_OFFSET_X, Constants.ICON_STATEMENT_OFFSET_Y);
             layer.add(this.icon);
         }
+
+        this.arrow = new ArrowDrawable(this, {x: Constants.ICON_STATEMENT_CIRCLERELATION_OFFSET_X, y: Constants.ICON_STATEMENT_CIRCLERELATION_OFFSET_Y}, this.graphService);
+        this.arrow.draw(layer);
     }
 
     update(newnode: Node): void {
@@ -63,6 +68,7 @@ export class StatementDrawable implements IDrawable {
         this.box.destroy();
         this.title.destroy();
         this.icon.destroy();
+        this.arrow.destroy();
     }
 
     onClick() {
@@ -84,6 +90,10 @@ export class StatementDrawable implements IDrawable {
     }
 
     relation(hasRelation: boolean) {
-        // do nothing
+        if (hasRelation) {
+            this.arrow.hide();
+        } else {
+            this.arrow.show();
+        }
     }
 }

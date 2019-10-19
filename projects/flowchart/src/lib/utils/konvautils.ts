@@ -337,12 +337,47 @@ export class KonvaUtils {
     }
 
     public static getPointsNodes(from: Position, to: Position, offset: any) {
+        const fromX = from.x + offset.relationship.x;
+        const fromY = from.y + offset.relationship.y;
+        const toY = to.y + Constants.NODE_STATEMENT_HEIGHT/2;
+
         let points = [];
-        points.push(from.x + offset.relationship.x);
-        points.push(from.y + offset.relationship.y);
+
+        points.push(fromX);
+        points.push(fromY);
+
+        if (fromX + 15 < to.x - 25) {
+            // target node to the right
+            const x1 = fromX + (to.x - fromX) / 2;
+
+            points.push(x1);
+            points.push(fromY);
+
+            points.push(x1);
+            points.push(toY);
+        } else {
+            // target node to the left
+            const x1 = fromX + 15;
+
+            points.push(x1);
+            points.push(fromY);
+
+            const y1 = fromY + (toY - fromY)/2;
+
+            points.push(x1);
+            points.push(y1);
+
+            const x2 = to.x - 25;
+
+            points.push(x2);
+            points.push(y1);
+
+            points.push(x2);
+            points.push(toY);
+        }
 
         points.push(to.x);
-        points.push(to.y + Constants.NODE_STATEMENT_HEIGHT/2);
+        points.push(toY);
 
         return points;
     }

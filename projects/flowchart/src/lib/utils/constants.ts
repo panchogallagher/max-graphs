@@ -35,6 +35,9 @@ export class Constants {
     public static ICON_CIRCLERELATION_OFFSET_X:number = Constants.NODE_WIDTH + 10;
     public static ICON_CIRCLERELATION_OFFSET_Y:number = Constants.ICON_OFFSET_Y + 10;
 
+    public static ICON_STATEMENT_CIRCLERELATION_OFFSET_X:number = Constants.ICON_CIRCLERELATION_OFFSET_X;
+    public static ICON_STATEMENT_CIRCLERELATION_OFFSET_Y:number = Constants.ICON_OFFSET_Y + 2;
+
     public static ICON_PLUS_OFFSET_X:number = Constants.ICON_OFFSET_X + 10;
     public static ICON_PLUS_OFFSET_Y:number = Constants.NODE_HEIGHT + 10;
 
@@ -154,5 +157,7 @@ export class Constants {
             title: 'Condición',
             relationship: Constants.DEFAULT_RELATIONSHIP
         }
-    }
+    };
+
+    public static NO_RELATION_TYPE: string[] = ['S', 'I'];
 }

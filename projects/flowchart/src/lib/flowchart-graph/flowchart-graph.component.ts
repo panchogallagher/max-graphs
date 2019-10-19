@@ -28,6 +28,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   /** PRIVATE PROPERTIES */
   private layer : Konva.Layer;
   private layerRelationship : Konva.Layer;
+  private layerBG : Konva.Layer;
   private offset: any;
   private counter: number = 0;
   private selectedNodeId: string = null;
@@ -53,13 +54,16 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
       height: 500
     });
 
+
     this.layerRelationship = new Konva.Layer();
     this.layer = new Konva.Layer();
+    this.layerBG = new Konva.Layer();
 
-    this.layer.add(KonvaUtils.createBG(700,500));
+    this.layerBG.add(KonvaUtils.createBG(700,500));
   /*  
     this.randomScene();
 */
+    stage.add(this.layerBG);
     stage.add(this.layerRelationship);
     stage.add(this.layer);
     this.layerRelationship.draw();
@@ -123,6 +127,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     graph.nodes.forEach(function (node: Node) {
       let drawable = DrawableFactory.create(ChartUtils.clone(node), this._graphService, this.clickConfig);
       this.addDrawable(drawable);
+      drawable.setSelected(false);
     }.bind(this));
 
     console.log(graph.relationship);
@@ -165,7 +170,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
    * @param drawable 
    */
   private addRelationship(drawable: RelationshipDrawable) {
-    drawable.draw(this.layer);
+    drawable.draw(this.layerRelationship);
     this.relationship[drawable.getId()] = drawable;
   }
 
@@ -198,6 +203,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     this.selectedNodeId = null;
 
     this.layer.clear();
+    this.layerRelationship.clear();
   }
 
   /**
@@ -278,6 +284,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
    */
   private redraw() {
     this.layer.batchDraw();
+    this.layerRelationship.batchDraw();
   }
 
   /**
@@ -288,8 +295,9 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     let ids = Object.keys(this.drawables);
     for (let i = 0; i < ids.length; i++) {
       let drawable = this.drawables[ids[i]];
-      if (ChartUtils.haveIntersect(check, drawable.getNode())) {
-        this.createRelationship(check.drawable.getNode(), drawable.getNode());
+      let node = drawable.getNode();
+      if (ChartUtils.haveIntersect(check, node) && ChartUtils.isRelationable(node)) {
+        this.createRelationship(check.drawable.getNode(), node);
         check.drawable.relation(true);
       }
     }

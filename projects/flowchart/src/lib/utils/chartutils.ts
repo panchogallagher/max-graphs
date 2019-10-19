@@ -25,6 +25,10 @@ export class ChartUtils {
         return JSON.parse(JSON.stringify(object));
     }
 
+    /**
+     * Clone a nested object relationship
+     * @param object 
+     */
     public static cloneRelation(object: Relationship) : Relationship {
         return JSON.parse(JSON.stringify(object));
     }
@@ -37,5 +41,13 @@ export class ChartUtils {
     public static haveIntersect(check: RelationCheck, node:Node) : boolean {
         let position = node.point;
         return check.x >= position.x && check.x <= position.x + Constants.NODE_WIDTH && check.y >= position.y && check.y <= position.y + Constants.NODE_HEIGHT;
+    }
+
+    /**
+     * Check if the node is relationable
+     * @param node 
+     */
+    public static isRelationable(node:Node) : boolean {
+        return Constants.NO_RELATION_TYPE.indexOf(node.type) === -1;
     }
 }

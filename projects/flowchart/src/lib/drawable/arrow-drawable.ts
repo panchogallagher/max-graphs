@@ -17,11 +17,13 @@ export class ArrowDrawable implements IDrawable {
     private id:string;
     private drawable:IDrawable;
     private graphService:GraphService;
+    private offset:any;
 
-    constructor(drawable:IDrawable, graphService?:GraphService) {
+    constructor(drawable:IDrawable, offset:any, graphService?:GraphService) {
         this.id = "arrow-" + drawable.getId();
         this.drawable = drawable;
         this.graphService = graphService;
+        this.offset = offset;
         this.onDragMove = this.onDragMove.bind(this);
         this.onDragEnd = this.onDragEnd.bind(this);
         this.onClick = this.onClick.bind(this);
@@ -37,7 +39,7 @@ export class ArrowDrawable implements IDrawable {
     }
     
     draw(layer: Layer): void {
-        this.circle = KonvaUtils.createCircleDragged({}, this.getNode().point, Constants.ICON_CIRCLERELATION_OFFSET_X, Constants.ICON_CIRCLERELATION_OFFSET_Y, this.onClick, this.onDragMove, this.onDragEnd);
+        this.circle = KonvaUtils.createCircleDragged({}, this.getNode().point, this.offset.x, this.offset.y, this.onClick, this.onDragMove, this.onDragEnd);
         this.arrow = KonvaUtils.createArrow(this.id);
 
         layer.add(this.arrow);
@@ -48,8 +50,8 @@ export class ArrowDrawable implements IDrawable {
         //this.node = node;
 
         this.circle.setAbsolutePosition({
-            x: node.point.x + Constants.ICON_CIRCLERELATION_OFFSET_X,
-            y: node.point.y + Constants.ICON_CIRCLERELATION_OFFSET_Y
+            x: node.point.x + this.offset.x,
+            y: node.point.y + this.offset.y
         }); 
 
         this.arrow.points([]);
@@ -72,11 +74,11 @@ export class ArrowDrawable implements IDrawable {
 
     private onDragEnd(e) {
         let check = new RelationCheck(e.target.attrs.x, e.target.attrs.y, this.drawable);
-        //console.log(e.target.attrs.x, e.target.attrs.y, check);
+
         let node = this.drawable.getNode();
         this.circle.setAbsolutePosition({
-            x: node.point.x + Constants.ICON_CIRCLERELATION_OFFSET_X,
-            y: node.point.y + Constants.ICON_CIRCLERELATION_OFFSET_Y
+            x: node.point.x + this.offset.x,
+            y: node.point.y + this.offset.y
         }); 
         this.arrow.points([]);
 
@@ -95,7 +97,7 @@ export class ArrowDrawable implements IDrawable {
 
     private getBaseCoordinate() {
         let node = this.drawable.getNode();
-        return [node.point.x + Constants.ICON_ARROW_OFFSET_X, node.point.y + Constants.ICON_ARROW_OFFSET_Y];
+        return [node.point.x + Constants.ICON_ARROW_OFFSET_X, node.point.y + this.offset.y];
     }
 
     hide() {

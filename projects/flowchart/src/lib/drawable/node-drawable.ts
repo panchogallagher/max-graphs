@@ -52,7 +52,7 @@ export class NodeDrawable implements IDrawable {
         }
 
         if (this.node.type !== 'E' && this.node.type !== 'C') {
-            this.arrow = new ArrowDrawable(this, this.graphService);
+            this.arrow = new ArrowDrawable(this, {x: Constants.ICON_CIRCLERELATION_OFFSET_X, y: Constants.ICON_CIRCLERELATION_OFFSET_Y}, this.graphService);
             this.arrow.draw(layer);
         }
     }
