@@ -5,6 +5,7 @@ import { KonvaUtils } from '../utils/konvautils';
 import { Relationship } from '../object/relationship';
 import { Arrow } from 'konva/types/shapes/Arrow';
 import { ChartUtils } from '../utils/chartutils';
+import { Constants } from '../utils/constants';
 
 
 export class RelationshipDrawable {
@@ -55,5 +56,15 @@ export class RelationshipDrawable {
         if (this.graphService !== null && this.graphService !== undefined) {
             this.graphService.relationSelected(this.relationship);
         }
+    }
+
+    setSelected(isSelected: boolean) {
+        if (isSelected) {
+            this.line.fill(Constants.COLOR_SELECTION);
+            this.line.stroke(Constants.COLOR_SELECTION);
+        } else {
+            this.line.fill('black');
+            this.line.stroke('black');
+        }        
     }
 }

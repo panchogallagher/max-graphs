@@ -143,8 +143,7 @@ export class NodeDrawable implements IDrawable {
         } else {
             this.box.strokeWidth(0);
             this.box.strokeEnabled(false);
-        }
-        
+        }        
     }
 
     relation(hasRelation: boolean) {

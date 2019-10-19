@@ -256,17 +256,30 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
    * Set the current selected node
    * @param nodeId 
    */
-  private updateSelected(nodeId: string) {
+  private updateSelected(elementId: string) {
 
     if (this.selectedNodeId !== null) {
-      this.drawables[this.selectedNodeId].setSelected(false);
+
+      if (this.drawables[this.selectedNodeId] !== undefined) {
+        this.drawables[this.selectedNodeId].setSelected(false);
+      }
+
+      if (this.relationship[this.selectedNodeId] !== undefined) {
+        this.relationship[this.selectedNodeId].setSelected(false);
+      }
     }
 
-    if (nodeId !== null) {
-      this.drawables[nodeId].setSelected(true);
+    if (elementId !== null) {
+      if (this.drawables[elementId] !== undefined) {
+        this.drawables[elementId].setSelected(true);
+      }
+
+      if (this.relationship[elementId] !== undefined) {
+        this.relationship[elementId].setSelected(true);
+      }
     }
 
-    this.selectedNodeId = nodeId;
+    this.selectedNodeId = elementId;
     this.redraw();
   }
 
@@ -317,6 +330,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   private createRelationship(fromNode: Node, toNode:Node) {
     let relation = KonvaUtils.createEmptyRelationship(this.newNodeId(), fromNode, toNode);
     this.addRelationship(DrawableFactory.createRelationship(relation, fromNode, toNode, this._graphService));
+    this.updateSelected(relation.id);
     this.redraw();
   } 
 
@@ -385,7 +399,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   selectedRelationship(relationship: Relationship) {
     let fromNode = this.drawables[relationship.fromId].getNode();
     let toNode = this.drawables[relationship.toId].getNode();
-    this.updateSelected(null);
+    this.updateSelected(relationship.id);
     this._graphService.showRelationSetting(new RelationSetting(fromNode, toNode, relationship));
   }
 }
