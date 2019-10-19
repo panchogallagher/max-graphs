@@ -373,10 +373,6 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
           fromDrawable.relation(false);
         }
 
-        if (this.drawables[toId] !== undefined) {
-          this.drawables[toId].relation(false);
-        }
-
         drawable.destroy();
         delete this.relationship[ids[i]];
       }
