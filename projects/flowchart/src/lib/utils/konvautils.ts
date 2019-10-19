@@ -321,15 +321,40 @@ export class KonvaUtils {
     }
 
     public static getPointsCondition(from: Position, to: Position, offset: any) {
-        let points = [];
-        points.push(from.x + offset.relationship.x);
-        points.push(from.y + offset.relationship.y);
 
-        points.push(from.x + offset.relationship.x);
-        points.push(to.y + Constants.NODE_STATEMENT_HEIGHT/2);
+        const fromX = from.x + offset.relationship.x;
+        const fromY = from.y + offset.relationship.y;
+        const toY = to.y + Constants.NODE_STATEMENT_HEIGHT/2;
+
+        let points = [];
+        points.push(fromX);
+        points.push(fromY);
+
+        if (fromX < to.x - 15) {
+            // target node to the right
+            points.push(fromX);
+            points.push(toY);
+        } else {
+            // target node to the left
+            points.push(fromX);
+            points.push(fromY);
+
+            const y1 = fromY + 15;
+
+            points.push(fromX);
+            points.push(y1);
+
+            const x2 = to.x - 18;
+
+            points.push(x2);
+            points.push(y1);
+
+            points.push(x2);
+            points.push(toY);
+        }
 
         points.push(to.x);
-        points.push(to.y + Constants.NODE_STATEMENT_HEIGHT/2);
+        points.push(toY);
 
         return points;
     }
@@ -337,7 +362,7 @@ export class KonvaUtils {
     public static getPointsNodes(from: Position, to: Position, offset: any) {
         const fromX = from.x + offset.relationship.x;
         const fromY = from.y + offset.relationship.y;
-        const toY = to.y + Constants.NODE_STATEMENT_HEIGHT/2;
+        const toY = to.y + Constants.NODE_STATEMENT_HEIGHT/2 + 5;
 
         let points = [];
 

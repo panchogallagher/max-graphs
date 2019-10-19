@@ -12,6 +12,7 @@ import { RelationCheck } from '../object/relation-check';
 import { RelationshipDrawable } from '../drawable/relationship-drawable';
 import { Graph } from '../object/graph';
 import { Relationship } from '../object/relationship';
+import { RelationSetting } from '../object/relation-setting';
 
 declare var $: any;
 
@@ -43,6 +44,9 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     _graphService.onPositionChanged.subscribe(this.updatePosition.bind(this));
     _graphService.onRedraw.subscribe(this.redraw.bind(this));
     _graphService.onCheckRelation.subscribe(this.checkRelationship.bind(this));
+    _graphService.onDeleteNode.subscribe(this.deleteNode.bind(this));
+    _graphService.onRelationSelected.subscribe(this.selectedRelationship.bind(this));
+    _graphService.onDeleteRelation.subscribe(this.deleteRelationship.bind(this));
     this.clickConfig = this.clickConfig.bind(this);
   }
 
@@ -53,7 +57,6 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
       width: 700,
       height: 500
     });
-
 
     this.layerRelationship = new Konva.Layer();
     this.layer = new Konva.Layer();
@@ -139,7 +142,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
         let fromNode: Node = fromDrawable.getNode();
         let toNode: Node = this.drawables[relation.toId].getNode();
 
-        this.addRelationship(DrawableFactory.createRelationship(ChartUtils.cloneRelation(relation), fromNode, toNode));
+        this.addRelationship(DrawableFactory.createRelationship(ChartUtils.cloneRelation(relation), fromNode, toNode, this._graphService));
         fromDrawable.relation(true);
       }.bind(this));
     }
@@ -242,7 +245,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     this.addDrawable(DrawableFactory.create(node, this._graphService, this.clickConfig));
 
     let relation = KonvaUtils.createEmptyRelationship(this.newNodeId(), statement.parentNode, node);
-    this.addRelationship(DrawableFactory.createRelationship(relation, statement.parentNode, node));
+    this.addRelationship(DrawableFactory.createRelationship(relation, statement.parentNode, node, this._graphService));
     
     this.updateSelected(node.id);
     this._graphService.showSetting(node);
@@ -313,12 +316,76 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
    */
   private createRelationship(fromNode: Node, toNode:Node) {
     let relation = KonvaUtils.createEmptyRelationship(this.newNodeId(), fromNode, toNode);
-    this.addRelationship(DrawableFactory.createRelationship(relation, fromNode, toNode));
+    this.addRelationship(DrawableFactory.createRelationship(relation, fromNode, toNode, this._graphService));
     this.redraw();
   } 
 
+  /**
+   * Hide configuration settings
+   */
   private hideSetting() {
     this.updateSelected(null);
     this._graphService.hideSetting();
+  }
+  
+  /**
+   * Detele a node
+   * @param nodeId 
+   */
+  private deleteNode(nodeId: string) {
+    if (this.drawables[nodeId] !== undefined) {
+      let drawable = this.drawables[nodeId];
+      drawable.destroy();
+      delete this.drawables[nodeId];
+      this.selectedNodeId = null;
+    }
+
+    let ids = Object.keys(this.relationship);
+    for (let i = 0; i < ids.length; i++) {
+      let drawable = this.relationship[ids[i]];
+      let fromId = drawable.relationship.fromId;
+      let toId = drawable.relationship.toId;
+      if (fromId === nodeId || toId === nodeId) {
+
+        if (this.drawables[fromId] !== undefined) {
+          this.drawables[fromId].relation(false);
+        }
+
+        if (this.drawables[toId] !== undefined) {
+          this.drawables[toId].relation(false);
+        }
+
+        drawable.destroy();
+        delete this.relationship[ids[i]];
+      }
+    }
+
+    this.redraw();
+  }
+
+  deleteRelationship(relationId: string) {
+      let drawable = this.relationship[relationId];
+      let fromId = drawable.relationship.fromId;
+      let toId = drawable.relationship.toId;
+
+      if (this.drawables[fromId] !== undefined) {
+        this.drawables[fromId].relation(false);
+      }
+
+      if (this.drawables[toId] !== undefined) {
+        this.drawables[toId].relation(false);
+      }
+
+      drawable.destroy();
+      delete this.relationship[relationId];
+
+      this.redraw();
+  }
+
+  selectedRelationship(relationship: Relationship) {
+    let fromNode = this.drawables[relationship.fromId].getNode();
+    let toNode = this.drawables[relationship.toId].getNode();
+    this.updateSelected(null);
+    this._graphService.showRelationSetting(new RelationSetting(fromNode, toNode, relationship));
   }
 }

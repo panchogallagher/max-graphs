@@ -2,7 +2,6 @@ import { GraphService } from '../services/graph.service';
 import { Node } from '../object/node';
 import { Layer } from 'konva/types/Layer';
 import { KonvaUtils } from '../utils/konvautils';
-import { Constants } from '../utils/constants';
 import { Relationship } from '../object/relationship';
 import { Arrow } from 'konva/types/shapes/Arrow';
 import { ChartUtils } from '../utils/chartutils';
@@ -22,6 +21,7 @@ export class RelationshipDrawable {
         this.fromNode = fromNode;
         this.toNode = toNode;
         this.graphService = graphService;
+        this.onClick = this.onClick.bind(this);
     }
     
     getId(): string {
@@ -29,7 +29,7 @@ export class RelationshipDrawable {
     }
 
     draw(layer: Layer): void {
-        this.line = KonvaUtils.createArrow(this.relationship.id);
+        this.line = KonvaUtils.createArrow(this.relationship.id, this.onClick);
         this.line.points(this.relationship.points);
         layer.add(this.line);
     }
@@ -53,7 +53,7 @@ export class RelationshipDrawable {
 
     onClick() {
         if (this.graphService !== null && this.graphService !== undefined) {
-            
+            this.graphService.relationSelected(this.relationship);
         }
     }
 }

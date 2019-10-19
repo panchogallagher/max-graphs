@@ -26,7 +26,8 @@ export class StatementDrawable implements IDrawable {
         this.node = node;
         this.graphService = graphService;
         this.onConfigCallback = onConfigCallback;
-        this.onClick = this.onClick.bind(this);
+        this.onDrag = this.onDrag.bind(this);
+        this.onDragStart = this.onDragStart.bind(this);
     }
 
     getNode(): Node {
@@ -38,7 +39,7 @@ export class StatementDrawable implements IDrawable {
     }
 
     draw(layer: Layer): void {
-        this.box = KonvaUtils.createBoxNoDrag(this.node.point, this.node.style, Constants.NODE_WIDTH, Constants.NODE_STATEMENT_HEIGHT, this.onClick);
+        this.box = KonvaUtils.createBox(this.node.point, this.node.style, Constants.NODE_WIDTH, Constants.NODE_STATEMENT_HEIGHT, this.onDrag, this.onDragStart);
         this.title = KonvaUtils.createTitle(this.node.title, this.node.style, this.node.point, Constants.TITLE_OFFSET_X, Constants.TITLE_STATEMENT_OFFSET_Y);        
 
         layer.add(this.box);
@@ -64,18 +65,41 @@ export class StatementDrawable implements IDrawable {
         });
     }
 
+    onDrag(e:any) {
+        this.node.point.x = e.target.attrs.x;
+        this.node.point.y = e.target.attrs.y;
+
+        this.title.setAbsolutePosition({
+            x: this.node.point.x + Constants.TITLE_OFFSET_X,
+            y: this.node.point.y + Constants.TITLE_STATEMENT_OFFSET_Y
+        });
+
+        if (this.icon !== null) {
+            this.icon.setAbsolutePosition({
+                x: this.node.point.x + Constants.ICON_OFFSET_X,
+                y: this.node.point.y + Constants.ICON_OFFSET_Y
+            }); 
+        }
+
+        if (this.arrow !== null && this.arrow !== undefined) {
+            this.arrow.update(this.node);
+        }
+
+        this.graphService.positionChanged(this.node);
+    }
+
+    onDragStart() {
+        if (this.graphService !== null && this.graphService !== undefined) {
+            this.graphService.showSetting(this.node);
+            this.graphService.nodeSelected(this.node);
+        }
+    }
+
     destroy(): void {
         this.box.destroy();
         this.title.destroy();
         this.icon.destroy();
         this.arrow.destroy();
-    }
-
-    onClick() {
-        if (this.graphService !== null && this.graphService !== undefined) {
-            this.graphService.showSetting(this.node);
-            this.graphService.nodeSelected(this.node);
-        }
     }
 
     setSelected(isSelected: boolean) {

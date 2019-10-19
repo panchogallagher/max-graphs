@@ -3,6 +3,8 @@ import { Node } from '../object/node';
 import { ChartUtils } from '../utils/chartutils';
 import { Statement } from '../object/statement';
 import { RelationCheck } from '../object/relation-check';
+import { Relationship } from '../object/relationship';
+import { RelationSetting } from '../object/relation-setting';
 
 @Injectable()
 export class GraphService {
@@ -10,8 +12,12 @@ export class GraphService {
   @Output() onNewRelationship: EventEmitter<Node> = new EventEmitter();
   @Output() onNewStatement: EventEmitter<Statement> = new EventEmitter();
   @Output() onNodeSelected: EventEmitter<string> = new EventEmitter();
+  @Output() onDeleteNode: EventEmitter<string> = new EventEmitter();
+  @Output() onDeleteRelation: EventEmitter<string> = new EventEmitter();
   @Output() onPositionChanged: EventEmitter<Node> = new EventEmitter();
   @Output() onViewSetting: EventEmitter<Node> = new EventEmitter();
+  @Output() onViewRelationSetting: EventEmitter<RelationSetting> = new EventEmitter();
+  @Output() onRelationSelected: EventEmitter<Relationship> = new EventEmitter();
   @Output() onApplySetting: EventEmitter<Node> = new EventEmitter();
   @Output() onRedraw = new EventEmitter();
   @Output() onCheckRelation: EventEmitter<RelationCheck> = new EventEmitter();
@@ -56,4 +62,21 @@ export class GraphService {
   hideSetting() {
     this.onHideSetting.emit();
   }
+
+  deleteNode(nodeId: string) {
+    this.onDeleteNode.emit(nodeId);
+  }
+
+  deleteRelation(relationId: string) {
+    this.onDeleteRelation.emit(relationId);
+  }
+
+  showRelationSetting(relationship: RelationSetting) {
+    this.onViewRelationSetting.emit(relationship);
+  }
+
+  relationSelected(relationship: Relationship) {
+    this.onRelationSelected.emit(relationship);
+  }
+  
 }

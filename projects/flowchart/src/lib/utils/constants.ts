@@ -159,5 +159,5 @@ export class Constants {
         }
     };
 
-    public static NO_RELATION_TYPE: string[] = ['S', 'I'];
+    public static NO_RELATION_TYPE: string[] = ['S'];
 }

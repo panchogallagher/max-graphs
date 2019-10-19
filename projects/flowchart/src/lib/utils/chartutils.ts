@@ -34,6 +34,14 @@ export class ChartUtils {
     }
 
     /**
+     * Clone any nested object
+     * @param object 
+     */
+    public static cloneObject<T>(object: T) : T {
+        return JSON.parse(JSON.stringify(object));
+    }
+
+    /**
      * Check if the relation intersects with the node
      * @param check 
      * @param node 
