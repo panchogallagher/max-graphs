@@ -343,6 +343,10 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     this._graphService.hideSetting();
   }
 
+  /**
+   * Drop a node by the id
+   * @param nodeId 
+   */
   private dropNode(nodeId: string) {
     if (this.drawables[nodeId] !== undefined) {
       let drawable = this.drawables[nodeId];
@@ -353,36 +357,58 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   }
   
   /**
-   * Detele a node
+   * Delete a node
    * @param nodeId 
    */
   private deleteNode(nodeId: string) {
-    this.dropNode(nodeId);
-
     let ids = Object.keys(this.relationship);
     for (let i = 0; i < ids.length; i++) {
       let drawable = this.relationship[ids[i]];
-      let fromId = drawable.relationship.fromId;
-      let toId = drawable.relationship.toId;
-      if (fromId === nodeId || toId === nodeId) {
+      if (drawable !== undefined) {
+        let fromId = drawable.relationship.fromId;
+        let toId = drawable.relationship.toId;
+        let removeTo = false;
+        if (fromId === nodeId || toId === nodeId) {
 
-        if (this.drawables[fromId] !== undefined) {
-          let fromDrawable = this.drawables[fromId];
-          let fromNode = fromDrawable.getNode();
-          
-          if (fromNode.type === 'C') {
-            fromDrawable.removeChild();
+          if (this.drawables[fromId] !== undefined) {
+            let fromDrawable = this.drawables[fromId];
+            let fromNode = fromDrawable.getNode();
+            
+            if (fromNode.type === 'C') {
+              fromDrawable.removeChild();
+              removeTo = true;
+            }
+    
+            fromDrawable.relation(false);
           }
-  
-          fromDrawable.relation(false);
-        }
 
-        drawable.destroy();
-        delete this.relationship[ids[i]];
+          drawable.destroy();
+          delete this.relationship[ids[i]];
+
+          if (removeTo) {
+            this.dropNode(toId);
+            this.dropRelationship(toId);
+          }
+        }
       }
     }
 
+    this.dropNode(nodeId);
     this.redraw();
+  }
+
+  dropRelationship(nodeId: string) {
+    let ids = Object.keys(this.relationship);
+    for (let i = 0; i < ids.length; i++) {
+      let drawable = this.relationship[ids[i]];
+      if (drawable !== undefined) {
+        let fromId = drawable.relationship.fromId;
+        if (fromId === nodeId) {
+          drawable.destroy();
+          delete this.relationship[ids[i]];
+        }
+      }
+    }
   }
 
   deleteRelationship(relationId: string) {
