@@ -3,10 +3,6 @@
     font-size: 0.75em;
 }
 
-.fc-root-parent {
-    position: absolute;
-}
-
 .fc-setting-widget {
     position: absolute;
     top: 0;
@@ -14,4 +10,15 @@
     height: 100%;
     padding-left: 15px;
     padding-right: 15px;
+}
+
+.fc-no-padding {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.fc-border {
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
 }

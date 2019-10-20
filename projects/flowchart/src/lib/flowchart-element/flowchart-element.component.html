@@ -1,5 +1,7 @@
-<h6 class="mt-2">Elementos</h6>
 <div id="element-container">
+    <div class="d-flex justify-content-center">
+        <h6 class="mt-2 mb-3">Elementos</h6>
+    </div>
     <div *ngFor="let type of nodeTypes" class="d-flex justify-content-center">
         <div id="{{'shape' + type }}" class="draggable draggable-type-{{type}}" attr.data-type="{{type}}">
             <span>
