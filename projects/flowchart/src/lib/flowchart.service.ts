@@ -13,7 +13,6 @@ export class FlowchartService {
   }
 
   clickConfig(node: Node) {
-    console.log("FlowchartService", node);
     this.onClickConfig.emit(node);
   }
 }

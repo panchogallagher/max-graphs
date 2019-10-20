@@ -556,6 +556,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   private changeSize(width:number, height:number) {
     this.largeContainer.style.width = width + 'px';     
     this.largeContainer.style.height = height + 'px';   
+    console.log('width: ' +width, 'height: ' + height);
   }
 
 }

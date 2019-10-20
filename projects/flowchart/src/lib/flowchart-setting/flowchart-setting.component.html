@@ -1,5 +1,5 @@
-
 <div *ngIf="visible" class="bg-light p-3 fc-shadow">
+    <button type="button" class="btn btn-outline-link btn-close float-right" (click)="hide()">X</button>
     <h6 *ngIf="mode === 'R'">Relación</h6>
     <h6 *ngIf="mode === 'N'">Nodo</h6>
     <form *ngIf="mode === 'N'">

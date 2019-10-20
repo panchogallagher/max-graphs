@@ -8,6 +8,7 @@
     width: 3500px;
     height: 2500px;
     overflow: hidden;
+    background: #eaeaea;
 }
 
 #scroll-container {
@@ -18,6 +19,7 @@
     overflow: auto;
     margin: 10px;
     border: 1px solid #ccc;
+    background: #eaeaea;
 }
 
 flowchart-controls {
