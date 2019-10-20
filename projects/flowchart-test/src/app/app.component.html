@@ -1,6 +1,6 @@
 <div class="container mt-3">
     <div class="text-center">
-        <h1>{{title}}</h1>
+        <h2>{{title}}</h2>
     </div>
     
     <lib-flowchart #chart></lib-flowchart>
@@ -9,7 +9,14 @@
         <div class="col-12 text-center">
             <button class="btn btn-primary mr-3" (click)="this.saveState()">Guardar estado</button>
             <button class="btn btn-secondary" (click)="this.revertState()">Revertir estado</button>
+            <button *ngIf="graphJSON !== null" class="btn btn-info ml-3" (click)="this.onClickViewJSON()">
+                {{buttonJSON}}
+            </button>
+        </div>
+        <div class="col-12" id="jsonDiv" *ngIf="viewJSON">
+            <div class="card card-body bg-light mt-4 mb-4">
+                <code>{{graphJSON}}</code>
+            </div>
         </div>
     </div>
 </div>
-

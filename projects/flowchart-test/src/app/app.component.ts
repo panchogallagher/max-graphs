@@ -13,6 +13,9 @@ export class AppComponent implements AfterViewInit {
 
   graph: any = {};
   title: string = "FlowChart Example";
+  graphJSON: string = null;
+  viewJSON: boolean = false;
+  buttonJSON: string = "Ver JSON";
 
   constructor() {}
 
@@ -24,11 +27,17 @@ export class AppComponent implements AfterViewInit {
 
   saveState() {
     this.graph = this.chart.export();
+    this.graphJSON = JSON.stringify(this.graph);
     alert("saved snapshot");
     console.log(this.graph);
   }
 
   revertState() {
     this.chart.load(this.graph);
+  }
+
+  onClickViewJSON() {
+    this.viewJSON = !this.viewJSON;
+    this.buttonJSON = this.viewJSON ? "Ocultar JSON" : "Ver JSON";
   }
 }
