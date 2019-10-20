@@ -1,7 +1,7 @@
 
-<div *ngIf="visible">
-    <h6 class="mt-2" *ngIf="mode === 'R'">Relación</h6>
-    <h6 class="mt-2" *ngIf="mode === 'N'">Nodo</h6>
+<div *ngIf="visible" class="bg-light p-3 fc-shadow">
+    <h6 *ngIf="mode === 'R'">Relación</h6>
+    <h6 *ngIf="mode === 'N'">Nodo</h6>
     <form *ngIf="mode === 'N'">
         <div class="form-group">
             <label for="fi-title">T&iacute;tulo</label>

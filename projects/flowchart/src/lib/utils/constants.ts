@@ -2,9 +2,14 @@ import { Style } from '../object/style';
 
 export class Constants {
 
-    public static ZOOM_MAX:number = 2;
+    public static ZOOM_MAX:number = 1.4;
     public static ZOOM_MIN:number = 0.8;
-    public static ZOOM_CHANGE:number = 0.2;
+    public static ZOOM_INITIAL:number = 1.0;
+    public static ZOOM_CHANGE:number = 0.1;
+
+    public static CANVAS_MAXWIDTH:number = 3500;
+    public static CANVAS_MAXHEIGHT:number = 2500;
+    public static CANVAS_PADDING:number = 500;
 
     public static ICON_WIDTH:number = 15;
     public static ICON_STATEMENT_WIDTH:number = 13;

@@ -1,0 +1,35 @@
+.fc-graph {
+    overflow: hidden;
+    height: 100%;
+    padding: 0px !important;
+}
+
+#large-container {
+    width: 3500px;
+    height: 2500px;
+    overflow: hidden;
+}
+
+#scroll-container {
+    /*width: calc(100% - 22px);
+    height: calc(100vh - 22px);*/
+    width: calc(100% - 22px);
+    height: 500px;
+    overflow: auto;
+    margin: 10px;
+    border: 1px solid #ccc;
+}
+
+flowchart-controls {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+}
+
+flowchart-setting {
+    position: absolute;
+    right: 45px;
+    top: 10px;
+    width: 230px;
+    height: 500px;
+}

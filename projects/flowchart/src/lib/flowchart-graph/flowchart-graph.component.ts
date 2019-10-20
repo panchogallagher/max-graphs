@@ -34,6 +34,8 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   private offset: any;
   private counter: number = 0;
   private selectedNodeId: string = null;
+  private scrollContainer: any = null;
+  private largeContainer: any = null;
 
   private relationship: any = {};
   private drawables: any = {};
@@ -52,21 +54,30 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     _graphService.onZoomIn.subscribe(this.zoomIn.bind(this));
     _graphService.onZoomOut.subscribe(this.zoomOut.bind(this));
     this.clickConfig = this.clickConfig.bind(this);
+    this.scrollStage = this.scrollStage.bind(this);
   }
 
   /** ANGULAR EVENTS */
   ngOnInit() {
+
+    let width = Constants.CANVAS_MAXWIDTH;
+    let height = Constants.CANVAS_MAXHEIGHT;
+
     this.stage = new Konva.Stage({
       container: 'graph-container',
-      width: 700,
-      height: 500
+      width: width,
+      height: height,
+      scale: {
+        x: Constants.ZOOM_INITIAL,
+        y: Constants.ZOOM_INITIAL
+      }
     });
 
     this.layerRelationship = new Konva.Layer();
     this.layer = new Konva.Layer();
     this.layerBG = new Konva.Layer();
 
-    this.layerBG.add(KonvaUtils.createBG(700,500, this.hideSetting.bind(this)));
+    this.layerBG.add(KonvaUtils.createBG(width,height, this.hideSetting.bind(this)));
 
     this.stage.add(this.layerBG);
     this.stage.add(this.layerRelationship);
@@ -77,6 +88,12 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     $("#graph-container" ).droppable({
       drop: this.onDrop.bind(this)
     });
+
+    this.largeContainer = document.getElementById('large-container');
+    this.changeSize(width, height);
+
+    this.scrollContainer = document.getElementById('scroll-container');
+    this.scrollContainer.addEventListener('scroll', this.scrollStage);
   }
 
   ngAfterViewInit() {
@@ -202,8 +219,11 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
    */
   private onDrop(event, ui) {
     let scale = this.stage.getAbsoluteScale().x;
-    let x = (ui.position.left - this.offset.left + Constants.NODE_WIDTH/2) / scale;
-    let y = ui.position.top / scale;
+    var dx = this.scrollContainer.scrollLeft;
+    var dy = this.scrollContainer.scrollTop;
+
+    let x = (dx + ui.position.left - this.offset.left + Constants.NODE_WIDTH/2) / scale;
+    let y = (dy + ui.position.top) / scale;
 
     let node = KonvaUtils.createEmptyNode(ui.draggable.data('type'), this.newNodeId(), x, y);
     this.addDrawable(DrawableFactory.create(node, this._graphService, this.clickConfig));
@@ -472,10 +492,15 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     this._graphService.showRelationSetting(new RelationSetting(fromNode, toNode, relationship));
   }
 
+  /**
+   * Zoom in the canvas
+   */
   private zoomIn() {
     let scale = this.stage.getAbsoluteScale().x + Constants.ZOOM_CHANGE;
 
     if (scale <= Constants.ZOOM_MAX) {
+      this.resize(scale);
+
       this.stage.scale({
         x: scale,
         y: scale
@@ -484,10 +509,16 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Zoom out the canvas
+   */
   private zoomOut() {
     let scale = this.stage.getAbsoluteScale().x - Constants.ZOOM_CHANGE;
 
     if (scale >= Constants.ZOOM_MIN) {
+
+      this.resize(scale);
+
       this.stage.scale({
         x: scale,
         y: scale
@@ -495,4 +526,36 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
       this.stage.batchDraw();
     }
   }
+
+  /**
+   * Resize the container 
+   * @param scale 
+   */
+  private resize(scale?: number) {
+    let newWidth = Math.round(Constants.CANVAS_MAXWIDTH * scale);
+    let newHeight = Math.round(Constants.CANVAS_MAXHEIGHT * scale);
+    this.changeSize(newWidth, newHeight);
+  }
+
+  /**
+   * Scroll the stage
+   */
+  private scrollStage() {
+    var dx = this.scrollContainer.scrollLeft;
+    var dy = this.scrollContainer.scrollTop;
+    this.stage.container().style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
+    this.stage.x(-dx);
+    this.stage.y(-dy);
+
+    this.stage.batchDraw();
+  }
+
+  /**
+   * Change the large container size
+   */
+  private changeSize(width:number, height:number) {
+    this.largeContainer.style.width = width + 'px';     
+    this.largeContainer.style.height = height + 'px';   
+  }
+
 }
