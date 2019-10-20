@@ -201,9 +201,9 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
    * Manages the drop event into the canvas creating new nodes
    */
   private onDrop(event, ui) {
-    
-    let x = ui.position.left - this.offset.left + Constants.NODE_WIDTH/2;
-    let y = ui.position.top;
+    let scale = this.stage.getAbsoluteScale().x;
+    let x = (ui.position.left - this.offset.left + Constants.NODE_WIDTH/2) / scale;
+    let y = ui.position.top / scale;
 
     let node = KonvaUtils.createEmptyNode(ui.draggable.data('type'), this.newNodeId(), x, y);
     this.addDrawable(DrawableFactory.create(node, this._graphService, this.clickConfig));
