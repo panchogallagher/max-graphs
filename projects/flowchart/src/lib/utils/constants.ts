@@ -2,6 +2,10 @@ import { Style } from '../object/style';
 
 export class Constants {
 
+    public static ZOOM_MAX:number = 2;
+    public static ZOOM_MIN:number = 0.8;
+    public static ZOOM_CHANGE:number = 0.2;
+
     public static ICON_WIDTH:number = 15;
     public static ICON_STATEMENT_WIDTH:number = 13;
     public static CIRCLE_RADIOUS:number = 12;

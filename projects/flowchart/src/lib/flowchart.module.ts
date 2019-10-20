@@ -7,9 +7,10 @@ import { FlowchartSettingComponent } from './flowchart-setting/flowchart-setting
 import { FlowchartGraphComponent } from './flowchart-graph/flowchart-graph.component';
 import { SettingService } from './services/setting.service';
 import { GraphService } from './services/graph.service';
+import { FlowchartControlsComponent } from './flowchart-controls/flowchart-controls.component';
 
 @NgModule({
-  declarations: [FlowchartComponent, FlowchartElementComponent, FlowchartSettingComponent, FlowchartGraphComponent],
+  declarations: [FlowchartComponent, FlowchartElementComponent, FlowchartSettingComponent, FlowchartGraphComponent, FlowchartControlsComponent],
   imports: [
     FormsModule,
     CommonModule

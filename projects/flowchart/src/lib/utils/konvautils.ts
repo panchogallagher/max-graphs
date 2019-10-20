@@ -9,6 +9,35 @@ import { Relationship } from '../object/relationship';
 
 export class KonvaUtils {
 
+    public static createGroup(position:Position, onDragCallback?:any, onDragStart?:any) : Konva.Group {
+
+        let group = new Konva.Group({
+            x: position.x,
+            y: position.y,
+            listening: onDragStart !== null && onDragStart !== undefined,
+            draggable: true
+        });
+
+        group.on('mouseover', function() {
+            document.body.style.cursor = 'move';
+        });
+          
+        group.on('mouseout', function() {
+            document.body.style.cursor = 'default';
+        });
+
+        if (onDragCallback !== null && onDragCallback !== undefined) {
+            group.on('dragmove', onDragCallback);
+        }
+
+        if (onDragStart !== null && onDragStart !== undefined) {
+            group.on('dragstart', onDragStart);
+            group.on('click', onDragStart);
+        }
+
+        return group;
+    }
+
     /**
      * Creates a new Box for a node
      * @param Position 

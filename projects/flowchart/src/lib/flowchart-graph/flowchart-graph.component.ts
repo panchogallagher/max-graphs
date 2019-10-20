@@ -27,6 +27,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   onClickConfig: EventEmitter<Node> = null;
 
   /** PRIVATE PROPERTIES */
+  private stage : Konva.Stage;
   private layer : Konva.Layer;
   private layerRelationship : Konva.Layer;
   private layerBG : Konva.Layer;
@@ -48,12 +49,14 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     _graphService.onDeleteNode.subscribe(this.deleteNode.bind(this));
     _graphService.onRelationSelected.subscribe(this.selectedRelationship.bind(this));
     _graphService.onDeleteRelation.subscribe(this.deleteRelationship.bind(this));
+    _graphService.onZoomIn.subscribe(this.zoomIn.bind(this));
+    _graphService.onZoomOut.subscribe(this.zoomOut.bind(this));
     this.clickConfig = this.clickConfig.bind(this);
   }
 
   /** ANGULAR EVENTS */
   ngOnInit() {
-    var stage = new Konva.Stage({
+    this.stage = new Konva.Stage({
       container: 'graph-container',
       width: 700,
       height: 500
@@ -64,12 +67,10 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     this.layerBG = new Konva.Layer();
 
     this.layerBG.add(KonvaUtils.createBG(700,500, this.hideSetting.bind(this)));
-  /*  
-    this.randomScene();
-*/
-    stage.add(this.layerBG);
-    stage.add(this.layerRelationship);
-    stage.add(this.layer);
+
+    this.stage.add(this.layerBG);
+    this.stage.add(this.layerRelationship);
+    this.stage.add(this.layer);
     this.layerRelationship.draw();
     this.layer.draw();
 
@@ -80,23 +81,6 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.offset = $("#graph-container").offset();
-  }
-
-  private randomScene() {
-    let nodes = KonvaUtils.getNodes(2);
-    nodes.forEach(function (node) {
-      node.id = this.newNodeId();
-      let drawable = DrawableFactory.create(node, this._graphService, this.clickConfig);
-      this.addDrawable(drawable);
-    }.bind(this));
-
-    let relationships = KonvaUtils.getRelationships();
-
-    relationships.forEach(connect => {
-      var line = KonvaUtils.createArrow(connect.id);
-      line.points(KonvaUtils.getConnectorPoints(nodes[0].type, nodes[0].point, nodes[1].point));
-      this.layer.add(line);
-    });
   }
 
   /** PUBLIC METHODS */
@@ -426,7 +410,11 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     this.redraw();
   }
 
-  dropRelationship(nodeId: string) {
+  /**
+   * Drop the relations from a node
+   * @param nodeId 
+   */
+  private dropRelationship(nodeId: string) {
     let ids = Object.keys(this.relationship);
     for (let i = 0; i < ids.length; i++) {
       let drawable = this.relationship[ids[i]];
@@ -440,7 +428,11 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     }
   }
 
-  deleteRelationship(relationId: string) {
+  /**
+   * Delete all the relations from/to a node
+   * @param relationId 
+   */
+  private deleteRelationship(relationId: string) {
       let drawable = this.relationship[relationId];
       let fromId = drawable.relationship.fromId;
       let removeTo = false;
@@ -469,10 +461,38 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
       this.redraw();
   }
 
-  selectedRelationship(relationship: Relationship) {
+  /**
+   * Set a selected relationship
+   * @param relationship 
+   */
+  private selectedRelationship(relationship: Relationship) {
     let fromNode = this.drawables[relationship.fromId].getNode();
     let toNode = this.drawables[relationship.toId].getNode();
     this.updateSelected(relationship.id);
     this._graphService.showRelationSetting(new RelationSetting(fromNode, toNode, relationship));
+  }
+
+  private zoomIn() {
+    let scale = this.stage.getAbsoluteScale().x + Constants.ZOOM_CHANGE;
+
+    if (scale <= Constants.ZOOM_MAX) {
+      this.stage.scale({
+        x: scale,
+        y: scale
+      });
+      this.stage.batchDraw();
+    }
+  }
+
+  private zoomOut() {
+    let scale = this.stage.getAbsoluteScale().x - Constants.ZOOM_CHANGE;
+
+    if (scale >= Constants.ZOOM_MIN) {
+      this.stage.scale({
+        x: scale,
+        y: scale
+      });
+      this.stage.batchDraw();
+    }
   }
 }

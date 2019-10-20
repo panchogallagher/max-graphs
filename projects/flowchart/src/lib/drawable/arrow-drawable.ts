@@ -50,7 +50,7 @@ export class ArrowDrawable implements IDrawable {
 
     update(node: Node): void {
 
-        this.circle.setAbsolutePosition({
+        this.circle.setPosition({
             x: node.point.x + this.offset.x,
             y: node.point.y + this.offset.y
         }); 
@@ -82,7 +82,7 @@ export class ArrowDrawable implements IDrawable {
         let check = new RelationCheck(e.target.attrs.x, e.target.attrs.y, this.drawable);
 
         let node = this.drawable.getNode();
-        this.circle.setAbsolutePosition({
+        this.circle.setPosition({
             x: node.point.x + this.offset.x,
             y: node.point.y + this.offset.y
         }); 

@@ -31,12 +31,12 @@ export class ConditionDrawable extends NodeDrawable {
     onDrag(e:any) {
         super.onDrag(e);
 
-        this.circlePlus.setAbsolutePosition({
+        this.circlePlus.setPosition({
             x: this.node.point.x + Constants.ICON_PLUS_CIRCLE_OFFSET_X,
             y: this.node.point.y + Constants.ICON_PLUS_CIRCLE_OFFSET_Y
         });
 
-        this.iconPlus.setAbsolutePosition({
+        this.iconPlus.setPosition({
             x: this.node.point.x + Constants.ICON_PLUS_OFFSET_X,
             y: this.node.point.y + Constants.ICON_PLUS_OFFSET_Y
         });

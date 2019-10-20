@@ -8,7 +8,6 @@ import { ChartUtils } from '../utils/chartutils';
 import { FontAwesomeUnicode } from '../utils/fontawesome-unicode';
 import { IDrawable } from './i-drawable';
 import { GraphService } from '../services/graph.service';
-import { Arrow } from 'konva/types/shapes/Arrow';
 import { ArrowDrawable } from './arrow-drawable';
 
 export class NodeDrawable implements IDrawable {
@@ -40,7 +39,6 @@ export class NodeDrawable implements IDrawable {
         this.description = KonvaUtils.createDescription(this.node.description, this.node.style, this.node.point, Constants.DESCRIPTION_OFFSET_X, Constants.DESCRIPTION_OFFSET_Y);
         this.config = KonvaUtils.createIcon(FontAwesomeUnicode.cog, this.node.style, this.node.point, Constants.ICON_CONFIG_OFFSET_X, Constants.ICON_CONFIG_OFFSET_Y, this.onClickConfig.bind(this));
 
-
         layer.add(this.box);
         layer.add(this.title);
         layer.add(this.description);
@@ -61,23 +59,23 @@ export class NodeDrawable implements IDrawable {
         this.node.point.x = e.target.attrs.x;
         this.node.point.y = e.target.attrs.y;
 
-        this.title.setAbsolutePosition({
+        this.title.setPosition({
             x: this.node.point.x + Constants.TITLE_OFFSET_X,
             y: this.node.point.y + (this.node.description != '' ? Constants.TITLE_OFFSET_Y : Constants.TITLE_OFFSET_NODESCRIPTION_Y)
         });
 
-        this.description.setAbsolutePosition({
+        this.description.setPosition({
             x: this.node.point.x + Constants.DESCRIPTION_OFFSET_X,
             y: this.node.point.y + Constants.DESCRIPTION_OFFSET_Y
         });
 
-        this.config.setAbsolutePosition({
+        this.config.setPosition({
             x: this.node.point.x + Constants.ICON_CONFIG_OFFSET_X,
             y: this.node.point.y + Constants.ICON_CONFIG_OFFSET_Y
         });
 
         if (this.icon !== null) {
-            this.icon.setAbsolutePosition({
+            this.icon.setPosition({
                 x: this.node.point.x + Constants.ICON_OFFSET_X,
                 y: this.node.point.y + Constants.ICON_OFFSET_Y
             }); 
@@ -104,7 +102,7 @@ export class NodeDrawable implements IDrawable {
         this.title.text(ChartUtils.format(this.node.title, Constants.MAX_TITLE_LENGTH));
         this.description.text(ChartUtils.format(this.node.description));
 
-        this.title.setAbsolutePosition({
+        this.title.setPosition({
             x: this.node.point.x + Constants.TITLE_OFFSET_X,
             y: this.node.point.y + (this.node.description != '' ? Constants.TITLE_OFFSET_Y : Constants.TITLE_OFFSET_NODESCRIPTION_Y)
         });

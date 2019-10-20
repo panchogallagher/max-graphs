@@ -23,6 +23,8 @@ export class GraphService {
   @Output() onCheckRelation: EventEmitter<RelationCheck> = new EventEmitter();
   @Output() onCollisionCheck: EventEmitter<RelationCheck> = new EventEmitter();
   @Output() onHideSetting = new EventEmitter();
+  @Output() onZoomIn = new EventEmitter();
+  @Output() onZoomOut = new EventEmitter();
 
   constructor() { 
 
@@ -82,5 +84,13 @@ export class GraphService {
 
   checkCollision(check:RelationCheck) {
     this.onCollisionCheck.emit(check);
+  }
+
+  zoomIn() {
+    this.onZoomIn.emit();
+  }
+
+  zoomOut() {
+    this.onZoomOut.emit();
   }
 }

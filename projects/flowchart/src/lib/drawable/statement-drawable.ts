@@ -59,7 +59,7 @@ export class StatementDrawable implements IDrawable {
 
         this.title.text(ChartUtils.format(this.node.title, Constants.MAX_TITLE_LENGTH));
 
-        this.title.setAbsolutePosition({
+        this.title.setPosition({
             x: this.node.point.x + Constants.TITLE_OFFSET_X,
             y: this.node.point.y + Constants.TITLE_STATEMENT_OFFSET_Y
         });
@@ -69,13 +69,13 @@ export class StatementDrawable implements IDrawable {
         this.node.point.x = e.target.attrs.x;
         this.node.point.y = e.target.attrs.y;
 
-        this.title.setAbsolutePosition({
+        this.title.setPosition({
             x: this.node.point.x + Constants.TITLE_OFFSET_X,
             y: this.node.point.y + Constants.TITLE_STATEMENT_OFFSET_Y
         });
 
         if (this.icon !== null) {
-            this.icon.setAbsolutePosition({
+            this.icon.setPosition({
                 x: this.node.point.x + Constants.ICON_OFFSET_X,
                 y: this.node.point.y + Constants.ICON_STATEMENT_OFFSET_Y
             }); 
