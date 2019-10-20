@@ -11,8 +11,10 @@ export class AppComponent implements AfterViewInit {
 
   @ViewChild("chart", {static: false}) chart : FlowchartComponent;
 
-  graph: any = {};
   title: string = "FlowChart Example";
+
+  graph: any = {};
+  
   graphJSON: string = null;
   viewJSON: boolean = false;
   buttonJSON: string = "Ver JSON";
@@ -34,6 +36,10 @@ export class AppComponent implements AfterViewInit {
 
   revertState() {
     this.chart.load(this.graph);
+    let jsonContent = JSON.stringify(this.graph);
+    if (jsonContent !== '{}') {
+      this.graphJSON = jsonContent;
+    }
   }
 
   onClickViewJSON() {
