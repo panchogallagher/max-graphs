@@ -2,6 +2,8 @@ import { Style } from '../object/style';
 
 export class Constants {
 
+    public static NODE_ID_PREFIX:string = "N";
+
     public static ZOOM_MAX:number = 1.5;
     public static ZOOM_MIN:number = 0.2;
     public static ZOOM_INITIAL:number = 1.0;

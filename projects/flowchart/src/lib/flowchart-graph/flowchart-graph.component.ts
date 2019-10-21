@@ -128,7 +128,6 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
    */
   public load(graph: Graph) {
     this.clear();
-
     if (graph.nodes !== undefined) {
       graph.nodes.forEach(function (node: Node) {
         let drawable = DrawableFactory.create(ChartUtils.clone(node), this._graphService, this.clickConfig);
@@ -149,6 +148,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
       }.bind(this));
     }
 
+    this.initMaxNodeId();
     this.hideSetting();
     this.redraw();
   }
@@ -161,7 +161,28 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
    */
   private newNodeId() {
     this.counter++;
-    return "N" + (this.counter);
+    return Constants.NODE_ID_PREFIX + (this.counter);
+  }
+
+  private initMaxNodeId() {
+    let maxNodeId:number = 0;
+    let ids = Object.keys(this.drawables);
+    for (let i = 0; i < ids.length; i++) {
+      let nodeId = parseInt(this.drawables[ids[i]].getNode().id.replace(Constants.NODE_ID_PREFIX, ''));
+      if (maxNodeId < nodeId) {
+        maxNodeId = nodeId;
+      }
+    }
+
+    let relationIds = Object.keys(this.relationship);
+    for (let i = 0; i < relationIds.length; i++) {
+      let nodeId = parseInt(this.relationship[relationIds[i]].relationship.id.replace(Constants.NODE_ID_PREFIX, ''));
+      if (maxNodeId < nodeId) {
+        maxNodeId = nodeId;
+      }
+    }
+
+    this.counter = maxNodeId;
   }
 
   /**
