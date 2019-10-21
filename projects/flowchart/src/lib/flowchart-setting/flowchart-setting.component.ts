@@ -1,10 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, AfterViewInit, AfterViewChecked} from '@angular/core';
 import { Node } from '../object/node';
-import { SettingService } from '../services/setting.service';
 import { ChartUtils } from '../utils/chartutils';
 import { GraphService } from '../services/graph.service';
-import { Relationship } from '../object/relationship';
 import { RelationSetting } from '../object/relation-setting';
+import 'select2';
+import { FontAwesomeUnicode } from '../utils/fontawesome-unicode';
+
+declare var $: any;
 
 @Component({
   selector: 'flowchart-setting',
@@ -24,15 +26,21 @@ export class FlowchartSettingComponent implements OnInit {
 
   public visible:boolean = false;
   public mode: string = null;
+  public icons: string[] = Object.keys(FontAwesomeUnicode);
 
   constructor(private _service: GraphService) { 
     _service.onViewSetting.subscribe(this.init.bind(this));
     _service.onHideSetting.subscribe(this.hide.bind(this));
     _service.onViewRelationSetting.subscribe(this.initRelation.bind(this));
+    this.initSelect2 = this.initSelect2.bind(this);
   }
 
   ngOnInit() {
     this.node = new Node();
+  }
+
+  public initSelect2() {
+    $("#fi-icon").select2();
   }
 
   public init(node: Node) {
@@ -40,6 +48,11 @@ export class FlowchartSettingComponent implements OnInit {
     this.node = ChartUtils.clone(node);
     this.original = ChartUtils.clone(node);
     this.mode = 'N';
+    /*
+    setTimeout(() => { 
+      this.initSelect2(); 
+    }, 0);
+    */
   }
 
   public initRelation(relationship: RelationSetting) {
@@ -49,6 +62,7 @@ export class FlowchartSettingComponent implements OnInit {
   }
 
   public onApply() {
+    //this.node.icon = $("#fi-icon").select2().val();
     this._service.applyNodeSetting(this.node);
   }
 

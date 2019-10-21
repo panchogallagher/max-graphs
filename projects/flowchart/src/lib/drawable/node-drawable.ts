@@ -24,6 +24,7 @@ export class NodeDrawable implements IDrawable {
 
     protected graphService:GraphService;
     private onConfigCallback:any;
+    private layer:Layer = null;
 
     constructor(node:Node, graphService?:GraphService, onConfigCallback?: any) {
         this.node = node;
@@ -55,6 +56,8 @@ export class NodeDrawable implements IDrawable {
             this.arrow = new ArrowDrawable(this, {x: Constants.ICON_CIRCLERELATION_OFFSET_X, y: Constants.ICON_CIRCLERELATION_OFFSET_Y}, this.graphService);
             this.arrow.draw(layer);
         }
+
+        this.layer = layer;
     }
 
     onDrag(e:any) {
@@ -98,8 +101,12 @@ export class NodeDrawable implements IDrawable {
     }
 
     update(newnode: Node) {
+        let style = this.getStyle(this.node.type, this.node.style);
+
         this.node.title = newnode.title;
+        this.node.icon = newnode.icon;
         this.node.description = newnode.description;
+        this.node.style = newnode.style;
 
         this.title.text(ChartUtils.format(this.node.title, Constants.MAX_TITLE_LENGTH));
         this.description.text(ChartUtils.format(this.node.description));
@@ -108,6 +115,12 @@ export class NodeDrawable implements IDrawable {
             x: this.node.point.x + Constants.TITLE_OFFSET_X,
             y: this.node.point.y + (this.node.description != '' ? Constants.TITLE_OFFSET_Y : Constants.TITLE_OFFSET_NODESCRIPTION_Y)
         });
+
+        this.box.fill(this.node.style.boxBackgroundColor);
+        
+        this.icon.destroy();
+        this.icon = KonvaUtils.createIcon(FontAwesomeUnicode[this.node.icon], style, this.node.point, Constants.ICON_OFFSET_X, Constants.ICON_OFFSET_Y);
+        this.layer.add(this.icon);
     }
 
     getId() : string {

@@ -145,7 +145,7 @@ export class KonvaUtils {
 
     public static createTitle(text:string, baseStyle:Style, Position:Position, xOffset:number, yOffset:number) : Konva.Text {
         let style = Object.assign({}, Constants.DEFAULT_STYLE, baseStyle);
-        console.log(style, Constants.DEFAULT_STYLE, baseStyle);
+
         let txt = new Konva.Text({
             x: Position.x + xOffset,
             y: Position.y + yOffset,
@@ -326,9 +326,8 @@ export class KonvaUtils {
     }
 
     public static createEmptyNode(type: string, id: string, x: number, y: number) {
-
         let definition = Object.assign({}, Constants.NODE_DEFINITION[type]);
-        console.log(definition);
+
         return {
             id: id,
             width: Constants.NODE_WIDTH,
