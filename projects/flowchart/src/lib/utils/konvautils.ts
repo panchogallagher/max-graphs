@@ -46,7 +46,8 @@ export class KonvaUtils {
      * @param height 
      * @param onDragCallback 
      */
-    public static createBox(Position:Position, style:FullStyle, width:number, height:number, onDragCallback?:any, onDragStart?:any) : Konva.Rect {
+    public static createBox(Position:Position, baseStyle:Style, width:number, height:number, onDragCallback?:any, onDragStart?:any) : Konva.Rect {
+        let style = Object.assign({}, Constants.DEFAULT_STYLE, baseStyle);
         let rect = new Konva.Rect({
             x: Position.x,
             y: Position.y,
@@ -83,7 +84,8 @@ export class KonvaUtils {
         return rect;
     }
 
-    public static createBoxNoDrag(Position:Position, style:FullStyle, width:number, height:number, onClickCallback?:any) : Konva.Rect {
+    public static createBoxNoDrag(Position:Position, baseStyle:Style, width:number, height:number, onClickCallback?:any) : Konva.Rect {
+        let style = Object.assign({}, Constants.DEFAULT_STYLE, baseStyle);
         let rect = new Konva.Rect({
             x: Position.x,
             y: Position.y,
@@ -131,7 +133,8 @@ export class KonvaUtils {
         return rect;
     }
 
-    public static createText(text:string, style:FullStyle, Position:Position, xOffset:number, yOffset:number) : Konva.Text {
+    public static createText(text:string, baseStyle:Style, Position:Position, xOffset:number, yOffset:number) : Konva.Text {
+        let style = Object.assign({}, Constants.DEFAULT_STYLE, baseStyle);
         return new Konva.Text({
             x: Position.x + xOffset,
             y: Position.y + yOffset,
@@ -140,7 +143,9 @@ export class KonvaUtils {
         });
     }
 
-    public static createTitle(text:string, style:FullStyle, Position:Position, xOffset:number, yOffset:number) : Konva.Text {
+    public static createTitle(text:string, baseStyle:Style, Position:Position, xOffset:number, yOffset:number) : Konva.Text {
+        let style = Object.assign({}, Constants.DEFAULT_STYLE, baseStyle);
+        console.log(style, Constants.DEFAULT_STYLE, baseStyle);
         let txt = new Konva.Text({
             x: Position.x + xOffset,
             y: Position.y + yOffset,
@@ -154,7 +159,8 @@ export class KonvaUtils {
         return txt;
     }
 
-    public static createDescription(text:string, style:FullStyle, Position:Position, xOffset:number, yOffset:number) : Konva.Text {
+    public static createDescription(text:string, baseStyle:Style, Position:Position, xOffset:number, yOffset:number) : Konva.Text {
+        let style = Object.assign({}, Constants.DEFAULT_STYLE, baseStyle);
         let txt = new Konva.Text({
             x: Position.x + xOffset,
             y: Position.y + yOffset,
@@ -168,7 +174,8 @@ export class KonvaUtils {
         return txt;
     }
 
-    public static createIcon(text:string, style:FullStyle, Position:Position, xOffset:number, yOffset:number, onClickCallback?: any) {
+    public static createIcon(text:string, baseStyle:Style, Position:Position, xOffset:number, yOffset:number, onClickCallback?: any) {
+        let style = Object.assign({}, Constants.DEFAULT_STYLE, baseStyle);
         let icon =  new Konva.Text({
             x: Position.x + xOffset,
             y: Position.y + yOffset,
@@ -194,7 +201,8 @@ export class KonvaUtils {
         return icon;
     }
 
-    public static createCircle(style:FullStyle, Position:Position, xOffset:number, yOffset:number, onClickCallback?: any) {
+    public static createCircle(baseStyle:Style, Position:Position, xOffset:number, yOffset:number, onClickCallback?: any) {
+        let style = Object.assign({}, Constants.DEFAULT_STYLE, baseStyle);
         let circle =  new Konva.Circle({
             x: Position.x + xOffset,
             y: Position.y + yOffset,
@@ -219,7 +227,7 @@ export class KonvaUtils {
         return circle;
     }
 
-    public static createCircleDragged(style:FullStyle, Position:Position, xOffset:number, yOffset:number, onClickCallback?: any, onDragMoveCallback?:any, onDragEndCallback?:any) {
+    public static createCircleDragged(baseStyle:Style, Position:Position, xOffset:number, yOffset:number, onClickCallback?: any, onDragMoveCallback?:any, onDragEndCallback?:any) {
         let circle =  new Konva.Circle({
             x: Position.x + xOffset,
             y: Position.y + yOffset,
@@ -319,8 +327,8 @@ export class KonvaUtils {
 
     public static createEmptyNode(type: string, id: string, x: number, y: number) {
 
-        let definition = Constants.NODE_DEFINITION[type];
-
+        let definition = Object.assign({}, Constants.NODE_DEFINITION[type]);
+        console.log(definition);
         return {
             id: id,
             width: Constants.NODE_WIDTH,

@@ -39,14 +39,16 @@ export class StatementDrawable implements IDrawable {
     }
 
     draw(layer: Layer): void {
-        this.box = KonvaUtils.createBox(this.node.point, this.node.style, Constants.NODE_WIDTH, Constants.NODE_STATEMENT_HEIGHT, this.onDrag, this.onDragStart);
-        this.title = KonvaUtils.createTitle(this.node.title, this.node.style, this.node.point, Constants.TITLE_OFFSET_X, Constants.TITLE_STATEMENT_OFFSET_Y);        
+        let style = Object.assign({}, Constants.NODE_BASE, Constants.NODE_STATEMENT, this.node.style);
+
+        this.box = KonvaUtils.createBox(this.node.point, style, Constants.NODE_WIDTH, Constants.NODE_STATEMENT_HEIGHT, this.onDrag, this.onDragStart);
+        this.title = KonvaUtils.createTitle(this.node.title, style, this.node.point, Constants.TITLE_OFFSET_X, Constants.TITLE_STATEMENT_OFFSET_Y);        
 
         layer.add(this.box);
         layer.add(this.title);
 
         if (this.node.icon !== null) {
-            this.icon = KonvaUtils.createIcon(FontAwesomeUnicode[this.node.icon], this.node.style, this.node.point, Constants.ICON_OFFSET_X, Constants.ICON_STATEMENT_OFFSET_Y);
+            this.icon = KonvaUtils.createIcon(FontAwesomeUnicode[this.node.icon], style, this.node.point, Constants.ICON_OFFSET_X, Constants.ICON_STATEMENT_OFFSET_Y);
             layer.add(this.icon);
         }
 

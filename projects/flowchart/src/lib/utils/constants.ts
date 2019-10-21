@@ -84,19 +84,25 @@ export class Constants {
         iconColor: "white"
     };
 
-    public static NODE_START:any = Object.assign({}, Constants.DEFAULT_STYLE, {
+    public static BASE_STYLE:any = {
+        boxBackgroundColor: "#1DE9B6",
+        boxBorderWidth: 1,
+        boxBorderColor: "#1DE9B6"
+    };
+
+    public static NODE_START:any = Object.assign({}, Constants.BASE_STYLE, {
         boxBackgroundColor: "#1DE9B6",
         boxBorderColor: Constants.COLOR_SELECTION,
         boxBorderWidth: 1
     });
 
-    public static NODE_END:any = Object.assign({}, Constants.DEFAULT_STYLE, {
+    public static NODE_END:any = Object.assign({}, Constants.BASE_STYLE, {
         boxBackgroundColor: "#F44336",
         boxBorderColor: Constants.COLOR_SELECTION,
         boxBorderWidth: 1
     });
 
-    public static NODE_NORMAL:any = Object.assign({}, Constants.DEFAULT_STYLE, {
+    public static NODE_BASE:any = Object.assign({}, Constants.BASE_STYLE, {
         boxBackgroundColor: "#FFFFFF",
         boxBorderColor: Constants.COLOR_SELECTION,
         boxBorderWidth: 1,
@@ -105,25 +111,21 @@ export class Constants {
         iconColor: "#424242"
     });
 
-    public static NODE_CONDITIONAL:any = Object.assign({}, Constants.NODE_NORMAL, {
+    public static NODE_NORMAL:any = Object.assign({}, Constants.BASE_STYLE, {
+        boxBackgroundColor: "#FFFFFF",
+        boxBorderColor: Constants.COLOR_SELECTION,
+        boxBorderWidth: 1
+    });
+
+    public static NODE_CONDITIONAL:any = Object.assign({}, Constants.BASE_STYLE, {
         plusCircleColor: "white",
         plusCircleSize: 20
     });
 
-    public static NODE_STATEMENT:any = Object.assign({}, Constants.NODE_NORMAL, {
+    public static NODE_STATEMENT:any = Object.assign({}, Constants.BASE_STYLE, {
         boxCornerRadious: 10,
         iconSize: 14
     });
-
-    public static NODE_STYLE:any = {
-        S: Constants.NODE_START,
-        E: Constants.NODE_END,
-        N: Constants.NODE_NORMAL,
-        C: Constants.NODE_NORMAL,
-        I: Constants.NODE_NORMAL
-    };
-
-    public static NODE_TYPES:string[] = ["S","E","N","C"];
 
     public static DEFAULT_RELATIONSHIP:any = {
         x: Constants.NODE_WIDTH,
@@ -154,13 +156,13 @@ export class Constants {
             relationship: Constants.DEFAULT_RELATIONSHIP
         },
         C: {
-            style: Constants.NODE_CONDITIONAL,
+            style: Constants.NODE_NORMAL,
             icon: 'list-ul',
             title: 'Evaluar entrante',
             relationship: Constants.CONDITION_RELATIONSHIP
         },
         I: {
-            style: Constants.NODE_STATEMENT,
+            style: Constants.NODE_NORMAL,
             icon: 'chevron-right',
             title: 'Condición',
             relationship: Constants.DEFAULT_RELATIONSHIP

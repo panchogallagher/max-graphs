@@ -9,6 +9,7 @@ import { FontAwesomeUnicode } from '../utils/fontawesome-unicode';
 import { IDrawable } from './i-drawable';
 import { GraphService } from '../services/graph.service';
 import { ArrowDrawable } from './arrow-drawable';
+import { Style } from '../object/style';
 
 export class NodeDrawable implements IDrawable {
 
@@ -33,11 +34,12 @@ export class NodeDrawable implements IDrawable {
     }
 
     draw(layer:Layer) {
+        let style = this.getStyle(this.node.type, this.node.style);
         
-        this.box = KonvaUtils.createBox(this.node.point, this.node.style, Constants.NODE_WIDTH, Constants.NODE_HEIGHT, this.onDrag, this.onDragStart);
-        this.title = KonvaUtils.createTitle(this.node.title, this.node.style, this.node.point, Constants.TITLE_OFFSET_X, this.node.description != '' ? Constants.TITLE_OFFSET_Y : Constants.TITLE_OFFSET_NODESCRIPTION_Y);
-        this.description = KonvaUtils.createDescription(this.node.description, this.node.style, this.node.point, Constants.DESCRIPTION_OFFSET_X, Constants.DESCRIPTION_OFFSET_Y);
-        this.config = KonvaUtils.createIcon(FontAwesomeUnicode.cog, this.node.style, this.node.point, Constants.ICON_CONFIG_OFFSET_X, Constants.ICON_CONFIG_OFFSET_Y, this.onClickConfig.bind(this));
+        this.box = KonvaUtils.createBox(this.node.point, style, Constants.NODE_WIDTH, Constants.NODE_HEIGHT, this.onDrag, this.onDragStart);
+        this.title = KonvaUtils.createTitle(this.node.title, style, this.node.point, Constants.TITLE_OFFSET_X, this.node.description != '' ? Constants.TITLE_OFFSET_Y : Constants.TITLE_OFFSET_NODESCRIPTION_Y);
+        this.description = KonvaUtils.createDescription(this.node.description, style, this.node.point, Constants.DESCRIPTION_OFFSET_X, Constants.DESCRIPTION_OFFSET_Y);
+        this.config = KonvaUtils.createIcon(FontAwesomeUnicode.cog, style, this.node.point, Constants.ICON_CONFIG_OFFSET_X, Constants.ICON_CONFIG_OFFSET_Y, this.onClickConfig.bind(this));
 
         layer.add(this.box);
         layer.add(this.title);
@@ -45,7 +47,7 @@ export class NodeDrawable implements IDrawable {
         layer.add(this.config);
 
         if (this.node.icon !== null) {
-            this.icon = KonvaUtils.createIcon(FontAwesomeUnicode[this.node.icon], this.node.style, this.node.point, Constants.ICON_OFFSET_X, Constants.ICON_OFFSET_Y);
+            this.icon = KonvaUtils.createIcon(FontAwesomeUnicode[this.node.icon], style, this.node.point, Constants.ICON_OFFSET_X, Constants.ICON_OFFSET_Y);
             layer.add(this.icon);
         }
 
@@ -153,5 +155,23 @@ export class NodeDrawable implements IDrawable {
                 this.arrow.show();
             }
         }       
+    }
+
+    protected getStyle(type: string, baseStyle: Style) {
+        let style:any = null;
+
+        switch(type) {
+            case 'C':
+                style = Object.assign({}, Constants.NODE_BASE, Constants.NODE_CONDITIONAL, baseStyle);
+                break;
+            case 'S':
+            case 'E':
+                style = Object.assign({}, baseStyle);
+                break;
+            default:
+                style = Object.assign({}, Constants.NODE_BASE, baseStyle);
+                break;
+        }
+        return style;
     }
 }
