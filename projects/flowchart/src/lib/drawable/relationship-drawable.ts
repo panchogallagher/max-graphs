@@ -66,7 +66,6 @@ export class RelationshipDrawable {
         } else {
             this.line.fill(Constants.COLOR_ARROW);
             this.line.stroke(Constants.COLOR_ARROW);
-            this.line.moveToBottom();
         }        
     }
 }

@@ -133,6 +133,30 @@ export class KonvaUtils {
         return rect;
     }
 
+    public static createImageBG(width:number, height:number, layer:Konva.Layer, onClickCallback?:any) : void {
+        var imageObj = new Image();
+
+        imageObj.onload = () => {
+            var image = new Konva.Image({
+                image: imageObj,
+                x: 0,
+                y: 0,
+                width: width,
+                height: height,
+                listening: true 
+            });
+
+            if (onClickCallback !== null && onClickCallback !== undefined) {
+                image.on('click', onClickCallback);
+            }
+
+            layer.add(image);
+            layer.draw();
+        };
+
+        imageObj.src = './assets/images/grid-layer.png';
+    }
+
     public static createText(text:string, baseStyle:Style, Position:Position, xOffset:number, yOffset:number) : Konva.Text {
         let style = Object.assign({}, Constants.DEFAULT_STYLE, baseStyle);
         return new Konva.Text({

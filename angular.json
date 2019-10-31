@@ -56,7 +56,12 @@
             "aot": false,
             "assets": [
               "projects/flowchart-test/src/favicon.ico",
-              "projects/flowchart-test/src/assets"
+              "projects/flowchart-test/src/assets",
+              {
+                "glob": "**/*",
+                "input": "./flowchart/src/assets",
+                "output": "./assets"
+              }
             ],
             "styles": [
               "projects/flowchart-test/src/styles.css",

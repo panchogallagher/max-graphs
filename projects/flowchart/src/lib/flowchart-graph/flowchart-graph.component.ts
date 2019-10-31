@@ -30,7 +30,6 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   private stage : Konva.Stage;
   private layer : Konva.Layer;
   private layerRelationship : Konva.Layer;
-  private layerBG : Konva.Layer;
   private offset: any;
   private counter: number = 0;
   private selectedNodeId: string = null;
@@ -75,13 +74,13 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
 
     this.layerRelationship = new Konva.Layer();
     this.layer = new Konva.Layer();
-    this.layerBG = new Konva.Layer();
 
-    this.layerBG.add(KonvaUtils.createBG(width,height, this.hideSetting.bind(this)));
+    //this.layerBG.add(KonvaUtils.createBG(width,height, this.hideSetting.bind(this)));
+    KonvaUtils.createImageBG(width,height, this.layerRelationship, this.hideSetting.bind(this));
 
-    this.stage.add(this.layerBG);
     this.stage.add(this.layerRelationship);
     this.stage.add(this.layer);
+    
     this.layerRelationship.draw();
     this.layer.draw();
 

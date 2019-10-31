@@ -5,12 +5,12 @@ export class Constants {
     public static NODE_ID_PREFIX:string = "N";
 
     public static ZOOM_MAX:number = 1.5;
-    public static ZOOM_MIN:number = 0.2;
+    public static ZOOM_MIN:number = 0.4;
     public static ZOOM_INITIAL:number = 1.0;
     public static ZOOM_CHANGE:number = 0.1;
 
-    public static CANVAS_MAXWIDTH:number = 4250;
-    public static CANVAS_MAXHEIGHT:number = 2490;
+    public static CANVAS_MAXWIDTH:number = 2250;
+    public static CANVAS_MAXHEIGHT:number = 1290;
 
     public static ICON_WIDTH:number = 15;
     public static ICON_STATEMENT_WIDTH:number = 13;
