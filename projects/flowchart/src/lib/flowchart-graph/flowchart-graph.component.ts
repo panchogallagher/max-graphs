@@ -253,7 +253,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     var dx = this.scrollContainer.scrollLeft;
     var dy = this.scrollContainer.scrollTop;
 
-    let x = (dx + ui.position.left - this.offset.left + Constants.NODE_WIDTH - 25) / scale;
+    let x = (dx + ui.position.left - this.offset.left + Constants.NODE_WIDTH - 25 - ChartUtils.getAdditionalOffsetX()) / scale;
     let y = (dy + ui.position.top) / scale;
 
     let node = KonvaUtils.createEmptyNode(ui.draggable.data('type'), this.newNodeId(), x, y);

@@ -58,4 +58,22 @@ export class ChartUtils {
     public static isRelationable(node:Node) : boolean {
         return Constants.NO_RELATION_TYPE.indexOf(node.type) === -1;
     }
+
+    /**
+     * Get the OS
+     */
+    public static getOs() : string {
+        var OSName="Windows";
+        if (navigator.appVersion.indexOf("Mac")!=-1) OSName="MacOS";
+        if (navigator.appVersion.indexOf("X11")!=-1) OSName="UNIX";
+        if (navigator.appVersion.indexOf("Linux")!=-1) OSName="Linux";
+        return OSName;
+    }
+
+    /**
+     * Get additional offset based on the OS
+     */
+    public static getAdditionalOffsetX() : number {
+        return ChartUtils.getOs() != "Windows" ? 40 : 0;
+    }
 }
