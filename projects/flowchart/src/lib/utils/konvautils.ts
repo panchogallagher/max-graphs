@@ -154,7 +154,7 @@ export class KonvaUtils {
             layer.draw();
         };
 
-        imageObj.src = './assets/images/grid-layer.png';
+        imageObj.src = Constants.BG_IMAGE_SRC;
     }
 
     public static createText(text:string, baseStyle:Style, Position:Position, xOffset:number, yOffset:number) : Konva.Text {

@@ -2,6 +2,7 @@ import { Style } from '../object/style';
 
 export class Constants {
 
+    public static BG_IMAGE_SRC = './assets/images/grid-layer.png';
     public static NODE_ID_PREFIX:string = "N";
 
     public static ZOOM_MAX:number = 1.5;
