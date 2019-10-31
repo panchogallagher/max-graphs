@@ -54,6 +54,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     _graphService.onZoomOut.subscribe(this.zoomOut.bind(this));
     this.clickConfig = this.clickConfig.bind(this);
     this.scrollStage = this.scrollStage.bind(this);
+    this.initOffset = this.initOffset.bind(this);
   }
 
   /** ANGULAR EVENTS */
@@ -96,7 +97,10 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.offset = $("#graph-container").offset();
+    this.initOffset();
+    $( window ).resize(() => {
+      this.initOffset();
+    });
   }
 
   /** PUBLIC METHODS */
@@ -155,6 +159,10 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
 
   /** PRIVATE METHODS */
 
+  private initOffset() {
+    this.offset = $("#graph-container").offset();
+  }
+
   /**
    * Generate a new node Id
    */
@@ -163,6 +171,9 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     return Constants.NODE_ID_PREFIX + (this.counter);
   }
 
+  /**
+   * Init the max node Id
+   */
   private initMaxNodeId() {
     let maxNodeId:number = 0;
     let ids = Object.keys(this.drawables);
@@ -242,7 +253,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     var dx = this.scrollContainer.scrollLeft;
     var dy = this.scrollContainer.scrollTop;
 
-    let x = (dx + ui.position.left - this.offset.left + Constants.NODE_WIDTH/2) / scale;
+    let x = (dx + ui.position.left - this.offset.left + Constants.NODE_WIDTH - 25) / scale;
     let y = (dy + ui.position.top) / scale;
 
     let node = KonvaUtils.createEmptyNode(ui.draggable.data('type'), this.newNodeId(), x, y);
