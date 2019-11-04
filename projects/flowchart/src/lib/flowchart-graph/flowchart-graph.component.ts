@@ -160,7 +160,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   /** PRIVATE METHODS */
 
   private initOffset() {
-    this.offset = $("#graph-container").offset();
+    this.offset = document.getElementById('graph-container').getBoundingClientRect();
   }
 
   /**
