@@ -10,8 +10,8 @@ export class Constants {
     public static ZOOM_INITIAL:number = 1.0;
     public static ZOOM_CHANGE:number = 0.1;
 
-    public static CANVAS_MAXWIDTH:number = 2250;
-    public static CANVAS_MAXHEIGHT:number = 1290;
+    public static CANVAS_MAXWIDTH:number = 2230;
+    public static CANVAS_MAXHEIGHT:number = 1245;
 
     public static ICON_WIDTH:number = 15;
     public static ICON_STATEMENT_WIDTH:number = 13;

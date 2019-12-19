@@ -1,5 +1,4 @@
 import { Component, OnInit, AfterViewInit, EventEmitter } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import Konva from 'konva';
 import { Node } from '../object/node';
 import { KonvaUtils } from '../utils/konvautils';
@@ -77,7 +76,6 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     this.layerRelationship = new Konva.Layer();
     this.layer = new Konva.Layer();
 
-    //this.layerBG.add(KonvaUtils.createBG(width,height, this.hideSetting.bind(this)));
     KonvaUtils.createImageBG(width,height, this.layerRelationship, this.hideSetting.bind(this));
 
     this.stage.add(this.layerRelationship);
