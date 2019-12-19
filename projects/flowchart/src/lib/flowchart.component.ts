@@ -2,6 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ViewChil
 import { Node } from './object/node';
 import { FlowchartGraphComponent } from './flowchart-graph/flowchart-graph.component';
 import { Graph } from './object/graph';
+import { Setting } from './object/setting';
+import { Constants } from './utils/constants';
 
 declare var $: any;
 
@@ -14,14 +16,19 @@ declare var $: any;
     './flowchart.component.css'
   ]
 })
-export class FlowchartComponent implements AfterViewInit {
+export class FlowchartComponent implements OnInit, AfterViewInit {
 
   @ViewChild("flowchartgraph", {static: false})
   flowchartgraph : FlowchartGraphComponent;
 
+  @Input() settings: String = null;
   @Output() onClickConfig: EventEmitter<Node> = new EventEmitter();
 
   constructor() { }
+
+  ngOnInit() {
+    this.settings = Object.assign(Constants.DEFAULT_SETTINGS, this.settings);
+  }
 
   ngAfterViewInit() {
     this.flowchartgraph.onClickConfig = this.onClickConfig;

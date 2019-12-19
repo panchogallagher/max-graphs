@@ -1,4 +1,4 @@
-import { Style } from '../object/style';
+import { Setting } from '../object/setting';
 
 export class Constants {
 
@@ -173,4 +173,9 @@ export class Constants {
     };
 
     public static NO_RELATION_TYPE: string[] = ['S'];
+
+    public static DEFAULT_SETTINGS: Setting = {
+        width: Constants.CANVAS_MAXWIDTH,
+        height: Constants.CANVAS_MAXWIDTH
+    }
 }

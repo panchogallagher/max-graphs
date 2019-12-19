@@ -1,6 +1,7 @@
 import { Component, Input, ViewChild, AfterViewInit } from '@angular/core';
 import { FlowchartComponent } from 'flowchart/flowchart';
 import { Node } from 'flowchart/lib/object/node';
+import { Setting } from 'flowchart/lib/object/setting';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,9 @@ export class AppComponent implements AfterViewInit {
   graphJSON: string = null;
   viewJSON: boolean = false;
   buttonJSON: string = "Ver JSON";
+  customSettings: Setting = {
+    width: 4000
+  };
 
   constructor() {}
 
