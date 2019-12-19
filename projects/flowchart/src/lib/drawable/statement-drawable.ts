@@ -58,8 +58,10 @@ export class StatementDrawable implements IDrawable {
 
     update(newnode: Node): void {
         this.node.title = newnode.title;
+        this.node.style = newnode.style;
 
         this.title.text(ChartUtils.format(this.node.title, Constants.MAX_TITLE_LENGTH));
+        this.box.fill(this.node.style.boxBackgroundColor);
 
         this.title.setPosition({
             x: this.node.point.x + Constants.TITLE_OFFSET_X,
