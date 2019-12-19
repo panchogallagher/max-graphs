@@ -20,6 +20,10 @@
     background: #eaeaea;
 }
 
+#graph-container {
+    position: relative;
+}
+
 flowchart-controls {
     position: absolute;
     bottom: 30px;

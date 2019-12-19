@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit, EventEmitter } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import Konva from 'konva';
 import { Node } from '../object/node';
 import { KonvaUtils } from '../utils/konvautils';
@@ -160,7 +161,19 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   /** PRIVATE METHODS */
 
   private initOffset() {
-    this.offset = document.getElementById('graph-container').getBoundingClientRect();
+    let bounding = document.getElementsByTagName("lib-flowchart")[0].getBoundingClientRect()
+    this.offset = {
+      bottom: bounding.bottom,
+      height: bounding.height,
+      left: bounding.left + 194,
+      right: bounding.right,
+      top: bounding.top,
+      width: bounding.width,
+      // @ts-ignore
+      x: bounding.x,
+      // @ts-ignore
+      y: bounding.y
+    };
   }
 
   /**
@@ -250,15 +263,14 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
    */
   private onDrop(event, ui) {
     let scale = this.stage.getAbsoluteScale().x;
-    var dx = this.scrollContainer.scrollLeft;
+    var dx = this.scrollContainer.scrollLeft - $(window).scrollLeft();
     var dy = this.scrollContainer.scrollTop;
 
-    let x = (dx + ui.position.left - this.offset.left + Constants.NODE_WIDTH - 25 - ChartUtils.getAdditionalOffsetX()) / scale;
+    let x = (dx + ui.offset.left - this.offset.left - Constants.NODE_WIDTH/2 + 75 - ChartUtils.getAdditionalOffsetX()) / scale;
     let y = (dy + ui.position.top) / scale;
 
     let node = KonvaUtils.createEmptyNode(ui.draggable.data('type'), this.newNodeId(), x, y);
     this.addDrawable(DrawableFactory.create(node, this._graphService, this.clickConfig));
-
     this.updateSelected(node.id);
     this._graphService.showSetting(node);
   }

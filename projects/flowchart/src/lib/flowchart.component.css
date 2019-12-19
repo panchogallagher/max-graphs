@@ -1,6 +1,19 @@
-.container {
+.container-chart {
     font-family: 'Lato', sans-serif;
     font-size: 0.75em;
+    height: 500px;
+    /*
+    min-width: 1140px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    */
+}
+
+.main-row {
+    position: relative;
+    height: 100%;
 }
 
 .fc-setting-widget {
@@ -21,4 +34,17 @@
     border-left: 1px solid #ccc;
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
+}
+
+#element-chart-container {
+    width: 194px;
+    height: 100%;
+}
+
+#element-graph-container {
+    width: 83.333333%;
+    width: calc(100% - 194px);
+    position: absolute;
+    top: 0;
+    left: 194px;
 }
