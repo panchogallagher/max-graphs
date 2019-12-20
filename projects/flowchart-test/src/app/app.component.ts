@@ -19,9 +19,6 @@ export class AppComponent implements AfterViewInit {
   graphJSON: string = null;
   viewJSON: boolean = false;
   buttonJSON: string = "Ver JSON";
-  customSettings: Setting = {
-    width: 4000
-  };
 
   constructor() {}
 

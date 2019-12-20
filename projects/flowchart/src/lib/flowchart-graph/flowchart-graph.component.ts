@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, AfterViewInit, EventEmitter, Input } from '@angular/core';
 import Konva from 'konva';
 import { Node } from '../object/node';
 import { KonvaUtils } from '../utils/konvautils';
@@ -13,6 +13,7 @@ import { RelationshipDrawable } from '../drawable/relationship-drawable';
 import { Graph } from '../object/graph';
 import { Relationship } from '../object/relationship';
 import { RelationSetting } from '../object/relation-setting';
+import { Setting } from '../object/setting';
 
 declare var $: any;
 
@@ -23,7 +24,8 @@ declare var $: any;
 })
 export class FlowchartGraphComponent implements OnInit, AfterViewInit {
   
-
+  @Input() settings: Setting = null;
+  
   onClickConfig: EventEmitter<Node> = null;
 
   /** PRIVATE PROPERTIES */
@@ -59,9 +61,9 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
 
   /** ANGULAR EVENTS */
   ngOnInit() {
-
-    let width = Constants.CANVAS_MAXWIDTH;
-    let height = Constants.CANVAS_MAXHEIGHT;
+    console.log(this.settings);
+    let width = this.settings.width;
+    let height = this.settings.height;
 
     this.stage = new Konva.Stage({
       container: 'graph-container',
@@ -573,8 +575,8 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
    * @param scale 
    */
   private resize(scale?: number) {
-    let newWidth = Math.round(Constants.CANVAS_MAXWIDTH * scale);
-    let newHeight = Math.round(Constants.CANVAS_MAXHEIGHT * scale);
+    let newWidth = Math.round(this.settings.width * scale);
+    let newHeight = Math.round(this.settings.height * scale);
     this.changeSize(newWidth, newHeight);
   }
 

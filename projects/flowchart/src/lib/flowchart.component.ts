@@ -21,13 +21,23 @@ export class FlowchartComponent implements OnInit, AfterViewInit {
   @ViewChild("flowchartgraph", {static: false})
   flowchartgraph : FlowchartGraphComponent;
 
-  @Input() settings: String = null;
+  @Input() settings: Setting = null;
   @Output() onClickConfig: EventEmitter<Node> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
-    this.settings = Object.assign(Constants.DEFAULT_SETTINGS, this.settings);
+    this.settings = Object.assign({}, Constants.DEFAULT_SETTINGS, this.settings);
+
+    if (this.settings.width < Constants.DEFAULT_SETTINGS.width) {
+      this.settings.width = Constants.DEFAULT_SETTINGS.width;
+      console.info("[Flowchart] Width can't be lesser than " + Constants.DEFAULT_SETTINGS.width);
+    }
+
+    if (this.settings.height < Constants.DEFAULT_SETTINGS.height) {
+      this.settings.height = Constants.DEFAULT_SETTINGS.height;
+      console.info("[Flowchart] Height can't be lesser than " + Constants.DEFAULT_SETTINGS.height);
+    }
   }
 
   ngAfterViewInit() {
