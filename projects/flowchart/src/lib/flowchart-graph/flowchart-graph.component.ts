@@ -61,7 +61,6 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
 
   /** ANGULAR EVENTS */
   ngOnInit() {
-    console.log(this.settings);
     let width = this.settings.width;
     let height = this.settings.height;
 
@@ -269,7 +268,8 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     let x = (dx + ui.offset.left - this.offset.left - Constants.NODE_WIDTH/2 + 75 - ChartUtils.getAdditionalOffsetX()) / scale;
     let y = (dy + ui.position.top) / scale;
 
-    let node = KonvaUtils.createEmptyNode(ui.draggable.data('type'), this.newNodeId(), x, y);
+    //let node = KonvaUtils.createEmptyNode(ui.draggable.data('type'), this.newNodeId(), x, y);
+    let node = KonvaUtils.createEmptyNodeElement(this.settings.elements[ui.draggable.data('id')], this.newNodeId(), x, y);
     this.addDrawable(DrawableFactory.create(node, this._graphService, this.clickConfig));
     this.updateSelected(node.id);
     this._graphService.showSetting(node);

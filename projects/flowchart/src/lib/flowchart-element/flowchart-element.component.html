@@ -2,12 +2,12 @@
     <div class="d-flex justify-content-center">
         <h6 class="mt-2 mb-3">Elementos</h6>
     </div>
-    <div *ngFor="let type of nodeTypes" class="d-flex justify-content-center">
-        <div id="{{'shape' + type }}" class="draggable draggable-type-{{type}}" attr.data-type="{{type}}">
+    <div *ngFor="let element of settings.elements; let i = index" class="d-flex justify-content-center">
+        <div id="{{'shape' + i }}" class="draggable draggable-type" attr.data-id="{{i}}" [ngStyle]="getNodeStyle(element)" attr.data-type="{{element.type}}">
             <span>
-                <i class="fa fa-{{getNodeIcon(type)}} d-flex justify-content-center"></i>
+                <i class="fa fa-{{element.icon}} d-flex justify-content-center"></i>
             </span>
-            <p class="d-flex justify-content-center">{{getNodeText(type)}}</p>
+            <p class="d-flex justify-content-center">{{element.title}}</p>
         </div>
     </div>
 </div>

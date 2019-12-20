@@ -41,6 +41,10 @@ export class StatementDrawable implements IDrawable {
     draw(layer: Layer): void {
         let style = Object.assign({}, Constants.NODE_BASE, Constants.NODE_STATEMENT, this.node.style);
 
+        style.iconColor = this.node.style.fontColor;
+        style.titleFontColor = this.node.style.fontColor;
+        style.descriptionFontColor = this.node.style.fontColor;
+
         this.box = KonvaUtils.createBox(this.node.point, style, Constants.NODE_WIDTH, Constants.NODE_STATEMENT_HEIGHT, this.onDrag, this.onDragStart);
         this.title = KonvaUtils.createTitle(this.node.title, style, this.node.point, Constants.TITLE_OFFSET_X, Constants.TITLE_STATEMENT_OFFSET_Y);        
 

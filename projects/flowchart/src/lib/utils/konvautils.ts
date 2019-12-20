@@ -6,6 +6,7 @@ import { Constants } from './constants';
 import { ChartUtils } from './chartutils';
 import { FullStyle } from '../object/full-style';
 import { Relationship } from '../object/relationship';
+import { Element } from '../object/element';
 
 export class KonvaUtils {
 
@@ -357,6 +358,27 @@ export class KonvaUtils {
             width: Constants.NODE_WIDTH,
             height: Constants.NODE_HEIGHT,
             type: type,
+            typeID: type,
+            title: definition.title,
+            description: "",
+            icon: definition.icon,
+            style: definition.style,
+            point: {
+                x: x,
+                y: y,
+            }
+        };
+    }
+
+    public static createEmptyNodeElement(element: Element, id: string, x: number, y: number) {
+        let definition = Object.assign({}, element);
+
+        return {
+            id: id,
+            width: Constants.NODE_WIDTH,
+            height: Constants.NODE_HEIGHT,
+            type: definition.type,
+            typeID: definition.typeID,
             title: definition.title,
             description: "",
             icon: definition.icon,

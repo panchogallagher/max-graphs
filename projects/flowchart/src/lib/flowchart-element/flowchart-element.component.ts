@@ -1,5 +1,7 @@
-import { Component, ViewEncapsulation, AfterViewInit } from '@angular/core';
+import { Component, ViewEncapsulation, AfterViewInit, Input } from '@angular/core';
 import { Constants } from '../utils/constants';
+import { Element } from '../object/element';
+import { Setting } from '../object/setting';
 
 declare var $: any;
 
@@ -14,7 +16,7 @@ declare var $: any;
 })
 export class FlowchartElementComponent implements AfterViewInit {
 
-  public nodeTypes: string[] = Object.keys(Constants.NODE_DEFINITION).filter(value => value !== 'I');
+  @Input() settings: Setting = null;
 
   constructor() { }
 
@@ -26,11 +28,10 @@ export class FlowchartElementComponent implements AfterViewInit {
     });
   }
 
-  public getNodeText(type:string) {
-    return Constants.NODE_DEFINITION[type].title;
-  }
-
-  public getNodeIcon(type:string) {
-    return Constants.NODE_DEFINITION[type].icon;
+  public getNodeStyle(element:Element) {
+    return {
+      'background': element.style.boxBackgroundColor,
+      'color': element.style.fontColor
+    }
   }
 }

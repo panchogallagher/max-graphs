@@ -2,7 +2,7 @@
 <div id="main-chart-container" class="container-chart">
     <div class="main-row">
         <div class="bg-light fc-no-padding fc-border" id="element-chart-container">
-            <flowchart-element></flowchart-element>
+            <flowchart-element [settings]="settings"></flowchart-element>
         </div>
         <div class="fc-no-padding" id="element-graph-container">
             <flowchart-graph #flowchartgraph [settings]="settings"></flowchart-graph>

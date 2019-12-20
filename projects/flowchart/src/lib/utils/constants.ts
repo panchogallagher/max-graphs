@@ -1,4 +1,5 @@
 import { Setting } from '../object/setting';
+import { Element } from '../object/element';
 
 export class Constants {
 
@@ -85,24 +86,28 @@ export class Constants {
 
         iconSize: 18,
         iconColor: "white"
+
     };
 
     public static BASE_STYLE:any = {
         boxBackgroundColor: "#1DE9B6",
         boxBorderWidth: 1,
-        boxBorderColor: "#1DE9B6"
+        boxBorderColor: "#1DE9B6",
+        fontColor: "#212529"
     };
 
     public static NODE_START:any = Object.assign({}, Constants.BASE_STYLE, {
         boxBackgroundColor: "#1DE9B6",
         boxBorderColor: Constants.COLOR_SELECTION,
-        boxBorderWidth: 1
+        boxBorderWidth: 1,
+        fontColor: "#ffffff"
     });
 
     public static NODE_END:any = Object.assign({}, Constants.BASE_STYLE, {
         boxBackgroundColor: "#F44336",
         boxBorderColor: Constants.COLOR_SELECTION,
-        boxBorderWidth: 1
+        boxBorderWidth: 1,
+        fontColor: "#ffffff"
     });
 
     public static NODE_BASE:any = Object.assign({}, Constants.BASE_STYLE, {
@@ -174,8 +179,85 @@ export class Constants {
 
     public static NO_RELATION_TYPE: string[] = ['S'];
 
+    public static DEFAULT_ELEMENTS: Element[] = [
+        {
+            type: "S",
+            typeID: "S2",
+            icon: 'play',
+            title: 'Punto entrada',
+            style: Constants.NODE_START
+        },
+        {
+            type: "E",
+            typeID: "E",
+            icon: 'stop',
+            title: 'Punto término',
+            style: Constants.NODE_END
+        },
+        {
+            type: "N",
+            typeID: "N",
+            icon: 'arrow-right',
+            title: 'Envía mensaje',
+            style: Constants.NODE_NORMAL
+        }, 
+        {
+            type: "C",
+            typeID: "C1",
+            icon: 'list-ul',
+            title: 'Evaluar entrante',
+            style: Constants.NODE_NORMAL
+        }, 
+        {
+            type: "C",
+            typeID: "C2",
+            icon: 'lock',
+            title: 'Lock',
+            style: Object.assign({}, Constants.NODE_NORMAL, {
+                boxBackgroundColor: "#F9A825",
+                fontColor: "#eee"
+            })
+        }, 
+        {
+            type: "C",
+            typeID: "C",
+            icon: 'plug',
+            title: 'Plug',
+            style: Constants.NODE_NORMAL
+        }, 
+        {
+            type: "E",
+            typeID: "E2",
+            icon: 'rss',
+            title: 'RSS-FINAL',
+            style: Constants.NODE_NORMAL
+        }, 
+        {
+            type: "C",
+            typeID: "C",
+            icon: 'list-ul',
+            title: 'Evaluar entrante',
+            style: Constants.NODE_NORMAL
+        }, 
+        {
+            type: "C",
+            typeID: "C",
+            icon: 'list-ul',
+            title: 'Evaluar entrante',
+            style: Constants.NODE_NORMAL
+        }, 
+        {
+            type: "C",
+            typeID: "C",
+            icon: 'list-ul',
+            title: 'Evaluar entrante',
+            style: Constants.NODE_NORMAL
+        }
+    ];
+
     public static DEFAULT_SETTINGS: Setting = {
         width: Constants.CANVAS_MAXWIDTH,
-        height: Constants.CANVAS_MAXHEIGHT
+        height: Constants.CANVAS_MAXHEIGHT,
+        elements: Constants.DEFAULT_ELEMENTS
     }
 }

@@ -170,7 +170,7 @@ export class NodeDrawable implements IDrawable {
         }       
     }
 
-    protected getStyle(type: string, baseStyle: Style) {
+    protected getStyle(type: string, baseStyle: Style, notReplaceIcon?: boolean) {
         let style:any = null;
 
         switch(type) {
@@ -185,6 +185,10 @@ export class NodeDrawable implements IDrawable {
                 style = Object.assign({}, Constants.NODE_BASE, baseStyle);
                 break;
         }
+        
+        style.iconColor = baseStyle.fontColor;
+        style.titleFontColor = baseStyle.fontColor;
+        style.descriptionFontColor = baseStyle.fontColor;
         return style;
     }
 }

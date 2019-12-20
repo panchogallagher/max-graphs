@@ -1,6 +1,8 @@
 #element-container
 {
     z-index: 10;
+    overflow: auto;
+    height: 100%;
 }
 
 .draggable {
@@ -9,7 +11,7 @@
     display: block;
     margin-bottom: 20px;
     border-radius: 5px;
-    border: none;
+    border: 1px solid #ccc;
 
     -webkit-user-select: none;  
     -moz-user-select: none;    
