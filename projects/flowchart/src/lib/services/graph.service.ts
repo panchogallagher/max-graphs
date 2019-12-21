@@ -19,6 +19,7 @@ export class GraphService {
   @Output() onViewRelationSetting: EventEmitter<RelationSetting> = new EventEmitter();
   @Output() onRelationSelected: EventEmitter<Relationship> = new EventEmitter();
   @Output() onApplySetting: EventEmitter<Node> = new EventEmitter();
+  @Output() onApplyRelationSetting: EventEmitter<Relationship> = new EventEmitter();
   @Output() onRedraw = new EventEmitter();
   @Output() onCheckRelation: EventEmitter<RelationCheck> = new EventEmitter();
   @Output() onCollisionCheck: EventEmitter<RelationCheck> = new EventEmitter();
@@ -80,6 +81,10 @@ export class GraphService {
 
   relationSelected(relationship: Relationship) {
     this.onRelationSelected.emit(relationship);
+  }
+
+  applyRelationSetting(relationship: Relationship) {
+    this.onApplyRelationSetting.emit(relationship);
   }
 
   checkCollision(check:RelationCheck) {

@@ -26,6 +26,7 @@ export class FlowchartSettingComponent implements OnInit {
   public relationship: RelationSetting;
 
   private original: Node;
+  private originalRelationship: RelationSetting;
 
   public visible:boolean = false;
   public mode: string = null;
@@ -81,6 +82,7 @@ export class FlowchartSettingComponent implements OnInit {
   public initRelation(relationship: RelationSetting) {
     this.show();
     this.relationship = ChartUtils.cloneObject<RelationSetting>(relationship);
+    this.originalRelationship = ChartUtils.cloneObject<RelationSetting>(relationship);
     this.mode = 'R';
   }
 
@@ -97,6 +99,15 @@ export class FlowchartSettingComponent implements OnInit {
   public onDelete() {
     this._service.deleteNode(this.node.id);
     this.hide();
+  }
+
+  public onApplyRelation() {
+    this._service.applyRelationSetting(this.relationship.relationship);
+  }
+
+  public onRevertRelation() {
+    this.relationship = ChartUtils.cloneObject<RelationSetting>(this.originalRelationship);
+    this.onApplyRelation();
   }
 
   public onDeleteRelation() {

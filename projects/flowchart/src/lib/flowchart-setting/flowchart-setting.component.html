@@ -5,7 +5,7 @@
     <form [ngClass]="{'d-none': mode !== 'N'}">
         <div class="form-group">
             <label for="fi-title">T&iacute;tulo</label>
-            <input type="email" class="form-control form-control-sm" id="fi-title" name="fi-title" placeholder="Ingrese el título" [(ngModel)]="node.title">
+            <input type="text" class="form-control form-control-sm" id="fi-title" name="fi-title" placeholder="Ingrese el título" [(ngModel)]="node.title">
         </div>
         <div class="form-group" *ngIf="node.type !== 'I'">
             <label for="fi-description">Descripci&oacute;n</label>
@@ -43,12 +43,21 @@
     </form>
     <form [ngClass]="{'d-none': mode !== 'R'}">
         <div class="form-group">
+            <label for="fi-title-relation">T&iacute;tulo</label>
+            <input type="text" class="form-control form-control-sm" id="fi-title-relation" name="fi-title-relation" placeholder="Ingrese el título" [(ngModel)]="relationship.relationship.title">
+        </div>
+        <div class="form-group">
             <label for="fi-fromNode">Desde</label>
             <input type="input" readonly class="form-control form-control-sm" id="fi-fromNode" name="fi-fromNode" [(ngModel)]="relationship.fromNode.title">
         </div>
         <div class="form-group">
             <label for="fi-toNode">Hasta</label>
             <input type="input" readonly class="form-control form-control-sm" id="fi-toNode" name="fi-toNode" [(ngModel)]="relationship.toNode.title">
+        </div>
+        <div class="form-row">
+            <button type="button" class="btn btn-primary btn-sm col mr-2" (click)="onApplyRelation()">Aplicar</button>
+            <div class="col-xs-1"></div>
+            <button type="button" class="btn btn-secondary btn-sm col" (click)="onRevertRelation()">Revertir</button>
         </div>
         <div class="form-row mt-3">
             <span class="font-weight-bold">¿Desea eliminar la relación entre los nodos?</span>

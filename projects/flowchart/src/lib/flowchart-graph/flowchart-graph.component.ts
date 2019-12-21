@@ -43,6 +43,7 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
 
   constructor(private _graphService: GraphService) { 
     _graphService.onApplySetting.subscribe(this.updateNode.bind(this));
+    _graphService.onApplyRelationSetting.subscribe(this.updateRelationship.bind(this));
     _graphService.onNewStatement.subscribe(this.addStatement.bind(this));
     _graphService.onNodeSelected.subscribe(this.updateSelected.bind(this));
     _graphService.onPositionChanged.subscribe(this.updatePosition.bind(this));
@@ -280,6 +281,15 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
    */
   private updateNode(node: Node) {
     this.drawables[node.id].update(node);
+    this.redraw();
+  }
+
+  /**
+   * Update the properties of a relationship
+   * @param node 
+   */
+  private updateRelationship(relationship: Relationship) {
+    this.relationship[relationship.id].setProperties(relationship);
     this.redraw();
   }
 

@@ -48,6 +48,10 @@ export class RelationshipDrawable {
         this.line.points(this.relationship.points);
     }
 
+    setProperties(newrelationship: Relationship) : void {
+        this.relationship.title = newrelationship.title;
+    }
+
     destroy(): void {
         this.line.destroy();
     }
