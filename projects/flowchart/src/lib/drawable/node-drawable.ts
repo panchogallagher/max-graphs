@@ -35,7 +35,7 @@ export class NodeDrawable implements IDrawable {
     }
 
     draw(layer:Layer) {
-        let style = this.getStyle(this.node.type, this.node.style);
+        let style = this.getStyle(this.node.type, this.node.style, true);
         
         this.box = KonvaUtils.createBox(this.node.point, style, Constants.NODE_WIDTH, Constants.NODE_HEIGHT, this.onDrag, this.onDragStart);
         this.title = KonvaUtils.createTitle(this.node.title, style, this.node.point, Constants.TITLE_OFFSET_X, this.node.description != '' ? Constants.TITLE_OFFSET_Y : Constants.TITLE_OFFSET_NODESCRIPTION_Y);
@@ -101,7 +101,7 @@ export class NodeDrawable implements IDrawable {
     }
 
     update(newnode: Node) {
-        let style = this.getStyle(this.node.type, this.node.style);
+        let style = this.getStyle(this.node.type, this.node.style, true);
 
         this.node.title = newnode.title;
         this.node.icon = newnode.icon;
@@ -170,7 +170,7 @@ export class NodeDrawable implements IDrawable {
         }       
     }
 
-    protected getStyle(type: string, baseStyle: Style, notReplaceIcon?: boolean) {
+    protected getStyle(type: string, baseStyle: Style, fontColorToIcon: boolean) {
         let style:any = null;
 
         switch(type) {
@@ -186,7 +186,9 @@ export class NodeDrawable implements IDrawable {
                 break;
         }
         
-        style.iconColor = baseStyle.fontColor;
+        if (fontColorToIcon === true) {
+            style.iconColor = baseStyle.fontColor;
+        }
         style.titleFontColor = baseStyle.fontColor;
         style.descriptionFontColor = baseStyle.fontColor;
         return style;

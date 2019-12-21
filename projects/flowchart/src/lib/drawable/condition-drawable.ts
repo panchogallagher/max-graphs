@@ -15,7 +15,7 @@ export class ConditionDrawable extends NodeDrawable {
     draw(layer:Layer) {
         super.draw(layer);
 
-        let style = this.getStyle(this.node.type, this.node.style);
+        let style = this.getStyle(this.node.type, this.node.style, false);
 
         this.circlePlus = KonvaUtils.createCircle(style,this.node.point,Constants.ICON_PLUS_CIRCLE_OFFSET_X, Constants.ICON_PLUS_CIRCLE_OFFSET_Y, this.onClickPlus.bind(this));
         this.iconPlus = KonvaUtils.createIcon(FontAwesomeUnicode.plus, style, this.node.point, Constants.ICON_PLUS_OFFSET_X, Constants.ICON_PLUS_OFFSET_Y, this.onClickPlus.bind(this));

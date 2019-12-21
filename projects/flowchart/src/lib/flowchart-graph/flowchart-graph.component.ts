@@ -268,7 +268,6 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
     let x = (dx + ui.offset.left - this.offset.left - Constants.NODE_WIDTH/2 + 75 - ChartUtils.getAdditionalOffsetX()) / scale;
     let y = (dy + ui.position.top) / scale;
 
-    //let node = KonvaUtils.createEmptyNode(ui.draggable.data('type'), this.newNodeId(), x, y);
     let node = KonvaUtils.createEmptyNodeElement(this.settings.elements[ui.draggable.data('id')], this.newNodeId(), x, y);
     this.addDrawable(DrawableFactory.create(node, this._graphService, this.clickConfig));
     this.updateSelected(node.id);
@@ -289,7 +288,8 @@ export class FlowchartGraphComponent implements OnInit, AfterViewInit {
    * @param parentNode 
    */
   private addStatement(statement: Statement) {
-    let node = KonvaUtils.createEmptyNode('I', this.newNodeId(), statement.parentNode.point.x + Constants.CONDITION_OFFSET_X, statement.parentNode.point.y + Constants.CONDITION_OFFSET_Y + (Constants.CONDITION_NODE_OFFSET_Y * statement.totalChilds));
+    let element = this.settings.elements.find(v => v.typeID === statement.parentNode.typeID);
+    let node = KonvaUtils.createEmptyNode('I', this.newNodeId(), statement.parentNode.point.x + Constants.CONDITION_OFFSET_X, statement.parentNode.point.y + Constants.CONDITION_OFFSET_Y + (Constants.CONDITION_NODE_OFFSET_Y * statement.totalChilds), element.style);
     this.addDrawable(DrawableFactory.create(node, this._graphService, this.clickConfig));
 
     let relation = KonvaUtils.createEmptyRelationship(this.newNodeId(), statement.parentNode, node);

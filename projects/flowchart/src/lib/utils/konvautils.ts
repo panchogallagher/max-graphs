@@ -350,8 +350,9 @@ export class KonvaUtils {
         return relationships;
     }
 
-    public static createEmptyNode(type: string, id: string, x: number, y: number) {
+    public static createEmptyNode(type: string, id: string, x: number, y: number, baseStyle: Style) {
         let definition = Object.assign({}, Constants.NODE_DEFINITION[type]);
+        let style = Object.assign({}, definition.style, baseStyle);
 
         return {
             id: id,
@@ -362,7 +363,7 @@ export class KonvaUtils {
             title: definition.title,
             description: "",
             icon: definition.icon,
-            style: definition.style,
+            style: style,
             point: {
                 x: x,
                 y: y,
