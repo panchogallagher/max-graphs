@@ -258,6 +258,7 @@ export class Constants {
     public static DEFAULT_SETTINGS: Setting = {
         width: Constants.CANVAS_MAXWIDTH,
         height: Constants.CANVAS_MAXHEIGHT,
+        allowStyle: false,
         elements: Constants.DEFAULT_ELEMENTS
     }
 }

@@ -158,12 +158,15 @@ export class KonvaUtils {
         imageObj.src = Constants.BG_IMAGE_SRC;
     }
 
-    public static createText(text:string, baseStyle:Style, Position:Position, xOffset:number, yOffset:number) : Konva.Text {
+    public static createText(text:string, baseStyle:Style, Position:Position, xOffset:number, yOffset:number, maxLength:number) : Konva.Text {
         let style = Object.assign({}, Constants.DEFAULT_STYLE, baseStyle);
         return new Konva.Text({
             x: Position.x + xOffset,
             y: Position.y + yOffset,
-            text: text,
+            text: ChartUtils.format(text, maxLength),
+            fontSize: style.titleFontSize,
+            fontFamily: style.titleFontFamily,
+            fill: style.titleFontColor,
             listening: false
         });
     }
@@ -495,5 +498,68 @@ export class KonvaUtils {
         points.push(toY);
 
         return points;
+    }
+
+    public static getRelationTitlePoint(points: number[], text:string, style:FullStyle, toNode: Node) : Position {
+        let position:Position = null;
+        let fontSize:number = style.titleFontSize !== null && style.titleFontSize !== undefined ? style.titleFontSize : 12;
+
+        if (toNode.type === 'I') {
+            if (points.length === 6) {
+                position = {
+                    x: points[0] + 6,
+                    y: points[3] - fontSize
+                };
+            } else {
+                position = {
+                    x: points[8] + 6,
+                    y: points[9] - Constants.NODE_HEIGHT + 6
+                };
+            }
+        } else if (points.length === 8) {
+            position = {
+                x: points[2] - (text.length/2 * 6),
+                y: (points[3] + points[5])/2 - fontSize
+            };
+        } else if (points.length === 6) {
+            position = {
+                x: points[2] - (text.length/2 * 6),
+                y: (points[1] + points[3])/2 - fontSize/2
+            };
+        } else if (points.length === 10) {
+            position = {
+                x: (points[4] + points[2])/2 - (text.length/2 * 6),
+                y: points[5] + fontSize/2 
+            };
+        } else {
+            position = {
+                x: points[2],
+                y: (points[3] + points[5])/2
+            };
+        }
+        return position;
+    }
+
+    public static getRelationTitleLength(points: number[], style:FullStyle, title: string, toNode: Node) : number {
+        let fontSize:number = (style.titleFontSize !== null && style.titleFontSize !== undefined ? style.titleFontSize : 12) / 2;
+        let maxX = Math.round(Math.abs(points[0] - points[points.length - 2]) / fontSize);
+
+        if (toNode.type === 'I') {
+            if (points.length === 12) {
+                maxX = Constants.NODE_WIDTH/fontSize;
+            } else {
+                maxX -= 30/fontSize;
+            }
+        } else {
+            maxX -= 50/fontSize;
+        }
+
+        let diffY = Math.abs(points[1] - points[points.length - 1]);
+        return diffY > Constants.NODE_HEIGHT + 40 
+            && 
+            (toNode.type !== 'C' || points[1] - points[points.length - 1] < 0)  
+            && 
+            (toNode.type !== 'I')  
+            ? title.length : maxX;
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, AfterViewInit, AfterViewChecked} from '@angular/core';
+import { Component, OnInit, OnChanges, AfterViewInit, AfterViewChecked, Input} from '@angular/core';
 import { Node } from '../object/node';
 import { ChartUtils } from '../utils/chartutils';
 import { GraphService } from '../services/graph.service';
@@ -8,6 +8,7 @@ import { FontAwesomeUnicode } from '../utils/fontawesome-unicode';
 import { HexColor } from '../utils/hex-color';
 import { Style } from '../object/style';
 import { Relationship } from '../object/relationship';
+import { Setting } from '../object/setting';
 
 declare var $: any;
 
@@ -21,6 +22,7 @@ declare var $: any;
 })
 export class FlowchartSettingComponent implements OnInit {
 
+  @Input() settings: Setting = null;
   public node: Node;
 
   public relationship: RelationSetting;
@@ -87,7 +89,9 @@ export class FlowchartSettingComponent implements OnInit {
   }
 
   public onApply() {
-    this.node.icon = $("#fi-icon").select2().val();
+    if (this.settings.allowStyle) {
+      this.node.icon = $("#fi-icon").select2().val();
+    }
     this._service.applyNodeSetting(this.node);
   }
 

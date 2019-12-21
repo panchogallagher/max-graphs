@@ -14,7 +14,18 @@ export class ChartUtils {
         if (max == null) {
             max = Constants.MAX_DESCRIPTION_LENGTH;
         }
-        return text.length > max ? text.substr(0, max - 3) + "..." : text;
+
+        let toFormat = text !== undefined && text !== null ? text.trim() : "";
+        if (toFormat.length > max && toFormat.length > 0) {
+            let totalPoints = toFormat.length - max > 3 ? 3 : toFormat.length - max;
+            toFormat = toFormat.substr(0, max - totalPoints);
+            for(let i = 0; i < totalPoints; i++) {
+                toFormat += ".";
+            }
+            return toFormat;
+        } else {
+            return toFormat;
+        }
     }
 
     /**
