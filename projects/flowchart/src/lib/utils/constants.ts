@@ -182,7 +182,7 @@ export class Constants {
     public static DEFAULT_ELEMENTS: Element[] = [
         {
             type: "S",
-            typeID: "S2",
+            typeID: "S",
             icon: 'play',
             title: 'Punto entrada',
             style: Constants.NODE_START
@@ -199,51 +199,6 @@ export class Constants {
             typeID: "N",
             icon: 'arrow-right',
             title: 'Envía mensaje',
-            style: Constants.NODE_NORMAL
-        }, 
-        {
-            type: "C",
-            typeID: "C1",
-            icon: 'list-ul',
-            title: 'Evaluar entrante',
-            style: Constants.NODE_NORMAL
-        }, 
-        {
-            type: "C",
-            typeID: "C2",
-            icon: 'lock',
-            title: 'Lock',
-            style: Object.assign({}, Constants.NODE_NORMAL, {
-                boxBackgroundColor: "#F9A825",
-                fontColor: "#eee"
-            })
-        }, 
-        {
-            type: "C",
-            typeID: "C",
-            icon: 'plug',
-            title: 'Plug',
-            style: Constants.NODE_NORMAL
-        }, 
-        {
-            type: "E",
-            typeID: "E2",
-            icon: 'rss',
-            title: 'RSS-FINAL',
-            style: Constants.NODE_NORMAL
-        }, 
-        {
-            type: "C",
-            typeID: "C",
-            icon: 'list-ul',
-            title: 'Evaluar entrante',
-            style: Constants.NODE_NORMAL
-        }, 
-        {
-            type: "C",
-            typeID: "C",
-            icon: 'list-ul',
-            title: 'Evaluar entrante',
             style: Constants.NODE_NORMAL
         }, 
         {
