@@ -10,9 +10,9 @@ La biblioteca se encuentra construida con Angular7. El tag HTML del componente e
 Éste objeto sirve para inicializar el grafo, tiene las siguientes propiedades
 |                |Tipo de dato                   |Descripción                  |
 |----------------|-------------------------------|-----------------------------|
-|width           |numérico                       |Ancho del canvas (valor mínimo: 2230)             |
-|height          |numérico                       |Alto del canvas (valor mínimo: 1245)             |
-|allowStyle      |booleano                       |Indica si se permite editar el color e ícono de los elementos|
+|width           |numérico                       |Ancho del canvas (valor mínimo: 2230)             
+|height          |numérico                       |Alto del canvas (valor mínimo: 1245)             
+|allowStyle      |booleano                       |Indica si se permite editar el color e ícono de los elementos
 |elements        |Element[]                      |Arreglo de elementos que se pueden dibujar en el grafo. Si no se indica valor, por defecto se dibujan los 4 tipos de elementos permitidos: Nodo de inicio, fin, normal y condicional.
 
 ### Element
