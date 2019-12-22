@@ -8,6 +8,7 @@ La biblioteca se encuentra construida con Angular7. El tag HTML del componente e
 ## Objetos
 ### Setting
 Éste objeto sirve para inicializar el grafo, tiene las siguientes propiedades
+
 |                |Tipo de dato                   |Descripción                  |
 |----------------|-------------------------------|-----------------------------|
 |width           |numérico                       |Ancho del canvas (valor mínimo: 2230)             
@@ -17,6 +18,7 @@ La biblioteca se encuentra construida con Angular7. El tag HTML del componente e
 
 ### Element
 Éste objeto sirve para definir un elemento que se puede dibujar en el grafo, tiene las siguientes propiedades
+
 |                |Tipo de dato                   |Descripción                  |
 |----------------|-------------------------------|-----------------------------|
 |type			 |string, 4 valores posibles. 	 |Este indica el tipo de elemento en el grafo, dependiendo del tipo es el comportamiento que tendrá. Los 4 tipos son:<br>**N**: Normal. Tiene una salida y puede recibir entradas desde otros nodos. Es el nodo normal genérico de un grafo<br>**S**: Inicio. Tiene una salida, pero no puede recibir entradas de otros nodos. Se considera el punto de inicio del grafo<br>**E**: Fin. No tiene ninguna salida y puede recibir entradas de otros nodos. Se considera el punto de fin del grafo<br>**C**: Condicional. No tiene una salida única y puede recibir entradas desde otros nodos. Tiene un botón para agregar nodos de evaluación, podría considerarse como un switch dentro de un grafo
@@ -27,6 +29,7 @@ La biblioteca se encuentra construida con Angular7. El tag HTML del componente e
 
 ### Style
 Éste objeto sirve para definir el estilo de un elemento, tiene las siguientes propiedades.
+
 |                |Tipo de dato                   |Descripción                  |
 |----------------|-------------------------------|-----------------------------|
 |boxBackgroundColor|string						 |Color de fondo del elemento (código hex #FFFFFF)
