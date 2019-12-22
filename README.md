@@ -129,6 +129,7 @@ No tiene salida
 
 ### onClickConfig
 Este evento se dispara cuando se hace click en el botón de configuración de un nodo. Consta de los siguientes parámetros
+
 |                |Tipo de dato                   |Descripción                  |
 |----------------|-------------------------------|-----------------------------|
 |node            |Node                           |Nodo sobre el que se realizó el click
