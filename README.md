@@ -34,6 +34,7 @@ La biblioteca se encuentra construida con Angular7. El tag HTML del componente e
 |----------------|-------------------------------|-----------------------------|
 |boxBackgroundColor|string						 |Color de fondo del elemento (código hex #FFFFFF)
 |fontColor         |string						 |Color de las letras del elemento (código hex #FFFFFF)
+
 Los valores por defecto dependerán del tipo de nodo, por defecto los nodos de Inicio son verdes, los nodos de Fin son rojos y los demás nodos son blancos.
 
 ## Ejemplo de configuración de componente
