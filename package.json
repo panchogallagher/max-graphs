@@ -27,7 +27,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@types/select2": "^4.0.48",
     "font-awesome": "^4.7.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "jquery-ui-dist": "^1.12.1",
     "konva": "^4.0.12",
     "rxjs": "~6.4.0",
